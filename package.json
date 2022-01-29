@@ -1,0 +1,28 @@
+{
+	"name": "google-fonts-collection",
+	"version": "1.0.0",
+	"description": "",
+	"scripts": {
+		"format": "npx prettier --write .",
+		"prepare": "husky install"
+	},
+	"type": "module",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/DaveKeehl/google-fonts-collection.git"
+	},
+	"author": "",
+	"license": "ISC",
+	"bugs": {
+		"url": "https://github.com/DaveKeehl/google-fonts-collection/issues"
+	},
+	"homepage": "https://github.com/DaveKeehl/google-fonts-collection#readme",
+	"devDependencies": {
+		"husky": "^7.0.4",
+		"lint-staged": "^12.3.2",
+		"prettier": "2.5.1"
+	},
+	"lint-staged": {
+		"**/*": "prettier --write --ignore-unknown"
+	}
+}
