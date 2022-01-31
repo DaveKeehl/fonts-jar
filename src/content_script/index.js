@@ -66,8 +66,8 @@ const injectStyles = () => {
 };
 
 const updateButton = (button, icon, fontInFavorites, callback = () => null) => {
-	button.classList[fontInFavorites ? 'add' : 'remove']('active');
-	button.innerText = fontInFavorites ? 'Remove from collection' : 'Add to collection';
+	button.classList.toggle('active', fontInFavorites);
+	button.innerText = fontInFavorites ? 'Remove from wishlist' : 'Add to wishlist';
 	icon.textContent = fontInFavorites ? '-' : '+';
 	button.appendChild(icon);
 	callback();
@@ -95,7 +95,7 @@ const injectMarkup = (typeface) => {
 
 	// Fix button style when placed in collapsed header
 	document.addEventListener('scroll', () => {
-		button.classList[window.scrollY > 130 ? 'add' : 'remove']('collapsed-header');
+		button.classList.toggle('collapsed-header', window.scrollY > 130);
 	});
 
 	// Check if page font is in favorites
@@ -112,9 +112,7 @@ const injectMarkup = (typeface) => {
 			const fontInFavorites = fav.has(typeface.slug);
 			updateButton(button, icon, !fontInFavorites, () => {
 				if (!fontInFavorites) {
-					console.log(typeface);
 					typeface['added_at'] = Date.now();
-					console.log(typeface);
 					fav.set(typeface.slug, typeface);
 				} else {
 					fav.delete(typeface.slug);
@@ -146,8 +144,4 @@ const slugify = (text) =>
 onReady(() => {
 	injectStyles();
 	injectMarkup(extractFontData());
-
-	// chrome.storage.sync.get(null, function (data) {
-	// 	console.info('Storage:', data);
-	// });
 });

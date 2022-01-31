@@ -3,19 +3,16 @@
 	"description": "Save your favorite Google fonts in collections so you never forget they exist.",
 	"version": "1.0",
 	"manifest_version": 3,
-	"background": {
-		"service_worker": "src/scripts/background.js"
-	},
 	"content_scripts": [
 		{
 			"matches": ["https://fonts.google.com/specimen/*"],
-			"js": ["src/scripts/content_script.js"],
+			"js": ["content_script/index.js"],
 			"run_at": "document_end"
 		}
 	],
 	"permissions": ["storage", "activeTab", "declarativeContent", "scripting"],
 	"action": {
-		"default_popup": "src/views/popup.html",
+		"default_popup": "popup/views/popup.html",
 		"default_icon": {
 			"16": "images/get_started16.png",
 			"32": "images/get_started32.png",
