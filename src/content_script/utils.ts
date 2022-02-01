@@ -1,4 +1,4 @@
-const onReady = (callback) => {
+export const onReady = (callback: () => any) => {
 	if (document.readyState != 'loading') {
 		setTimeout(callback, 1000);
 	} else {
@@ -6,7 +6,7 @@ const onReady = (callback) => {
 	}
 };
 
-const extractFontData = () => {
+export const extractFontData = (): Typeface => {
 	const title = document.querySelector('div.sticky-header h1').textContent;
 	const variants = document.querySelectorAll('span.variant__style');
 	return {
@@ -17,7 +17,7 @@ const extractFontData = () => {
 	};
 };
 
-const injectStyles = () => {
+export const injectStyles = () => {
 	const head = document.querySelector('head');
 	const stylesheet = document.createElement('style');
 	stylesheet.setAttribute('data-extension', 'google-fonts-collections');
@@ -65,15 +65,20 @@ const injectStyles = () => {
 	head.appendChild(stylesheet);
 };
 
-const updateButton = (button, icon, fontInFavorites, callback = () => null) => {
+export const updateButton = (
+	button: HTMLButtonElement,
+	icon: HTMLSpanElement,
+	fontInFavorites: boolean,
+	fn = () => null
+) => {
 	button.classList.toggle('active', fontInFavorites);
 	button.innerText = fontInFavorites ? 'Remove from wishlist' : 'Add to wishlist';
 	icon.textContent = fontInFavorites ? '-' : '+';
 	button.appendChild(icon);
-	callback();
+	fn();
 };
 
-const createButton = () => {
+export const createButton = (): [HTMLButtonElement, HTMLSpanElement] => {
 	const button = document.createElement('button');
 	button.innerText = 'Add to collection';
 	button.classList.add('button__addToCollection');
@@ -85,12 +90,12 @@ const createButton = () => {
 	return [button, icon];
 };
 
-const placeButtonOnScreen = (button) => {
+export const placeButtonOnScreen = (button: HTMLButtonElement) => {
 	const downloadButtonStd = document.querySelector('button.sticky-header__cta-button');
-	downloadButtonStd.insertAdjacentElement('beforeBegin', button);
+	downloadButtonStd.insertAdjacentElement('beforebegin', button);
 };
 
-const injectMarkup = (typeface) => {
+export const injectMarkup = (typeface: Typeface) => {
 	const [button, icon] = createButton();
 
 	// Fix button style when placed in collapsed header
@@ -131,7 +136,7 @@ const injectMarkup = (typeface) => {
 	placeButtonOnScreen(button);
 };
 
-const slugify = (text) =>
+export const slugify = (text: string) =>
 	text
 		.split(/[^A-Za-z]/g)
 		.map((el) => el.toLowerCase())
@@ -140,8 +145,3 @@ const slugify = (text) =>
 			return el[0].toUpperCase() + el.slice(1);
 		})
 		.join('');
-
-onReady(() => {
-	injectStyles();
-	injectMarkup(extractFontData());
-});

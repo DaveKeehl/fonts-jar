@@ -7,7 +7,11 @@
 		"format": "npx prettier --write .",
 		"prepare": "husky install && npm run build",
 		"prebuild": "npm run clean",
-		"build": "mkdir dist && cp src/manifest.json dist/ && cp -R src/content_script dist/ && cp -R src/popup dist/popup/ && cp -R src/images/ dist/images",
+		"build:prepare": "mkdir dist && cp src/manifest.json dist/",
+		"build:images": "cp -R src/images/ dist/images",
+		"build:content_script": "node esbuild.content_script.config.js",
+		"build:popup": "cp -R src/popup dist/popup/ && rm -rf dist/popup/scripts && node esbuild.popup.config.js",
+		"build": "npm run build:prepare && npm run build:content_script && npm run build:popup && npm run build:images",
 		"precompress": "npm run build && rm -rf google-fonts-collection.tgz",
 		"compress": "tar -czf google-fonts-collection.tgz dist"
 	},
@@ -23,11 +27,15 @@
 	},
 	"homepage": "https://github.com/DaveKeehl/google-fonts-collection#readme",
 	"devDependencies": {
+		"@types/chrome": "^0.0.177",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.2",
 		"prettier": "2.5.1"
 	},
 	"lint-staged": {
 		"**/*": "prettier --write --ignore-unknown"
+	},
+	"dependencies": {
+		"esbuild": "^0.14.16"
 	}
 }

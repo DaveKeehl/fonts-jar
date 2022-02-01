@@ -11,7 +11,7 @@ const search = document.querySelector('input');
  * @param {*} b - The second typeface to compare.
  * @returns Returns -1 whether the first slug comes first in the alphabet, 1 whether the first one comes after, else 0 whether they are the same.
  */
-export const sortBySlug = (a, b) => {
+export const sortBySlug = (a: TypefaceTuple, b: TypefaceTuple) => {
 	if (a[1].slug < b[1].slug) return -1;
 	if (a[1].slug > b[1].slug) return 1;
 	return 0;
@@ -22,7 +22,7 @@ export const sortBySlug = (a, b) => {
  * @param {*} typeface - The typeface used to create the markup.
  * @returns Returns the div element containing the created markup.
  */
-export const createMarkupFromTypeface = ({ variants, family, url, slug }) => {
+export const createMarkupFromTypeface = ({ variants, family, url, slug }: Typeface) => {
 	const font = document.createElement('div');
 	font.classList.add('font');
 	font.classList.add(`font-${slug}`);
@@ -45,7 +45,7 @@ export const createMarkupFromTypeface = ({ variants, family, url, slug }) => {
 	return font;
 };
 
-const handleRemoveBtnClick = (font, favorites, slug) => {
+const handleRemoveBtnClick = (font: HTMLDivElement, favorites: TypefaceTuple[], slug: string) => {
 	font.style.display = 'none';
 	const fav = new Map(favorites);
 	fav.delete(slug);
@@ -64,7 +64,7 @@ const handleRemoveBtnClick = (font, favorites, slug) => {
 	});
 };
 
-const createMarkupForTypefaces = (favorites) => {
+const createMarkupForTypefaces = (favorites: TypefaceTuple[]) => {
 	favorites.sort(sortBySlug).forEach((favorite) => {
 		const { slug } = favorite[1];
 		const font = createMarkupFromTypeface(favorite[1]);
@@ -86,8 +86,9 @@ export const populatePopup = () => {
 
 			createMarkupForTypefaces(favorites);
 
-			search.addEventListener('keyup', (e) => {
-				const text = e.target.value.trim().toLowerCase();
+			search.addEventListener('keyup', (event) => {
+				const target = event.target as HTMLInputElement;
+				const text = target.value.trim().toLowerCase();
 
 				const filteredFavorites = favorites.filter((favorite) => {
 					const family = favorite[1].family.toLowerCase();
