@@ -1,3 +1,5 @@
+import type { Typeface } from 'types';
+
 export const onReady = (callback: () => any) => {
 	if (document.readyState != 'loading') {
 		setTimeout(callback, 1000);
@@ -7,18 +9,22 @@ export const onReady = (callback: () => any) => {
 };
 
 export const extractFontData = (): Typeface => {
-	const title = document.querySelector('div.sticky-header h1').textContent;
-	const variants = document.querySelectorAll('span.variant__style');
+	const titleElement = document.querySelector('div.sticky-header h1') as HTMLHeadingElement;
+	const title = titleElement.textContent as string;
+	const variants = document.querySelectorAll<HTMLSpanElement>('span.variant__style');
+
 	return {
 		family: title,
 		slug: slugify(title),
-		variants: [...variants].map((variant) => variant.textContent.trim()),
+		variants: [...variants]
+			.map((variant) => (variant.textContent !== null ? variant.textContent : ''))
+			.filter((variant) => variant !== ''),
 		url: document.location.href
 	};
 };
 
 export const injectStyles = () => {
-	const head = document.querySelector('head');
+	const head = document.querySelector('head') as HTMLHeadElement;
 	const stylesheet = document.createElement('style');
 	stylesheet.setAttribute('data-extension', 'google-fonts-collections');
 	stylesheet.innerHTML = `
@@ -69,7 +75,7 @@ export const updateButton = (
 	button: HTMLButtonElement,
 	icon: HTMLSpanElement,
 	fontInFavorites: boolean,
-	fn = () => null
+	fn: Function = () => null
 ) => {
 	button.classList.toggle('active', fontInFavorites);
 	button.innerText = fontInFavorites ? 'Remove from wishlist' : 'Add to wishlist';
@@ -91,7 +97,9 @@ export const createButton = (): [HTMLButtonElement, HTMLSpanElement] => {
 };
 
 export const placeButtonOnScreen = (button: HTMLButtonElement) => {
-	const downloadButtonStd = document.querySelector('button.sticky-header__cta-button');
+	const downloadButtonStd = document.querySelector(
+		'button.sticky-header__cta-button'
+	) as HTMLButtonElement;
 	downloadButtonStd.insertAdjacentElement('beforebegin', button);
 };
 
