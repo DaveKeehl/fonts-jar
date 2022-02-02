@@ -1,4 +1,4 @@
-interface Typeface {
+export interface Typeface {
 	family: string;
 	slug: string;
 	variants: string[];
@@ -6,4 +6,4 @@ interface Typeface {
 	added_at?: number;
 }
 
-type TypefaceTuple = [string, Typeface];
+export type TypefaceTuple = [string, Typeface];
