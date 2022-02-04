@@ -1,4 +1,4 @@
-![](/Users/davideciulla/Repositories/Davide/fonts-jar/banner.png)
+![](./banner.png)
 
 # Fonts Jar
 
