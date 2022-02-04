@@ -1,10 +1,10 @@
 ![](./banner.png)
 
-# Fonts Jar
+# 🍯 Fonts Jar
 
 Useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default.
 
-## Supported Websites
+## 🪄 Supported Websites
 
 - [x] [Google Fonts](https://fonts.google.com/)
 - [ ] [Adobe Fonts](https://fonts.adobe.com/fonts)
@@ -13,6 +13,6 @@ Useful Chrome extension to save your favorite fonts when websites do not have a 
 - [ ] [dafont](https://www.dafont.com/)
 - [ ] [Font Squirrel](https://www.fontsquirrel.com/)
 
-## Requests
+## 🙋🏻‍♀️ Requests
 
 You can request new websites to support by creating a new issue.
