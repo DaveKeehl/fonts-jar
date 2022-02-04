@@ -1,7 +1,7 @@
 {
 	"name": "fonts-jar",
 	"version": "1.0.0",
-	"description": "Save your favorite Google fonts so you never forget they exist.",
+	"description": "Save your favorite fonts so you never forget they exist.",
 	"scripts": {
 		"clean": "rm -rf dist/ && npm run format",
 		"format": "npx prettier --write .",
