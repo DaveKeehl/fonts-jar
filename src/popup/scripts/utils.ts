@@ -6,8 +6,14 @@ import type { TypefaceTuple, Typeface } from 'types';
 const fonts = document.getElementById('fonts') as HTMLDivElement;
 const noFonts = document.getElementById('no-fonts') as HTMLParagraphElement;
 const noResults = document.getElementById('no-results') as HTMLParagraphElement;
-const searchDiv = document.querySelector('.search') as HTMLDivElement;
-const searchInput = document.querySelector('div.search input') as HTMLInputElement;
+const topBar = document.querySelector('.top-bar') as HTMLDivElement;
+const search = document.querySelector('div.search input') as HTMLInputElement;
+const sortBox = document.querySelector('.sort') as HTMLDivElement;
+const alphabetic = document.querySelector('.alphabetic') as HTMLOrSVGImageElement;
+const clock = document.querySelector('.clock') as HTMLOrSVGImageElement;
+
+type SortMethod = 'bySlug' | 'byDate';
+let defaultSort: SortMethod = 'bySlug';
 
 /**
  * Compare function to sort a list of typefaces based on their slug.
@@ -22,11 +28,36 @@ export const sortBySlug = (a: TypefaceTuple, b: TypefaceTuple) => {
 };
 
 /**
+ * Compare function to sort a list of typefaces based on their date.
+ * @param a - The first typeface to compare.
+ * @param b - The second typeface to compare.
+ * @returns Returns -1 whether the first date is older, 1 whether the first one is newer, else 0 whether they are the same.
+ */
+export const sortByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
+	const aDate = new Date(a[1].added_at);
+	const bDate = new Date(b[1].added_at);
+
+	if (+aDate < +bDate) return 1;
+	if (+aDate > +bDate) return -1;
+	return 0;
+};
+
+const getSortFunction = () => {
+	return defaultSort === 'bySlug' ? sortBySlug : sortByDate;
+};
+
+/**
  * Given a typeface object, create some markup and inject it in the page.
  * @param typeface - The typeface used to create the markup.
  * @returns Returns the div element containing the created markup.
  */
-export const createMarkupFromTypeface = ({ styles, family, url, slug, variableAxes }: Typeface) => {
+export const createMarkupFromTypeface = ({
+	styles,
+	family,
+	origin,
+	slug,
+	variableAxes
+}: Typeface) => {
 	const font = document.createElement('div');
 	const stylesText = `${styles.length} style${styles.length > 1 ? 's' : ''}`;
 	const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : '';
@@ -34,7 +65,7 @@ export const createMarkupFromTypeface = ({ styles, family, url, slug, variableAx
 	font.classList.add(`font-${slug}`);
 	font.innerHTML = `
 		<div>
-			<a href="${url}" target="_blank">${family}</a>
+			<a href="${origin.url}" target="_blank">${family}</a>
 			<p>${stylesText} ${variableAxesText}</p>
 		</div>
 		<div class="remove">
@@ -69,7 +100,7 @@ const handleRemoveBtnClick = (font: HTMLDivElement, favorites: TypefaceTuple[], 
 	// Hide elements that must not be visible when no typefaces are in the wishlist
 	if (fav.size === 0) {
 		noFonts.classList.remove('hidden');
-		searchDiv.classList.add('hidden');
+		topBar.classList.add('hidden');
 	}
 
 	// Send message to the content_script that a font has been removed from wishlist.
@@ -86,14 +117,37 @@ const handleRemoveBtnClick = (font: HTMLDivElement, favorites: TypefaceTuple[], 
  * Function that creates markup for an array of favorite typefaces.
  * @param favorites - The array of typefaces you want some markup to be created for.
  */
-const createMarkupForTypefaces = (favorites: TypefaceTuple[]) => {
-	[...favorites].sort(sortBySlug).forEach((favorite) => {
+const createMarkupForTypefaces = (
+	favorites: TypefaceTuple[],
+	compareFunction: (a: TypefaceTuple, b: TypefaceTuple) => number
+) => {
+	fonts.innerHTML = '';
+
+	console.log(compareFunction);
+	const sortedFavorites = [...favorites].sort(compareFunction);
+	console.log(sortedFavorites);
+
+	sortedFavorites.forEach((favorite) => {
 		const { slug } = favorite[1];
 		const font = createMarkupFromTypeface(favorite[1]);
 
 		const removeBtn = document.querySelector(`.font-${slug} .remove`) as HTMLButtonElement;
 		removeBtn.addEventListener('click', () => handleRemoveBtnClick(font, favorites, slug));
 	});
+};
+
+const handleSortBoxClick = (favorites: TypefaceTuple[]) => {
+	alphabetic.classList.toggle('hidden');
+	clock.classList.toggle('hidden');
+
+	if (defaultSort === 'bySlug') {
+		defaultSort = 'byDate';
+	} else if (defaultSort === 'byDate') {
+		defaultSort = 'bySlug';
+	}
+	console.log(defaultSort);
+
+	createMarkupForTypefaces(favorites, getSortFunction());
 };
 
 /**
@@ -104,11 +158,12 @@ export const populatePopup = () => {
 		if (favorites === undefined || favorites.length === 0) {
 			noFonts.classList.remove('hidden');
 		} else {
-			searchDiv.classList.remove('hidden');
+			topBar.classList.remove('hidden');
+			sortBox.addEventListener('click', () => handleSortBoxClick(favorites));
 
-			createMarkupForTypefaces(favorites);
+			createMarkupForTypefaces(favorites, getSortFunction());
 
-			searchInput.addEventListener('keyup', (event) => {
+			search.addEventListener('keyup', (event) => {
 				const target = event.target as HTMLInputElement;
 				const text = target.value.trim().toLowerCase();
 
@@ -117,11 +172,9 @@ export const populatePopup = () => {
 					return family.includes(text);
 				});
 
-				fonts.innerHTML = '';
-
 				if (filteredFavorites.length > 0) {
 					noResults.classList.add('hidden');
-					createMarkupForTypefaces(filteredFavorites);
+					createMarkupForTypefaces(filteredFavorites, getSortFunction());
 				} else {
 					noResults.classList.remove('hidden');
 				}

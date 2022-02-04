@@ -1,6 +1,6 @@
 import type { Typeface } from 'types';
 
-export const onReady = (callback: () => any) => {
+export const onReady = (callback: () => unknown) => {
 	if (document.readyState != 'loading') {
 		setTimeout(callback, 1000);
 	} else {
@@ -20,7 +20,7 @@ export const extractFontData = (): Typeface => {
 		family: title,
 		slug: slugify(title),
 		styles: [...variants]
-			.map((variant) => (variant.textContent !== null ? variant.textContent : ''))
+			.map((variant) => (variant.textContent !== null ? variant.textContent.trim() : ''))
 			.filter((variant) => variant !== ''),
 		variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
 		origin: {
@@ -34,9 +34,9 @@ export const extractFontData = (): Typeface => {
 export const injectStyles = () => {
 	const head = document.querySelector('head') as HTMLHeadElement;
 	const stylesheet = document.createElement('style');
-	stylesheet.setAttribute('data-extension', 'google-fonts-collections');
+	stylesheet.setAttribute('data-extension', 'fonts-jar');
 	stylesheet.innerHTML = `
-		.button__addToCollection {
+		.button__addToWishlist {
 			display: flex;
 			flex-direction: row-reverse;
 			justify-content: center;
@@ -53,16 +53,16 @@ export const injectStyles = () => {
 			margin-right: -2rem;
 		}
 
-		.button__addToCollection.collapsed-header {
+		.button__addToWishlist.collapsed-header {
 			margin-right: 1rem;
 		}
 
-		.button__addToCollection.active,
-		.button__addToCollection.active:hover {
+		.button__addToWishlist.active,
+		.button__addToWishlist.active:hover {
 			background: #354d70;
 		}
 		
-		.button__addToCollection span {
+		.button__addToWishlist span {
 			font-size: 24px;
 			height: 20px;
 			display: flex;
@@ -70,7 +70,7 @@ export const injectStyles = () => {
 			transform: translateY(-1px);
 		}
 		
-		.button__addToCollection:hover {
+		.button__addToWishlist:hover {
 			color: #d2e3fc;
 			background: rgba(138,180,248,.04);
 			cursor: pointer;
@@ -83,7 +83,7 @@ export const updateButton = (
 	button: HTMLButtonElement,
 	icon: HTMLSpanElement,
 	fontInFavorites: boolean,
-	fn: Function = () => null
+	fn: () => unknown = () => null
 ) => {
 	button.classList.toggle('active', fontInFavorites);
 	button.innerText = fontInFavorites ? 'Remove from wishlist' : 'Add to wishlist';
@@ -95,7 +95,7 @@ export const updateButton = (
 export const createButton = (): [HTMLButtonElement, HTMLSpanElement] => {
 	const button = document.createElement('button');
 	button.innerText = 'Add to collection';
-	button.classList.add('button__addToCollection');
+	button.classList.add('button__addToWishlist');
 
 	const icon = document.createElement('span');
 	icon.textContent = '+';
@@ -133,7 +133,8 @@ export const injectMarkup = (typeface: Typeface) => {
 			const fontInFavorites = fav.has(typeface.slug);
 			updateButton(button, icon, !fontInFavorites, () => {
 				if (!fontInFavorites) {
-					typeface['added_at'] = Date.toString();
+					const now = new Date();
+					typeface['added_at'] = now.toString();
 					fav.set(typeface.slug, typeface);
 					console.log(fav);
 				} else {
