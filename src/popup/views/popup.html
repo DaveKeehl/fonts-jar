@@ -6,11 +6,50 @@
 	</head>
 
 	<body>
-		<h1 id="title">Fonts Jar</h1>
+		<div id="header">
+			<img src="../../assets/logo/logo.svg" alt="Fonts Jar Logo" />
+			<div>
+				<h1>Fonts Jar</h1>
+				<p>Never forget your favorite fonts!</p>
+			</div>
+		</div>
 		<div id="container">
-			<p id="no-fonts" class="hidden">No fonts added.</p>
+			<p id="no-fonts" class="hidden nothing-to-show">No fonts added.</p>
 			<div id="favorites">
-				<input type="search" placeholder="Search..." class="hidden" />
+				<div class="search hidden">
+					<svg
+						xmlns="http://www.w3.org/2000/svg"
+						width="192"
+						height="192"
+						fill="#000000"
+						viewBox="0 0 256 256"
+					>
+						<rect width="256" height="256" fill="none"></rect>
+						<circle
+							cx="116"
+							cy="116"
+							r="84"
+							fill="none"
+							stroke="#000000"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="24"
+						></circle>
+						<line
+							x1="175.4"
+							y1="175.4"
+							x2="224"
+							y2="224"
+							fill="none"
+							stroke="#000000"
+							stroke-linecap="round"
+							stroke-linejoin="round"
+							stroke-width="24"
+						></line>
+					</svg>
+					<input type="search" placeholder="Search..." autocomplete="off" />
+				</div>
+				<p id="no-results" class="hidden nothing-to-show">No results.</p>
 				<div id="fonts"></div>
 			</div>
 		</div>

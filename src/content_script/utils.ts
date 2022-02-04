@@ -12,14 +12,22 @@ export const extractFontData = (): Typeface => {
 	const titleElement = document.querySelector('div.sticky-header h1') as HTMLHeadingElement;
 	const title = titleElement.textContent as string;
 	const variants = document.querySelectorAll<HTMLSpanElement>('span.variant__style');
+	const variableAxes = document.querySelectorAll<HTMLDivElement>(
+		'div.variable-axes__preview div.axis-container'
+	);
 
 	return {
 		family: title,
 		slug: slugify(title),
-		variants: [...variants]
+		styles: [...variants]
 			.map((variant) => (variant.textContent !== null ? variant.textContent : ''))
 			.filter((variant) => variant !== ''),
-		url: document.location.href
+		variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
+		origin: {
+			name: 'Google Fonts',
+			url: document.location.href
+		},
+		added_at: ''
 	};
 };
 
@@ -125,8 +133,9 @@ export const injectMarkup = (typeface: Typeface) => {
 			const fontInFavorites = fav.has(typeface.slug);
 			updateButton(button, icon, !fontInFavorites, () => {
 				if (!fontInFavorites) {
-					typeface['added_at'] = Date.now();
+					typeface['added_at'] = Date.toString();
 					fav.set(typeface.slug, typeface);
+					console.log(fav);
 				} else {
 					fav.delete(typeface.slug);
 				}
@@ -136,7 +145,7 @@ export const injectMarkup = (typeface: Typeface) => {
 	});
 
 	// Update button when extension removes font
-	chrome.runtime.onMessage.addListener((request, sendResponse) => {
+	chrome.runtime.onMessage.addListener((request) => {
 		const canUpdateButton = request.message === 'removed-font' && request.font === typeface.slug;
 		updateButton(button, icon, !canUpdateButton);
 	});

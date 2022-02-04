@@ -5,7 +5,9 @@ import type { TypefaceTuple, Typeface } from 'types';
  */
 const fonts = document.getElementById('fonts') as HTMLDivElement;
 const noFonts = document.getElementById('no-fonts') as HTMLParagraphElement;
-const search = document.querySelector('input') as HTMLInputElement;
+const noResults = document.getElementById('no-results') as HTMLParagraphElement;
+const searchDiv = document.querySelector('.search') as HTMLDivElement;
+const searchInput = document.querySelector('div.search input') as HTMLInputElement;
 
 /**
  * Compare function to sort a list of typefaces based on their slug.
@@ -24,22 +26,24 @@ export const sortBySlug = (a: TypefaceTuple, b: TypefaceTuple) => {
  * @param typeface - The typeface used to create the markup.
  * @returns Returns the div element containing the created markup.
  */
-export const createMarkupFromTypeface = ({ variants, family, url, slug }: Typeface) => {
+export const createMarkupFromTypeface = ({ styles, family, url, slug, variableAxes }: Typeface) => {
 	const font = document.createElement('div');
+	const stylesText = `${styles.length} style${styles.length > 1 ? 's' : ''}`;
+	const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : '';
 	font.classList.add('font');
 	font.classList.add(`font-${slug}`);
 	font.innerHTML = `
 		<div>
 			<a href="${url}" target="_blank">${family}</a>
-			<p>${variants.length} variant${variants.length > 1 ? 's' : ''}</p>
+			<p>${stylesText} ${variableAxesText}</p>
 		</div>
 		<div class="remove">
 			<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 				<rect width="256" height="256" fill="none"></rect>
-				<line x1="200" y1="56" x2="56" y2="200" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-					stroke-width="16"></line>
-				<line x1="200" y1="200" x2="56" y2="56" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
-					stroke-width="16"></line>
+				<line x1="200" y1="56" x2="56" y2="200" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+					stroke-width="24"></line>
+				<line x1="200" y1="200" x2="56" y2="56" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+					stroke-width="24"></line>
 			</svg>
 		</div>
 	`;
@@ -65,7 +69,7 @@ const handleRemoveBtnClick = (font: HTMLDivElement, favorites: TypefaceTuple[], 
 	// Hide elements that must not be visible when no typefaces are in the wishlist
 	if (fav.size === 0) {
 		noFonts.classList.remove('hidden');
-		search.classList.add('hidden');
+		searchDiv.classList.add('hidden');
 	}
 
 	// Send message to the content_script that a font has been removed from wishlist.
@@ -100,21 +104,27 @@ export const populatePopup = () => {
 		if (favorites === undefined || favorites.length === 0) {
 			noFonts.classList.remove('hidden');
 		} else {
-			search.classList.remove('hidden');
+			searchDiv.classList.remove('hidden');
 
 			createMarkupForTypefaces(favorites);
 
-			search.addEventListener('keyup', (event) => {
+			searchInput.addEventListener('keyup', (event) => {
 				const target = event.target as HTMLInputElement;
 				const text = target.value.trim().toLowerCase();
 
-				const filteredFavorites = favorites.filter((favorite: TypefaceTuple) => {
+				const filteredFavorites: TypefaceTuple[] = favorites.filter((favorite: TypefaceTuple) => {
 					const family = favorite[1].family.toLowerCase();
 					return family.includes(text);
 				});
 
 				fonts.innerHTML = '';
-				createMarkupForTypefaces(filteredFavorites);
+
+				if (filteredFavorites.length > 0) {
+					noResults.classList.add('hidden');
+					createMarkupForTypefaces(filteredFavorites);
+				} else {
+					noResults.classList.remove('hidden');
+				}
 			});
 		}
 	});

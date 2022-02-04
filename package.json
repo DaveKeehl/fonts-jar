@@ -5,28 +5,35 @@
 	"scripts": {
 		"clean": "rm -rf dist/ && npm run format",
 		"format": "npx prettier --write .",
+		"lint": "npx prettier --check . && npx eslint .",
 		"prepare": "husky install && npm run build",
 		"prebuild": "npm run clean",
 		"build:prepare": "mkdir dist && cp src/manifest.json dist/",
 		"build:assets": "cp -R src/assets/ dist/assets",
 		"build:content_script": "node esbuild.content_script.config.js",
+		"build:background": "cp -R src/background dist/background",
 		"build:popup": "cp -R src/popup dist/popup/ && rm -rf dist/popup/scripts && node esbuild.popup.config.js",
-		"build": "npm run build:prepare && npm run build:content_script && npm run build:popup && npm run build:assets",
+		"build": "npm run build:prepare && npm run build:background && npm run build:content_script && npm run build:popup && npm run build:assets",
 		"postbuild": "rm -rf fonts-jar.tgz && tar -czf fonts-jar.tgz dist"
 	},
 	"type": "module",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/DaveKeehl/google-fonts-collection.git"
+		"url": "git+https://github.com/DaveKeehl/fonts-jar.git"
 	},
 	"author": "",
 	"license": "ISC",
 	"bugs": {
-		"url": "https://github.com/DaveKeehl/google-fonts-collection/issues"
+		"url": "https://github.com/DaveKeehl/fonts-jar/issues"
 	},
-	"homepage": "https://github.com/DaveKeehl/google-fonts-collection#readme",
+	"homepage": "https://github.com/DaveKeehl/fonts-jar#readme",
 	"devDependencies": {
 		"@types/chrome": "^0.0.177",
+		"@typescript-eslint/eslint-plugin": "^5.10.2",
+		"@typescript-eslint/parser": "^5.10.2",
+		"eslint": "^8.8.0",
+		"eslint-config-prettier": "^8.3.0",
+		"eslint-plugin-prettier": "^4.0.0",
 		"husky": "^7.0.4",
 		"lint-staged": "^12.3.2",
 		"prettier": "2.5.1"

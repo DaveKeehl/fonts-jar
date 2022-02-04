@@ -3,6 +3,9 @@
 	"description": "Save your favorite Google fonts so you never forget they exist.",
 	"version": "1.0",
 	"manifest_version": 3,
+	"background": {
+		"service_worker": "background/index.js"
+	},
 	"content_scripts": [
 		{
 			"matches": ["https://fonts.google.com/specimen/*"],
