@@ -161,6 +161,8 @@ export const populatePopup = () => {
 			topBar.classList.remove('hidden');
 			sortBox.addEventListener('click', () => handleSortBoxClick(favorites));
 
+			// TODO: Store in chrome.storage.sync the name of the sort function to be used
+			// We don't want it to always default to sortBySlug
 			createMarkupForTypefaces(favorites, getSortFunction());
 
 			search.addEventListener('keyup', (event) => {
