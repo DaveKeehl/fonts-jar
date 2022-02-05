@@ -67,14 +67,15 @@ body {
 	display: flex;
 	align-items: center;
 	background: var(--greyscale-200);
-	height: 49px;
+	height: 40px;
 }
 
 .search {
 	display: flex;
 	flex-direction: row;
 	align-items: center;
-	padding: 0.75rem 1rem;
+	padding: 0 1rem;
+	height: 100%;
 	flex: 1;
 }
 
@@ -187,6 +188,10 @@ header p {
 	border-bottom: 1px solid var(--greyscale-200);
 }
 
+.font div {
+	width: 100%;
+}
+
 .font .remove {
 	opacity: 0;
 	height: 1rem;
@@ -239,4 +244,5 @@ header p {
 .font p {
 	opacity: 0.5;
 	font-size: 14px;
+	color: var(--greyscale-700);
 }

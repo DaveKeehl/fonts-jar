@@ -12,6 +12,7 @@ const sortBox = document.querySelector('.sort') as HTMLDivElement;
 const alphabetic = document.querySelector('.alphabetic') as HTMLOrSVGImageElement;
 const clock = document.querySelector('.clock') as HTMLOrSVGImageElement;
 
+type CompareFunction = (a: TypefaceTuple, b: TypefaceTuple) => 1 | -1 | 0;
 type SortMethod = 'bySlug' | 'byDate';
 let defaultSort: SortMethod = 'bySlug';
 
@@ -43,6 +44,7 @@ export const sortByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
 };
 
 const getSortFunction = () => {
+	console.log(defaultSort);
 	return defaultSort === 'bySlug' ? sortBySlug : sortByDate;
 };
 
@@ -117,10 +119,7 @@ const handleRemoveBtnClick = (font: HTMLDivElement, favorites: TypefaceTuple[], 
  * Function that creates markup for an array of favorite typefaces.
  * @param favorites - The array of typefaces you want some markup to be created for.
  */
-const createMarkupForTypefaces = (
-	favorites: TypefaceTuple[],
-	compareFunction: (a: TypefaceTuple, b: TypefaceTuple) => number
-) => {
+const createMarkupForTypefaces = (favorites: TypefaceTuple[], compareFunction: CompareFunction) => {
 	fonts.innerHTML = '';
 
 	console.log(compareFunction);
@@ -136,51 +135,86 @@ const createMarkupForTypefaces = (
 	});
 };
 
-const handleSortBoxClick = (favorites: TypefaceTuple[]) => {
+/**
+ * Toggles the sort icons and returns the name of currently active one.
+ */
+const toggleSortIcon = () => {
 	alphabetic.classList.toggle('hidden');
 	clock.classList.toggle('hidden');
 
-	if (defaultSort === 'bySlug') {
-		defaultSort = 'byDate';
-	} else if (defaultSort === 'byDate') {
+	if (defaultSort === 'byDate') {
 		defaultSort = 'bySlug';
+	} else if (defaultSort === 'bySlug') {
+		defaultSort = 'byDate';
 	}
-	console.log(defaultSort);
+	chrome.storage.sync.set({ sort: defaultSort });
+};
 
+const showSortIcon = (icon: 'alphabetic' | 'clock') => {
+	alphabetic.classList.remove('hidden');
+	clock.classList.remove('hidden');
+
+	if (icon === 'alphabetic') {
+		console.log('showing alphabetic icon');
+		clock.classList.add('hidden');
+	} else if (icon === 'clock') {
+		console.log('showing clock icon');
+		alphabetic.classList.add('hidden');
+	}
+};
+
+const handleSortBoxClick = (favorites: TypefaceTuple[]) => {
+	toggleSortIcon();
 	createMarkupForTypefaces(favorites, getSortFunction());
 };
 
+const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple[]) => {
+	const target = event.target as HTMLInputElement;
+	const text = target.value.trim().toLowerCase();
+
+	const filteredFavorites = favorites.filter((favorite) => {
+		const family = favorite[1].family.toLowerCase();
+		return family.includes(text);
+	});
+
+	if (filteredFavorites.length > 0) {
+		noResults.classList.add('hidden');
+		createMarkupForTypefaces(filteredFavorites, getSortFunction());
+	} else {
+		noResults.classList.remove('hidden');
+	}
+};
+
 /**
- * Populate the popup window using the favorite typefaces stored in chrome.storage.sync.
+ * Populate the popup window when opened.
  */
 export const populatePopup = () => {
+	chrome.storage.sync.get(null, (data) => {
+		console.info('Storage:', data);
+	});
+
 	chrome.storage.sync.get('favorites', ({ favorites }) => {
 		if (favorites === undefined || favorites.length === 0) {
 			noFonts.classList.remove('hidden');
 		} else {
 			topBar.classList.remove('hidden');
-			sortBox.addEventListener('click', () => handleSortBoxClick(favorites));
 
-			// TODO: Store in chrome.storage.sync the name of the sort function to be used
-			// We don't want it to always default to sortBySlug
-			createMarkupForTypefaces(favorites, getSortFunction());
+			// When popup is opened, retrieve from storage the lastly used sort method
+			chrome.storage.sync.get('sort', ({ sort }) => {
+				defaultSort = sort;
+				console.log(sort);
 
-			search.addEventListener('keyup', (event) => {
-				const target = event.target as HTMLInputElement;
-				const text = target.value.trim().toLowerCase();
-
-				const filteredFavorites: TypefaceTuple[] = favorites.filter((favorite: TypefaceTuple) => {
-					const family = favorite[1].family.toLowerCase();
-					return family.includes(text);
-				});
-
-				if (filteredFavorites.length > 0) {
-					noResults.classList.add('hidden');
-					createMarkupForTypefaces(filteredFavorites, getSortFunction());
+				if (sort === 'byDate') {
+					showSortIcon('clock');
 				} else {
-					noResults.classList.remove('hidden');
+					showSortIcon('alphabetic');
 				}
+
+				createMarkupForTypefaces(favorites, getSortFunction());
 			});
+
+			sortBox.addEventListener('click', () => handleSortBoxClick(favorites));
+			search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
 		}
 	});
 };

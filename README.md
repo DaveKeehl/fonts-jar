@@ -4,8 +4,6 @@
 
 Useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default.
 
-![](./popup.png)
-
 ## ✨ Features
 
 - Add, remove and move your fonts between collections

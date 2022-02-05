@@ -111,6 +111,29 @@ export const placeButtonOnScreen = (button: HTMLButtonElement) => {
 	downloadButtonStd.insertAdjacentElement('beforebegin', button);
 };
 
+const handleButtonClick = (
+	button: HTMLButtonElement,
+	icon: HTMLSpanElement,
+	typeface: Typeface
+) => {
+	chrome.storage.sync.get('favorites', ({ favorites }) => {
+		const fav = new Map(favorites);
+		const fontInFavorites = fav.has(typeface.slug);
+
+		updateButton(button, icon, !fontInFavorites, () => {
+			if (!fontInFavorites) {
+				const now = new Date();
+				typeface['added_at'] = now.toString();
+				fav.set(typeface.slug, typeface);
+				console.log(fav);
+			} else {
+				fav.delete(typeface.slug);
+			}
+		});
+		chrome.storage.sync.set({ favorites: Array.from(fav) });
+	});
+};
+
 export const injectMarkup = (typeface: Typeface) => {
 	const [button, icon] = createButton();
 
@@ -127,23 +150,7 @@ export const injectMarkup = (typeface: Typeface) => {
 	});
 
 	// React to click events on new added button
-	button.addEventListener('click', () => {
-		chrome.storage.sync.get('favorites', ({ favorites }) => {
-			const fav = new Map(favorites);
-			const fontInFavorites = fav.has(typeface.slug);
-			updateButton(button, icon, !fontInFavorites, () => {
-				if (!fontInFavorites) {
-					const now = new Date();
-					typeface['added_at'] = now.toString();
-					fav.set(typeface.slug, typeface);
-					console.log(fav);
-				} else {
-					fav.delete(typeface.slug);
-				}
-			});
-			chrome.storage.sync.set({ favorites: Array.from(fav) });
-		});
-	});
+	button.addEventListener('click', () => handleButtonClick(button, icon, typeface));
 
 	// Update button when extension removes font
 	chrome.runtime.onMessage.addListener((request) => {
