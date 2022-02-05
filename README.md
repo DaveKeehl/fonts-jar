@@ -4,6 +4,14 @@
 
 Useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default.
 
+![](./popup.png)
+
+## ✨ Features
+
+- Add, remove and move your fonts between collections
+- Search functionality within the popup
+- Sort either by font family name or by saved date
+
 ## 🪄 Supported Websites
 
 - [x] [Google Fonts](https://fonts.google.com/)
@@ -15,4 +23,4 @@ Useful Chrome extension to save your favorite fonts when websites do not have a 
 
 ## 🙋🏻‍♀️ Requests
 
-You can request new websites to support by creating a new issue.
+You can request new websites to be supported by creating a new issue.
