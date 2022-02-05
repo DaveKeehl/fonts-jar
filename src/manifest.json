@@ -13,6 +13,9 @@
 			"run_at": "document_end"
 		}
 	],
+	"content_security_policy": {
+		"extension_pages": "default-src 'self'; connect-src * data: blob: filesystem:; style-src 'self' data: 'unsafe-inline'; img-src 'self' data:; frame-src 'self' data:; font-src 'self' data:; media-src * data: blob: filesystem:;"
+	},
 	"permissions": ["storage", "activeTab", "declarativeContent", "scripting"],
 	"action": {
 		"default_popup": "popup/views/popup.html",
@@ -28,5 +31,6 @@
 		"32": "assets/logo/32.png",
 		"48": "assets/logo/48.png",
 		"128": "assets/logo/128.png"
-	}
+	},
+	"options_page": "options/index.html"
 }

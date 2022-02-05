@@ -13,7 +13,8 @@
 		"build:content_script": "node esbuild.content_script.config.js",
 		"build:background": "cp -R src/background dist/background",
 		"build:popup": "cp -R src/popup dist/popup/ && rm -rf dist/popup/scripts && node esbuild.popup.config.js",
-		"build": "npm run build:prepare && npm run build:background && npm run build:content_script && npm run build:popup && npm run build:assets",
+		"build:options": "cd options && npm run build && cp -R build ../dist/options",
+		"build": "npm run build:prepare && npm run build:background && npm run build:content_script && npm run build:popup && npm run build:assets && npm run build:options",
 		"postbuild": "rm -rf fonts-jar.tgz && tar -czf fonts-jar.tgz dist"
 	},
 	"type": "module",
