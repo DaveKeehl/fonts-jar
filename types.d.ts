@@ -3,11 +3,22 @@ export interface Typeface {
 	slug: string;
 	styles: string[];
 	variableAxes: number;
-	origin: {
-		name: string;
-		url: string;
-	};
+	origin: TypefaceOrigin;
 	added_at: string;
 }
 
 export type TypefaceTuple = [string, Typeface];
+
+export interface TypefaceOrigin {
+	name: SupportedWebsite;
+	url: string;
+}
+
+export type SupportedWebsite = 'Google Fonts';
+export type SupportedWebsites = { name: SupportedWebsite; regex: string }[];
+
+export interface TypefaceExtractionQueries {
+	titleElement: string;
+	variants: string;
+	variableAxes: string;
+}
