@@ -1,11 +1,11 @@
 import type { TypefaceTuple } from 'types/*';
 import { noFonts, noResults, topBar } from './constants';
-import { createMarkupForTypefaces, toggleSortIcon, defaultSort } from './DOM';
+import { createMarkupForTypefaces, toggleSortIcon, sortMethod } from './DOM';
 import { getSortFunction } from './utils';
 
 export const handleSortBoxClick = (favorites: TypefaceTuple[]) => {
 	toggleSortIcon();
-	createMarkupForTypefaces(favorites, getSortFunction(defaultSort));
+	createMarkupForTypefaces(favorites, getSortFunction(sortMethod));
 };
 
 export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple[]) => {
@@ -19,7 +19,7 @@ export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple
 
 	if (filteredFavorites.length > 0) {
 		noResults.classList.add('hidden');
-		createMarkupForTypefaces(filteredFavorites, getSortFunction(defaultSort));
+		createMarkupForTypefaces(filteredFavorites, getSortFunction(sortMethod));
 	} else {
 		noResults.classList.remove('hidden');
 	}

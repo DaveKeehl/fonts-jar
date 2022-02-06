@@ -3,7 +3,7 @@ import { fonts, alphabetic, clock, noFonts, topBar, sortBox, search } from './co
 import { handleRemoveBtnClick, handleSortBoxClick, handleSearchKeyup } from './eventHandlers';
 import { getSortFunction } from './utils';
 
-export let defaultSort: SortMethod = 'bySlug';
+export let sortMethod: SortMethod = 'bySlug';
 
 /**
  * Given a typeface object, create some markup and inject it in the page.
@@ -70,12 +70,12 @@ export const toggleSortIcon = () => {
 	alphabetic.classList.toggle('hidden');
 	clock.classList.toggle('hidden');
 
-	if (defaultSort === 'byDate') {
-		defaultSort = 'bySlug';
-	} else if (defaultSort === 'bySlug') {
-		defaultSort = 'byDate';
+	if (sortMethod === 'byDate') {
+		sortMethod = 'bySlug';
+	} else if (sortMethod === 'bySlug') {
+		sortMethod = 'byDate';
 	}
-	chrome.storage.sync.set({ sort: defaultSort });
+	chrome.storage.sync.set({ sort: sortMethod });
 };
 
 const showSortIcon = (icon: 'alphabetic' | 'clock') => {
@@ -107,7 +107,7 @@ export const populatePopup = () => {
 
 			// When popup is opened, retrieve from storage the lastly used sort method
 			chrome.storage.sync.get('sort', ({ sort }) => {
-				defaultSort = sort;
+				sortMethod = sort;
 				console.log(sort);
 
 				if (sort === 'byDate') {

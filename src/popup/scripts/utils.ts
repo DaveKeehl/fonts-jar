@@ -27,6 +27,6 @@ export const sortByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
 	return 0;
 };
 
-export const getSortFunction = (defaultSort: SortMethod) => {
-	return defaultSort === 'bySlug' ? sortBySlug : sortByDate;
+export const getSortFunction = (sortMethod: SortMethod) => {
+	return sortMethod === 'bySlug' ? sortBySlug : sortByDate;
 };
