@@ -1,5 +1,5 @@
 import type { TypefaceTuple } from 'types/*';
-import { noFonts, noResults, topBar } from './constants';
+import { fonts, noFonts, noResults, topBar } from './constants';
 import { createMarkupForTypefaces, toggleSortIcon, sortMethod } from './DOM';
 import { getSortFunction } from './utils';
 
@@ -21,6 +21,7 @@ export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple
 		noResults.classList.add('hidden');
 		createMarkupForTypefaces(filteredFavorites, getSortFunction(sortMethod));
 	} else {
+		fonts.innerHTML = '';
 		noResults.classList.remove('hidden');
 	}
 };

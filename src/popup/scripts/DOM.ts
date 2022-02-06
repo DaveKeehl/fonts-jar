@@ -108,7 +108,6 @@ export const populatePopup = () => {
 			// When popup is opened, retrieve from storage the lastly used sort method
 			chrome.storage.sync.get('sort', ({ sort }) => {
 				sortMethod = sort;
-				console.log(sort);
 
 				if (sort === 'byDate') {
 					showSortIcon('clock');
