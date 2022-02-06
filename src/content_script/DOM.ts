@@ -1,10 +1,5 @@
-import type {
-	TypefaceExtractionQueries,
-	SupportedWebsite,
-	SupportedWebsites,
-	Typeface,
-	TypefaceOrigin
-} from 'types';
+import type { ExtractionQueries, SupportedWebsite, Typeface, TypefaceOrigin } from 'types';
+import { buttonContent } from './constants';
 import { slugify } from './utils';
 
 /**
@@ -20,39 +15,11 @@ export const onReady = (callback: () => unknown) => {
 };
 
 /**
- * Given a url, this function checks whether the website is either supported or not.
- * @param url - The url to be checked.
- * @returns If the url is supported, an object of type TypefaceOrigin is returned. Otherwise an error is thrown.
- */
-export const identifyWebsite = (url: string): TypefaceOrigin | never => {
-	const websites: SupportedWebsites = [
-		{
-			name: 'Google Fonts',
-			regex: 'fonts.google'
-		}
-	];
-
-	const origin = websites.find((website) => new RegExp(website.regex).test(url));
-
-	if (origin === undefined) {
-		throw new Error(`The received url (${url}) does not seem to be supported`);
-	}
-
-	return {
-		name: origin.name,
-		url
-	};
-};
-
-/**
  * Given a TypefaceOrigin object, this function returns a Typeface object containing the required metadata of the typeface extracted for the currently visited page.
  * @param origin - The object containing the typeface origin metadata to know how to extract the typeface metadata.
  * @returns An object of type Typeface containing the typeface metadata.
  */
-export const extractFontData = (
-	origin: TypefaceOrigin,
-	queries: TypefaceExtractionQueries
-): Typeface => {
+export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueries): Typeface => {
 	const titleElement = document.querySelector(queries.titleElement) as HTMLHeadingElement;
 	const title = titleElement.textContent as string;
 	const variants = document.querySelectorAll<HTMLSpanElement>(queries.variants);
@@ -71,17 +38,6 @@ export const extractFontData = (
 		},
 		added_at: ''
 	};
-};
-
-const buttonContent = {
-	add: {
-		text: 'Add to favorites',
-		icon: '+'
-	},
-	remove: {
-		text: 'Remove from favorites',
-		icon: '-'
-	}
 };
 
 /**

@@ -1,4 +1,4 @@
-import type { SupportedWebsite } from 'types/*';
+import type { SupportedWebsite, WebsitesSpecificStyles } from 'types/*';
 import { minify } from './utils';
 
 const getStyleProperties = (website: SupportedWebsite) => {
@@ -106,7 +106,7 @@ const createStyles = (website: SupportedWebsite) => {
 		}
 	`;
 
-	const websiteSpecificStyles = {
+	const websiteSpecificStyles: WebsitesSpecificStyles = {
 		'Google Fonts': `
 			button.addToFavorites.collapsed-header {
 				margin-right: 1rem;

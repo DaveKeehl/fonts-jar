@@ -1,4 +1,6 @@
-import { onReady, identifyWebsite, injectMarkup, extractFontData } from './DOM';
+import type { WebsitesExtractionQueries } from 'types/*';
+import { identifyWebsite } from './detection';
+import { onReady, injectMarkup, extractFontData } from './DOM';
 import { injectStyles } from './styles';
 
 onReady(() => {
@@ -8,14 +10,15 @@ onReady(() => {
 
 	const typefaceOrigin = identifyWebsite(document.location.href);
 
-	const queries = {
+	const queries: WebsitesExtractionQueries = {
 		'Google Fonts': {
 			titleElement: 'div.sticky-header h1',
 			variants: 'span.variant__style',
 			variableAxes: 'div.variable-axes__preview div.axis-container'
 		}
 	};
-	const typeface = extractFontData(typefaceOrigin, queries[typefaceOrigin.name]);
+	const websiteSpecificQueries = queries[typefaceOrigin.name];
+	const typeface = extractFontData(typefaceOrigin, websiteSpecificQueries);
 
 	injectStyles(typeface.origin.name);
 	injectMarkup(typeface);
