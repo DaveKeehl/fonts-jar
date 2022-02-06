@@ -1,6 +1,6 @@
 ![](./banner.png)
 
-# 🍯 Fonts Jar
+# Fonts Jar
 
 Useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default.
 
