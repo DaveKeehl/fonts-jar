@@ -1,9 +1,28 @@
-import type { Typeface, TypefaceTuple, CompareFunction, SortMethod } from 'types/*';
-import { fonts, alphabetic, clock, noFonts, topBar, sortBox, search } from './constants';
-import { handleRemoveBtnClick, handleSortBoxClick, handleSearchKeyup } from './eventHandlers';
+import type { Typeface, TypefaceTuple, CompareFunction, Sort, SortDirection } from 'types/*';
+import {
+	fonts,
+	alphabetic,
+	clock,
+	noFonts,
+	topBar,
+	sortMethodBox,
+	search,
+	ascending,
+	descending,
+	sortDirectionBox
+} from './constants';
+import {
+	handleRemoveBtnClick,
+	handleSortMethodBoxClick,
+	handleSearchKeyup,
+	handleSortDirectionBoxClick
+} from './eventHandlers';
 import { getSortFunction } from './utils';
 
-export let sortMethod: SortMethod = 'bySlug';
+export const sort: Sort = {
+	method: 'bySlug',
+	direction: 'ascending'
+};
 
 /**
  * Given a typeface object, create some markup and inject it in the page.
@@ -66,28 +85,51 @@ export const createMarkupForTypefaces = (
 /**
  * Toggles the sort icons and returns the name of currently active one.
  */
-export const toggleSortIcon = () => {
+export const toggleSortMethodIcon = () => {
 	alphabetic.classList.toggle('hidden');
 	clock.classList.toggle('hidden');
 
-	if (sortMethod === 'byDate') {
-		sortMethod = 'bySlug';
-	} else if (sortMethod === 'bySlug') {
-		sortMethod = 'byDate';
+	if (sort.method === 'byDate') {
+		sort.method = 'bySlug';
+	} else if (sort.method === 'bySlug') {
+		sort.method = 'byDate';
 	}
-	chrome.storage.sync.set({ sort: sortMethod });
+
+	chrome.storage.sync.set({ sort });
 };
 
-const showSortIcon = (icon: 'alphabetic' | 'clock') => {
+export const toggleSortDirectionIcon = () => {
+	ascending.classList.toggle('hidden');
+	descending.classList.toggle('hidden');
+
+	if (sort.direction === 'ascending') {
+		sort.direction = 'descending';
+	} else if (sort.direction === 'descending') {
+		sort.direction = 'ascending';
+	}
+
+	chrome.storage.sync.set({ sort });
+};
+
+const showSortMethodIcon = (icon: 'alphabetic' | 'clock') => {
 	alphabetic.classList.remove('hidden');
 	clock.classList.remove('hidden');
 
 	if (icon === 'alphabetic') {
-		console.log('showing alphabetic icon');
 		clock.classList.add('hidden');
 	} else if (icon === 'clock') {
-		console.log('showing clock icon');
 		alphabetic.classList.add('hidden');
+	}
+};
+
+const showSortDirectionIcon = (icon: SortDirection) => {
+	ascending.classList.remove('hidden');
+	descending.classList.remove('hidden');
+
+	if (icon === 'ascending') {
+		descending.classList.add('hidden');
+	} else if (icon === 'descending') {
+		ascending.classList.add('hidden');
 	}
 };
 
@@ -106,19 +148,30 @@ export const populatePopup = () => {
 			topBar.classList.remove('hidden');
 
 			// When popup is opened, retrieve from storage the lastly used sort method
-			chrome.storage.sync.get('sort', ({ sort }) => {
-				sortMethod = sort;
-
-				if (sort === 'byDate') {
-					showSortIcon('clock');
-				} else {
-					showSortIcon('alphabetic');
+			chrome.storage.sync.get('sort', ({ sort: storedSort }) => {
+				if (storedSort.method !== undefined && storedSort.direction !== undefined) {
+					sort.method = storedSort.method;
+					sort.direction = storedSort.direction;
 				}
 
+				if (sort.method === 'byDate') {
+					showSortMethodIcon('clock');
+				} else {
+					showSortMethodIcon('alphabetic');
+				}
+
+				if (sort.direction === 'ascending') {
+					showSortDirectionIcon('ascending');
+				} else {
+					showSortDirectionIcon('descending');
+				}
+
+				console.log(sort);
 				createMarkupForTypefaces(favorites, getSortFunction(sort));
 			});
 
-			sortBox.addEventListener('click', () => handleSortBoxClick(favorites));
+			sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
+			sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
 			search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
 		}
 	});
