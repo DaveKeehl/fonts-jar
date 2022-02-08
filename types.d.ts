@@ -1,3 +1,5 @@
+// TYPEFACE
+
 export interface Typeface {
 	family: string;
 	slug: string;
@@ -5,6 +7,7 @@ export interface Typeface {
 	variableAxes: number;
 	origin: TypefaceOrigin;
 	added_at: string;
+	collections?: string[];
 }
 
 export type TypefaceTuple = [string, Typeface];
@@ -14,8 +17,22 @@ export interface TypefaceOrigin {
 	url: string;
 }
 
+// WEBSITE
+
+export interface Website {
+	name: SupportedWebsite;
+	regex: string;
+	queries: ExtractionQueries;
+	styles: {
+		button: {
+			default: CSSRules;
+			active: CSSRules;
+			hover: CSSRules;
+		};
+		icon: CSSRules;
+	};
+}
 export type SupportedWebsite = 'Google Fonts';
-export type SupportedWebsites = { name: SupportedWebsite; regex: string }[];
 
 export interface ExtractionQueries {
 	titleElement: string;
@@ -23,12 +40,18 @@ export interface ExtractionQueries {
 	variableAxes: string;
 }
 
-type WebsitesGenericObject<Type> = {
+export type CSSRules = {
+	[key: string]: string;
+};
+
+export type WebsitesGenericObject<Type> = {
 	[key in SupportedWebsite]: Type;
 };
 
 export type WebsitesExtractionQueries = WebsitesGenericObject<ExtractionQueries>;
 export type WebsitesSpecificStyles = WebsitesGenericObject<string>;
+
+// POPUP
 
 export type CompareFunction = (a: TypefaceTuple, b: TypefaceTuple) => 1 | -1 | 0;
 export type SortMethod = 'bySlug' | 'byDate';

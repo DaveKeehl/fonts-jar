@@ -1,7 +1,7 @@
-import type { WebsitesExtractionQueries } from 'types/*';
 import { identifyWebsite } from './detection';
 import { onReady, injectMarkup, extractFontData } from './DOM';
 import { injectStyles } from './styles';
+import { websites } from './constants';
 
 onReady(() => {
 	chrome.storage.sync.get('favorites', ({ favorites }) => {
@@ -9,16 +9,11 @@ onReady(() => {
 	});
 
 	const typefaceOrigin = identifyWebsite(document.location.href);
+	const website = websites.find((el) => el.name === typefaceOrigin.name);
 
-	const queries: WebsitesExtractionQueries = {
-		'Google Fonts': {
-			titleElement: 'div.sticky-header h1',
-			variants: 'span.variant__style',
-			variableAxes: 'div.variable-axes__preview div.axis-container'
-		}
-	};
-	const websiteSpecificQueries = queries[typefaceOrigin.name];
-	const typeface = extractFontData(typefaceOrigin, websiteSpecificQueries);
+	if (website === undefined) throw new Error('Unsupported website');
+
+	const typeface = extractFontData(typefaceOrigin, website.queries);
 
 	injectStyles(typeface.origin.name);
 	injectMarkup(typeface);

@@ -13,6 +13,11 @@ export const slugify = (text: string) =>
 		})
 		.join('');
 
+/**
+ * Given some CSS, get a minified version of it.
+ * @param css - The CSS to be minified.
+ * @returns The minified CSS.
+ */
 export const minify = (css: string) =>
 	css
 		.replace(/([^0-9a-zA-Z.#])\s+/g, '$1')

@@ -44,16 +44,20 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
  * Function that creates the button element to be placed on the screen.
  * @returns The created <button> element and its inner <span> icon element.
  */
-const createButton = (): [HTMLButtonElement, HTMLSpanElement] => {
+const createButton = (): HTMLButtonElement => {
 	const button = document.createElement('button');
-	button.innerText = buttonContent.add.text;
+	button.innerHTML = `
+		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
+			<rect width="256" height="256" fill="none"></rect>
+			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+				stroke-width="24"></line>
+			<line x1="128" y1="40" x2="128" y2="216" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+				stroke-width="24"></line>
+		</svg>
+		<span>${buttonContent.add}</span>
+	`;
 	button.classList.add('addToFavorites');
-
-	const icon = document.createElement('span');
-	icon.textContent = buttonContent.add.icon;
-	button.appendChild(icon);
-
-	return [button, icon];
+	return button;
 };
 
 /**
@@ -78,14 +82,29 @@ const placeButtonOnScreen = (website: SupportedWebsite, button: HTMLButtonElemen
  */
 const toggleButtonState = (
 	button: HTMLButtonElement,
-	icon: HTMLSpanElement,
 	fontInFavorites: boolean,
 	fn: () => unknown = () => null
 ) => {
 	button.classList.toggle('active', fontInFavorites);
-	button.innerText = buttonContent[fontInFavorites ? 'remove' : 'add'].text;
-	icon.textContent = buttonContent[fontInFavorites ? 'remove' : 'add'].icon;
-	button.appendChild(icon);
+	button.innerHTML = fontInFavorites
+		? `
+		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
+			<rect width="256" height="256" fill="none"></rect>
+			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+				stroke-width="24"></line>
+		</svg>
+		<span>${buttonContent.remove}</span>
+	`
+		: `
+		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
+			<rect width="256" height="256" fill="none"></rect>
+			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+				stroke-width="24"></line>
+			<line x1="128" y1="40" x2="128" y2="216" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
+				stroke-width="24"></line>
+		</svg>
+		<span>${buttonContent.add}</span>
+	`;
 	fn();
 };
 
@@ -95,21 +114,16 @@ const toggleButtonState = (
  * @param icon - The <span> element inside the button that contains the icon.
  * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
  */
-const handleButtonClick = (
-	button: HTMLButtonElement,
-	icon: HTMLSpanElement,
-	typeface: Typeface
-) => {
+const handleButtonClick = (button: HTMLButtonElement, typeface: Typeface) => {
 	chrome.storage.sync.get('favorites', ({ favorites }) => {
 		const fav = new Map(favorites);
 		const fontInFavorites = fav.has(typeface.slug);
 
-		toggleButtonState(button, icon, !fontInFavorites, () => {
+		toggleButtonState(button, !fontInFavorites, () => {
 			if (!fontInFavorites) {
 				const now = new Date();
 				typeface['added_at'] = now.toString();
 				fav.set(typeface.slug, typeface);
-				console.log(fav);
 			} else {
 				fav.delete(typeface.slug);
 			}
@@ -123,7 +137,7 @@ const handleButtonClick = (
  * @param typeface - The typeface metadata needed to create the markup.
  */
 export const injectMarkup = (typeface: Typeface) => {
-	const [button, icon] = createButton();
+	const button = createButton();
 
 	if (typeface.origin.name === 'Google Fonts') {
 		// Fix button style when placed in collapsed header
@@ -136,16 +150,16 @@ export const injectMarkup = (typeface: Typeface) => {
 	chrome.storage.sync.get('favorites', ({ favorites }) => {
 		const fav = new Map(favorites);
 		const fontInFavorites = fav.has(typeface.slug);
-		toggleButtonState(button, icon, fontInFavorites);
+		toggleButtonState(button, fontInFavorites);
 	});
 
 	// React to click events on new added button
-	button.addEventListener('click', () => handleButtonClick(button, icon, typeface));
+	button.addEventListener('click', () => handleButtonClick(button, typeface));
 
 	// Update button when extension removes font
 	chrome.runtime.onMessage.addListener((request) => {
 		const canUpdateButton = request.message === 'removed-font' && request.font === typeface.slug;
-		toggleButtonState(button, icon, !canUpdateButton);
+		toggleButtonState(button, !canUpdateButton);
 	});
 
 	placeButtonOnScreen(typeface.origin.name, button);
