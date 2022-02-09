@@ -23,33 +23,49 @@ export interface Website {
 	name: SupportedWebsite;
 	regex: string;
 	queries: ExtractionQueries;
+	themes: Themes;
 	styles: {
-		button: {
-			default: CSSRules;
-			active: CSSRules;
-			hover: CSSRules;
-		};
+		button: CSSRules;
 		icon: CSSRules;
 	};
 }
 export type SupportedWebsite = 'Google Fonts';
 
 export interface ExtractionQueries {
+	theme: ThemeQuery;
 	titleElement: string;
 	variants: string;
 	variableAxes: string;
+}
+
+export interface ThemeQuery {
+	element: string;
+	darkThemeClass: string;
+	toggle: string;
 }
 
 export type CSSRules = {
 	[key: string]: string;
 };
 
-export type WebsitesGenericObject<Type> = {
-	[key in SupportedWebsite]: Type;
+export type WebsitesSpecificStyles = {
+	name: SupportedWebsite;
+	styles: string;
 };
 
-export type WebsitesExtractionQueries = WebsitesGenericObject<ExtractionQueries>;
-export type WebsitesSpecificStyles = WebsitesGenericObject<string>;
+// THEME
+
+export type Themes = {
+	[key in ThemeType]?: Theme;
+};
+
+export interface Theme {
+	primary: string;
+	secondary: string;
+	tertiary: string;
+	quaternary: string;
+}
+export type ThemeType = 'light' | 'dark';
 
 // POPUP
 

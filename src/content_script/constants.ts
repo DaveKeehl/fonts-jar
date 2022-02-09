@@ -16,30 +16,39 @@ export const websites: Website[] = [
 		name: 'Google Fonts',
 		regex: 'fonts.google',
 		queries: {
+			theme: {
+				element: 'body', // Which element holds the dark theme class name
+				darkThemeClass: 'gf-dark-theme',
+				toggle: 'button.theme-toggle'
+			},
 			titleElement: 'div.sticky-header h1',
 			variants: 'span.variant__style',
 			variableAxes: 'div.variable-axes__preview div.axis-container'
 		},
+		themes: {
+			dark: {
+				primary: '#8ab4f8', // The button color at default state,
+				secondary: '#d2e3fc', // The button text color when hovered,
+				tertiary: 'rgba(138, 180, 248, .04)', // The button background when hovered.
+				quaternary: 'rgba(138, 180, 248, .42)' // The button background when active
+			},
+			light: {
+				primary: '#1a73e8',
+				secondary: '#174ea6',
+				tertiary: 'rgba(26, 115, 232, .04)',
+				quaternary: 'rgba(26, 115, 232, .20)'
+			}
+		},
 		styles: {
 			button: {
-				default: {
-					gap: '0.25rem',
-					color: '#8ab4f8',
-					background: 'none',
-					border: '1px solid #8ab4f8',
-					borderRadius: '0.25rem',
-					padding: '7px 24px',
-					margin: '0 -2rem 0 0',
-					fontSize: '14px',
-					fontWeight: '500'
-				},
-				active: {
-					background: '#354d70'
-				},
-				hover: {
-					color: '#d2e3fc',
-					background: 'rgba(138, 180, 248, .04)'
-				}
+				gap: '0.25rem',
+				background: 'none',
+				border: '1px solid',
+				borderRadius: '0.25rem',
+				padding: '7px 24px',
+				margin: '0 -2rem 0 0',
+				fontSize: '14px',
+				fontWeight: '500'
 			},
 			icon: {
 				size: '20px',

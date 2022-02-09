@@ -1,4 +1,4 @@
-import type { TypefaceOrigin } from 'types/*';
+import type { SupportedWebsite, ThemeType, TypefaceOrigin } from 'types/*';
 import { websites } from './constants';
 
 /**
@@ -17,4 +17,25 @@ export const identifyWebsite = (url: string): TypefaceOrigin | never => {
 		name: origin.name,
 		url
 	};
+};
+
+/**
+ * Given some DOM information, detect whether dark mode or light is being used.
+ * @param website - The website to extract the theme from.
+ * @returns The theme name.
+ */
+export const identifyTheme = (website: SupportedWebsite): ThemeType => {
+	const origin = websites.filter((el) => el.name === website)[0];
+	const themeQuery = origin.queries.theme;
+	const element = document.querySelector(themeQuery.element) as Element;
+	return element.classList.contains(themeQuery.darkThemeClass) ? 'dark' : 'light';
+};
+
+/**
+ * Function that given a query string, it returns an element representing the theme toggle button.
+ * @param query - The query to be used.
+ * @returns The theme toggle button
+ */
+export const getThemeToggleButton = (query: string) => {
+	return document.querySelector(query) as HTMLButtonElement;
 };

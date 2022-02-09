@@ -1,5 +1,7 @@
 import type { ExtractionQueries, SupportedWebsite, Typeface, TypefaceOrigin } from 'types';
 import { buttonContent } from './constants';
+import { identifyTheme } from './detection';
+import { injectStyles } from './styles';
 import { slugify } from './utils';
 
 /**
@@ -42,7 +44,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 
 /**
  * Function that creates the button element to be placed on the screen.
- * @returns The created <button> element and its inner <span> icon element.
+ * @returns The created <button> element.
  */
 const createButton = (): HTMLButtonElement => {
 	const button = document.createElement('button');
@@ -76,7 +78,6 @@ const placeButtonOnScreen = (website: SupportedWebsite, button: HTMLButtonElemen
 /**
  * Function that toggles the state of the created <button> element.
  * @param button - The <button> element to be updated.
- * @param icon - The <span> icon element inside the <button>.
  * @param fontInFavorites - Whether the typeface represented by the currently visited page is in the favorites.
  * @param fn - An optional callback function to be run everytime this function is fired.
  */
@@ -111,7 +112,6 @@ const toggleButtonState = (
 /**
  * Function that gets fired whenever the injected button is clicked.
  * @param button - The injected <button> element.
- * @param icon - The <span> element inside the button that contains the icon.
  * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
  */
 const handleButtonClick = (button: HTMLButtonElement, typeface: Typeface) => {
@@ -135,14 +135,23 @@ const handleButtonClick = (button: HTMLButtonElement, typeface: Typeface) => {
 /**
  * Given a Typeface object, inject in the DOM the needed markup.
  * @param typeface - The typeface metadata needed to create the markup.
+ * @param themeToggleButton - The theme toggle <button> element used to switch theme.
  */
-export const injectMarkup = (typeface: Typeface) => {
+export const injectMarkup = (typeface: Typeface, themeToggleButton: HTMLButtonElement) => {
 	const button = createButton();
+	const website = typeface.origin.name;
 
-	if (typeface.origin.name === 'Google Fonts') {
+	if (website === 'Google Fonts') {
 		// Fix button style when placed in collapsed header
 		document.addEventListener('scroll', () => {
 			button.classList.toggle('collapsed-header', window.scrollY > 130);
+		});
+	}
+
+	// If there is a theme toggle button, attach an event listener to update the styles
+	if (themeToggleButton !== undefined) {
+		themeToggleButton.addEventListener('click', () => {
+			injectStyles(website, identifyTheme(website));
 		});
 	}
 
@@ -153,7 +162,6 @@ export const injectMarkup = (typeface: Typeface) => {
 		toggleButtonState(button, fontInFavorites);
 	});
 
-	// React to click events on new added button
 	button.addEventListener('click', () => handleButtonClick(button, typeface));
 
 	// Update button when extension removes font

@@ -1,4 +1,4 @@
-import { identifyWebsite } from './detection';
+import { identifyTheme, identifyWebsite, getThemeToggleButton } from './detection';
 import { onReady, injectMarkup, extractFontData } from './DOM';
 import { injectStyles } from './styles';
 import { websites } from './constants';
@@ -13,8 +13,10 @@ onReady(() => {
 
 	if (website === undefined) throw new Error('Unsupported website');
 
+	const theme = identifyTheme(website.name);
+	const themeToggleButton = getThemeToggleButton(website.queries.theme.toggle);
 	const typeface = extractFontData(typefaceOrigin, website.queries);
 
-	injectStyles(typeface.origin.name);
-	injectMarkup(typeface);
+	injectStyles(typeface.origin.name, theme);
+	injectMarkup(typeface, themeToggleButton);
 });
