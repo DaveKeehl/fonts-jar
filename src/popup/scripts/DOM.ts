@@ -17,7 +17,7 @@ import {
 	handleSearchKeyup,
 	handleSortDirectionBoxClick
 } from './eventHandlers';
-import { getSortFunction } from './utils';
+import { getSortFunction, isStoredSortValid } from './utils';
 
 export const sort: Sort = {
 	method: 'bySlug',
@@ -149,7 +149,8 @@ export const populatePopup = () => {
 
 			// When popup is opened, retrieve from storage the lastly used sort method
 			chrome.storage.sync.get('sort', ({ sort: storedSort }) => {
-				if (storedSort.method !== undefined && storedSort.direction !== undefined) {
+				// Only use the stored sorting information if they exist and are valid
+				if (isStoredSortValid(storedSort)) {
 					sort.method = storedSort.method;
 					sort.direction = storedSort.direction;
 				}
@@ -166,7 +167,6 @@ export const populatePopup = () => {
 					showSortDirectionIcon('descending');
 				}
 
-				console.log(sort);
 				createMarkupForTypefaces(favorites, getSortFunction(sort));
 			});
 

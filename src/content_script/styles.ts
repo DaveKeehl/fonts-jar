@@ -17,7 +17,6 @@ const createStyles = (website: SupportedWebsite, theme: ThemeType) => {
 		throw new Error(`Theme "${theme}" does not exist for website "${website}"`);
 	}
 
-	console.log(themeData);
 	const { button, icon } = origin.styles;
 
 	const baseStyles = `
