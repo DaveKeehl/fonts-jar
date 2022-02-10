@@ -1,4 +1,11 @@
-import type { Typeface, TypefaceTuple, CompareFunction, Sort, SortDirection } from 'types/*';
+import type {
+	Typeface,
+	TypefaceTuple,
+	CompareFunction,
+	Sort,
+	SortDirection,
+	SortMethod
+} from 'types/*';
 import {
 	fonts,
 	alphabetic,
@@ -82,55 +89,43 @@ export const createMarkupForTypefaces = (
 	});
 };
 
-/**
- * Toggles the sort icons and returns the name of currently active one.
- */
+// TODO: Write JSDoc
+const toggleSortIcon = (icons: HTMLOrSVGImageElement[], fn: () => void) => {
+	icons.forEach((icon) => icon.classList.toggle('hidden'));
+	fn();
+	chrome.storage.sync.set({ sort });
+};
+
+// TODO: Write JSDoc
 export const toggleSortMethodIcon = () => {
-	alphabetic.classList.toggle('hidden');
-	clock.classList.toggle('hidden');
-
-	if (sort.method === 'byDate') {
-		sort.method = 'bySlug';
-	} else if (sort.method === 'bySlug') {
-		sort.method = 'byDate';
-	}
-
-	chrome.storage.sync.set({ sort });
+	toggleSortIcon([alphabetic, clock], () => {
+		if (sort.method === 'byDate') {
+			sort.method = 'bySlug';
+		} else if (sort.method === 'bySlug') {
+			sort.method = 'byDate';
+		}
+	});
 };
 
+// TODO: Write JSDoc
 export const toggleSortDirectionIcon = () => {
-	ascending.classList.toggle('hidden');
-	descending.classList.toggle('hidden');
-
-	if (sort.direction === 'ascending') {
-		sort.direction = 'descending';
-	} else if (sort.direction === 'descending') {
-		sort.direction = 'ascending';
-	}
-
-	chrome.storage.sync.set({ sort });
+	toggleSortIcon([ascending, descending], () => {
+		if (sort.direction === 'ascending') {
+			sort.direction = 'descending';
+		} else if (sort.direction === 'descending') {
+			sort.direction = 'ascending';
+		}
+	});
 };
 
-const showSortMethodIcon = (icon: 'alphabetic' | 'clock') => {
-	alphabetic.classList.remove('hidden');
-	clock.classList.remove('hidden');
-
-	if (icon === 'alphabetic') {
-		clock.classList.add('hidden');
-	} else if (icon === 'clock') {
-		alphabetic.classList.add('hidden');
-	}
-};
-
-const showSortDirectionIcon = (icon: SortDirection) => {
-	ascending.classList.remove('hidden');
-	descending.classList.remove('hidden');
-
-	if (icon === 'ascending') {
-		descending.classList.add('hidden');
-	} else if (icon === 'descending') {
-		ascending.classList.add('hidden');
-	}
+/**
+ * Given a pair of icons, decide which icon must be shown.
+ * @param icons - A pair of svg icons.
+ * @param iconToShow - The index of the icon that must be shown.
+ */
+const showSortIcon = (icons: [HTMLOrSVGImageElement, HTMLOrSVGImageElement], iconToShow: 0 | 1) => {
+	icons.forEach((icon) => icon.classList.remove('hidden'));
+	icons[iconToShow === 0 ? 1 : 0].classList.add('hidden');
 };
 
 /**
@@ -155,17 +150,8 @@ export const populatePopup = () => {
 					sort.direction = storedSort.direction;
 				}
 
-				if (sort.method === 'byDate') {
-					showSortMethodIcon('clock');
-				} else {
-					showSortMethodIcon('alphabetic');
-				}
-
-				if (sort.direction === 'ascending') {
-					showSortDirectionIcon('ascending');
-				} else {
-					showSortDirectionIcon('descending');
-				}
+				showSortIcon([alphabetic, clock], sort.method === 'bySlug' ? 0 : 1);
+				showSortIcon([ascending, descending], sort.direction === 'ascending' ? 0 : 1);
 
 				createMarkupForTypefaces(favorites, getSortFunction(sort));
 			});

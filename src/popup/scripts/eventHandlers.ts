@@ -8,16 +8,19 @@ import {
 } from './DOM';
 import { getSortFunction } from './utils';
 
+// TODO: Write JSDoc
 export const handleSortMethodBoxClick = (favorites: TypefaceTuple[]) => {
 	toggleSortMethodIcon();
 	createMarkupForTypefaces(favorites, getSortFunction(sort));
 };
 
+// TODO: Write JSDoc
 export const handleSortDirectionBoxClick = (favorites: TypefaceTuple[]) => {
 	toggleSortDirectionIcon();
 	createMarkupForTypefaces(favorites, getSortFunction(sort));
 };
 
+// TODO: Write JSDoc
 export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple[]) => {
 	const target = event.target as HTMLInputElement;
 	const text = target.value.trim().toLowerCase();
