@@ -1,11 +1,4 @@
-import type {
-	Typeface,
-	TypefaceTuple,
-	CompareFunction,
-	Sort,
-	SortDirection,
-	SortMethod
-} from 'types/*';
+import type { Typeface, TypefaceTuple, CompareFunction, Sort } from 'types/*';
 import {
 	fonts,
 	alphabetic,
@@ -89,14 +82,21 @@ export const createMarkupForTypefaces = (
 	});
 };
 
-// TODO: Write JSDoc
+/**
+ * Template function for toggling the icons of the sort boxes (sort method, sort direction) in the top bar.
+ * @param icons - The icons to toggle.
+ * @param fn - A callback function that toggles the stored sorting information.
+ */
 const toggleSortIcon = (icons: HTMLOrSVGImageElement[], fn: () => void) => {
 	icons.forEach((icon) => icon.classList.toggle('hidden'));
 	fn();
 	chrome.storage.sync.set({ sort });
 };
 
-// TODO: Write JSDoc
+/**
+ * Function that toggles the icon in the sort method (by slug, by date) box in the top bar.
+ * This function is also in charge of toggling the sort method being used.
+ */
 export const toggleSortMethodIcon = () => {
 	toggleSortIcon([alphabetic, clock], () => {
 		if (sort.method === 'byDate') {
@@ -107,7 +107,10 @@ export const toggleSortMethodIcon = () => {
 	});
 };
 
-// TODO: Write JSDoc
+/**
+ * Function that toggles the icon in the sort direction (ascending, descending) box in the top bar.
+ * This function is also in charge of toggling the sort direction being used.
+ */
 export const toggleSortDirectionIcon = () => {
 	toggleSortIcon([ascending, descending], () => {
 		if (sort.direction === 'ascending') {

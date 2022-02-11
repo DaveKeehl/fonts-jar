@@ -8,19 +8,29 @@ import {
 } from './DOM';
 import { getSortFunction } from './utils';
 
-// TODO: Write JSDoc
+/**
+ * Function than handles the click event on the sort method (by slug, by date) box in the top bar.
+ * @param favorites - The favorite typefaces to re-sort and to re-create the markup for.
+ */
 export const handleSortMethodBoxClick = (favorites: TypefaceTuple[]) => {
 	toggleSortMethodIcon();
 	createMarkupForTypefaces(favorites, getSortFunction(sort));
 };
 
-// TODO: Write JSDoc
+/**
+ * Function that handles the click event on the sort direction (ascending, descending) box in the top bar.
+ * @param favorites - The favorite typefaces to re-sort and to re-create the markup for.
+ */
 export const handleSortDirectionBoxClick = (favorites: TypefaceTuple[]) => {
 	toggleSortDirectionIcon();
 	createMarkupForTypefaces(favorites, getSortFunction(sort));
 };
 
-// TODO: Write JSDoc
+/**
+ * Function that handles the keyup event when typing in the search input field in the top bar.
+ * @param event - The event object.
+ * @param favorites - The favorites to filter.
+ */
 export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple[]) => {
 	const target = event.target as HTMLInputElement;
 	const text = target.value.trim().toLowerCase();
