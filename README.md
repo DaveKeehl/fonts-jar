@@ -10,7 +10,7 @@ Useful Chrome extension to save your favorite fonts when websites do not have a 
 - Search functionality within the popup
 - Sort either by font family name or by saved date
 
-## 🪄 Supported Websites
+## 🧭 Roadmap
 
 - [x] [Google Fonts](https://fonts.google.com/)
 - [ ] [Adobe Fonts](https://fonts.adobe.com/fonts)
