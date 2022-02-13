@@ -15,7 +15,8 @@ import {
 	handleRemoveBtnClick,
 	handleSortMethodBoxClick,
 	handleSearchKeyup,
-	handleSortDirectionBoxClick
+	handleSortDirectionBoxClick,
+	handleSearchClear
 } from './eventHandlers';
 import { getSortFunction, isStoredSortValid } from './utils';
 
@@ -162,6 +163,7 @@ export const populatePopup = () => {
 			sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
 			sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
 			search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
+			search.addEventListener('search', (event) => handleSearchClear(event, favorites));
 		}
 	});
 };

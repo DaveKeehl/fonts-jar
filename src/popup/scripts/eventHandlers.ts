@@ -49,6 +49,16 @@ export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple
 	}
 };
 
+export const handleSearchClear = (event: Event, favorites: TypefaceTuple[]) => {
+	const target = event.target as HTMLInputElement;
+
+	if (target.value === '') {
+		fonts.innerHTML = '';
+		noResults.classList.add('hidden');
+		createMarkupForTypefaces(favorites, getSortFunction(sort));
+	}
+};
+
 /**
  * Function that handles the click event of the remove button of a font container.
  * @param font - The font container where the remove button is localed within.

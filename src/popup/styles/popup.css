@@ -99,6 +99,20 @@ body {
 	color: var(--greyscale-600);
 }
 
+.search input::-webkit-search-cancel-button {
+	-webkit-appearance: none;
+	height: 1rem;
+	width: 1rem;
+	background: url('../../assets/icons/x-bold.svg') no-repeat 50% 50%;
+	background-size: contain;
+	transition: opacity 0.2s;
+}
+
+.search input::-webkit-search-cancel-button:hover {
+	opacity: 0.7;
+	cursor: pointer;
+}
+
 .search input:focus {
 	outline: none;
 }
