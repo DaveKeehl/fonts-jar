@@ -14,7 +14,7 @@ export const buttonContent = {
 export const websites: Website[] = [
 	{
 		name: 'Google Fonts',
-		regex: 'fonts.google',
+		regex: 'fonts.google.com/specimen',
 		queries: {
 			theme: {
 				element: 'body', // Which element holds the dark theme class name
@@ -30,13 +30,13 @@ export const websites: Website[] = [
 				primary: '#8ab4f8', // The button color at default state,
 				secondary: '#d2e3fc', // The button text color when hovered,
 				tertiary: 'rgba(138, 180, 248, .04)', // The button background when hovered.
-				quaternary: 'rgba(138, 180, 248, .42)' // The button background when active
+				quaternary: 'rgba(138, 180, 248, .25)' // The button background when active
 			},
 			light: {
 				primary: '#1a73e8',
 				secondary: '#174ea6',
 				tertiary: 'rgba(26, 115, 232, .04)',
-				quaternary: 'rgba(26, 115, 232, .20)'
+				quaternary: 'rgba(26, 115, 232, .25)'
 			}
 		},
 		styles: {

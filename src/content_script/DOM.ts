@@ -1,5 +1,5 @@
 import type { ExtractionQueries, SupportedWebsite, Typeface, TypefaceOrigin } from 'types';
-import { buttonContent } from './constants';
+import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { injectStyles } from './styles';
 import { slugify } from './utils';
@@ -8,12 +8,28 @@ import { slugify } from './utils';
  * Function that fires when the DOM is ready to run the content_script code.
  * @param callback - The function to be run when the DOM is ready.
  */
-export const onReady = (callback: () => unknown) => {
-	if (document.readyState != 'loading') {
-		setTimeout(callback, 1000);
-	} else {
-		document.addEventListener('DOMContentLoaded', callback);
-	}
+export const onReady = (fn: () => unknown) => {
+	let previousUrl = '';
+	const urls = websites.map((website) => website.regex);
+
+	const observer = new MutationObserver(() => {
+		const hasUrlChanged = location.href !== previousUrl;
+		const isUrlLegal = urls.some((url) => new RegExp(url).test(location.href));
+
+		if (hasUrlChanged) {
+			previousUrl = location.href;
+			// console.log(`URL changed to ${location.href}`);
+
+			if (isUrlLegal && document.readyState != 'loading') {
+				setTimeout(fn, 300);
+			} else {
+				document.addEventListener('DOMContentLoaded', fn);
+			}
+		}
+	});
+
+	const config = { subtree: true, childList: true };
+	observer.observe(document, config);
 };
 
 /**

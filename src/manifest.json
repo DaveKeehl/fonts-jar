@@ -8,7 +8,7 @@
 	},
 	"content_scripts": [
 		{
-			"matches": ["https://fonts.google.com/specimen/*"],
+			"matches": ["https://fonts.google.com/*"],
 			"js": ["content_script/index.js"],
 			"run_at": "document_end"
 		}
