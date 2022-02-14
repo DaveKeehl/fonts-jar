@@ -59,3 +59,27 @@ export const isStoredSortValid = (storedSort: object) => {
 		Object.prototype.hasOwnProperty.call(storedSort, 'direction')
 	);
 };
+
+export const readSyncStorage = async (key: string) => {
+	return new Promise((resolve, reject) => {
+		chrome.storage.sync.get([key], (result) => {
+			if (result[key] === undefined) {
+				reject();
+			} else {
+				resolve(result[key]);
+			}
+		});
+	});
+};
+
+export const writeSyncStorage = async (key: string, value: unknown) => {
+	return new Promise((resolve, reject) => {
+		chrome.storage.sync.set({ key: value }, () => {
+			if (key !== undefined && value !== undefined) {
+				resolve(value);
+			} else {
+				reject();
+			}
+		});
+	});
+};

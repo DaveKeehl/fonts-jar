@@ -6,7 +6,7 @@ import {
 	toggleSortDirectionIcon,
 	toggleSortMethodIcon
 } from './DOM';
-import { getSortFunction } from './utils';
+import { getSortFunction, readSyncStorage } from './utils';
 
 /**
  * Function than handles the click event on the sort method (by slug, by date) box in the top bar.
@@ -65,7 +65,7 @@ export const handleSearchClear = (event: Event, favorites: TypefaceTuple[]) => {
  * @param favorites - The array of favorite typefaces.
  * @param slug - The slug of the typeface you want to be removed.
  */
-export const handleRemoveBtnClick = (
+export const handleRemoveBtnClick = async (
 	font: HTMLDivElement,
 	favorites: TypefaceTuple[],
 	slug: string
@@ -74,9 +74,17 @@ export const handleRemoveBtnClick = (
 	font.style.display = 'none';
 
 	const fav = new Map(favorites);
+	console.log('before deletion: ', fav);
+	console.log('size before deletion: ', fav.size);
+
 	fav.delete(slug);
+	console.log('after deletion: ', fav);
+	console.log('size after deletion: ', fav.size);
+
 	chrome.storage.sync.set({ favorites: Array.from(fav) });
-	console.log(fav.size);
+
+	const storedStorage = await readSyncStorage('favorites');
+	console.log('test storage', storedStorage);
 
 	// Hide elements that must not be visible when no typefaces are in the wishlist
 	if (fav.size === 0) {
