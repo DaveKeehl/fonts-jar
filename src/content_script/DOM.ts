@@ -28,7 +28,7 @@ export const onReady = (fn: () => unknown) => {
 			// console.log(`URL changed to ${location.href}`);
 
 			if (isUrlLegal && document.readyState != 'loading') {
-				setTimeout(fn, 300);
+				setTimeout(fn, 500);
 			} else {
 				document.addEventListener('DOMContentLoaded', fn);
 			}
@@ -43,17 +43,36 @@ export const onReady = (fn: () => unknown) => {
 };
 
 /**
+ * Function that extracts the font name from a page given a list of selector queries.
+ * @param queries - The list of selector queries. The function uses the first query that results in a non-null element.
+ * @returns The font name.
+ */
+const extractFontName = (queries: string[]) => {
+	let title = '';
+
+	for (const query of queries) {
+		const element = document.querySelector(query) as HTMLHeadingElement;
+
+		if (element) {
+			title = element.textContent as string;
+			break;
+		}
+	}
+
+	return title;
+};
+
+/**
  * Given a TypefaceOrigin object, this function returns a Typeface object containing the required metadata of the typeface extracted for the currently visited page.
  * @param origin - The object containing the typeface origin metadata to know how to extract the typeface metadata.
  * @returns An object of type Typeface containing the typeface metadata.
  */
 export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueries): Typeface => {
-	const titleElement = document.querySelector(queries.titleElement) as HTMLHeadingElement;
-	const title = titleElement.textContent as string;
+	const title = extractFontName(queries.titleElement);
 	const variants = document.querySelectorAll<HTMLSpanElement>(queries.variants);
 	const variableAxes = document.querySelectorAll<HTMLDivElement>(queries.variableAxes);
 
-	return {
+	const res = {
 		family: title,
 		slug: slugify(title),
 		styles: [...variants]
@@ -67,6 +86,9 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 		added_at: '',
 		collections: []
 	};
+
+	console.log(res);
+	return res;
 };
 
 /**
@@ -95,10 +117,29 @@ const createButton = (): HTMLButtonElement => {
  */
 const placeButtonOnScreen = (website: SupportedWebsite, button: HTMLButtonElement) => {
 	if (website === 'Google Fonts') {
-		const downloadButtonStd = document.querySelector(
-			'button.sticky-header__cta-button'
-		) as HTMLButtonElement;
-		downloadButtonStd.insertAdjacentElement('beforebegin', button);
+		const downloadButtonCandidates = [
+			'button.sticky-header__cta-button',
+			'a.specimen__download-button'
+		];
+
+		let downloadButton;
+
+		for (const candidate of downloadButtonCandidates) {
+			const element = document.querySelector(candidate) as HTMLElement;
+
+			if (element !== null) {
+				downloadButton = element;
+				break;
+			}
+		}
+
+		// const downloadButtonStd = document.querySelector(
+		// 	'button.sticky-header__cta-button'
+		// ) as HTMLElement;
+		if (downloadButton) {
+			console.log(downloadButton);
+			downloadButton.insertAdjacentElement('beforebegin', button);
+		}
 	}
 };
 

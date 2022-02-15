@@ -15,7 +15,7 @@ export type SupportedWebsite = 'Google Fonts';
 
 export interface ExtractionQueries {
 	theme: ThemeQuery;
-	titleElement: string;
+	titleElement: string[];
 	variants: string;
 	variableAxes: string;
 }

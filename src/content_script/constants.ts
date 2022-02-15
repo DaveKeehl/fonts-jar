@@ -14,14 +14,14 @@ export const buttonContent = {
 export const websites: Website[] = [
 	{
 		name: 'Google Fonts',
-		regex: 'fonts.google.com/specimen',
+		regex: 'fonts.google.com/?(.*)/specimen/.*',
 		queries: {
 			theme: {
 				element: 'body', // Which element holds the dark theme class name
 				darkThemeClass: 'gf-dark-theme',
 				toggle: 'button.theme-toggle'
 			},
-			titleElement: 'div.sticky-header h1',
+			titleElement: ['div.sticky-header h1', 'div.breadcrumb__content h1'],
 			variants: 'span.variant__style',
 			variableAxes: 'div.variable-axes__preview div.axis-container'
 		},
