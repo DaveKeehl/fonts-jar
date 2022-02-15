@@ -1,4 +1,4 @@
-import type { SupportedWebsite, ThemeType, TypefaceOrigin } from 'types/*';
+import type { SupportedWebsite, ThemeType, TypefaceOrigin } from 'types';
 import { websites } from './constants';
 
 /**

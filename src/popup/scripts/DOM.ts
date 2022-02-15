@@ -1,4 +1,4 @@
-import type { Typeface, TypefaceTuple, CompareFunction, Sort } from 'types/*';
+import type { Typeface, TypefaceTuple, CompareFunction, Sort } from 'types';
 import {
 	fonts,
 	alphabetic,
@@ -18,7 +18,7 @@ import {
 	handleSortDirectionBoxClick,
 	handleSearchClear
 } from './eventHandlers';
-import { getSortFunction, isStoredSortValid } from './utils';
+import { getSortFunction, isStoredSortValid, readSyncStorage } from './utils';
 
 export const sort: Sort = {
 	method: 'bySlug',
@@ -79,7 +79,7 @@ export const createMarkupForTypefaces = (
 		const font = createMarkupFromTypeface(favorite[1]);
 
 		const removeBtn = document.querySelector(`.font-${slug} .remove`) as HTMLButtonElement;
-		removeBtn.addEventListener('click', () => handleRemoveBtnClick(font, favorites, slug));
+		removeBtn.addEventListener('click', () => handleRemoveBtnClick(font, slug));
 	});
 };
 
@@ -135,35 +135,35 @@ const showSortIcon = (icons: [HTMLOrSVGImageElement, HTMLOrSVGImageElement], ico
 /**
  * Populate the popup window when opened.
  */
-export const populatePopup = () => {
-	chrome.storage.sync.get(null, (data) => {
-		console.info('Storage:', data);
-	});
+export const populatePopup = async () => {
+	const storage = await readSyncStorage(null);
+	console.log(storage);
 
-	chrome.storage.sync.get('favorites', ({ favorites }) => {
-		if (favorites === undefined || favorites.length === 0) {
-			noFonts.classList.remove('hidden');
-		} else {
-			topBar.classList.remove('hidden');
+	const favorites = (await readSyncStorage('favorites')) as TypefaceTuple[];
 
-			// When popup is opened, retrieve from storage the lastly used sort method
-			chrome.storage.sync.get('sort', ({ sort: storedSort }) => {
-				// Only use the stored sorting information if they exist and are valid
-				if (isStoredSortValid(storedSort)) {
-					sort.method = storedSort.method;
-					sort.direction = storedSort.direction;
-				}
+	if (favorites === undefined || favorites.length === 0) {
+		noFonts.classList.remove('hidden');
+	} else {
+		topBar.classList.remove('hidden');
 
-				showSortIcon([alphabetic, clock], sort.method === 'bySlug' ? 0 : 1);
-				showSortIcon([ascending, descending], sort.direction === 'ascending' ? 0 : 1);
+		// When popup is opened, retrieve from storage the lastly used sort method
+		const storedSort = (await readSyncStorage('sort')) as Sort;
 
-				createMarkupForTypefaces(favorites, getSortFunction(sort));
-			});
-
-			sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
-			sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
-			search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
-			search.addEventListener('search', (event) => handleSearchClear(event, favorites));
+		// Only use the stored sorting information if they exist and are valid
+		if (isStoredSortValid(storedSort)) {
+			sort.method = storedSort.method;
+			sort.direction = storedSort.direction;
 		}
-	});
+
+		showSortIcon([alphabetic, clock], sort.method === 'bySlug' ? 0 : 1);
+		showSortIcon([ascending, descending], sort.direction === 'ascending' ? 0 : 1);
+
+		createMarkupForTypefaces(favorites, getSortFunction(sort));
+
+		// Register all event listeners
+		sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
+		sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
+		search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
+		search.addEventListener('search', (event) => handleSearchClear(event, favorites));
+	}
 };

@@ -1,4 +1,4 @@
-import type { SupportedWebsite, ThemeType, WebsitesSpecificStyles } from 'types/*';
+import type { SupportedWebsite, ThemeType, WebsitesSpecificStyles } from 'types';
 import { websites } from './constants';
 import { minify } from './utils';
 

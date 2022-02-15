@@ -2,11 +2,11 @@ import { identifyTheme, identifyWebsite, getThemeToggleButton } from './detectio
 import { onReady, injectMarkup, extractFontData } from './DOM';
 import { injectStyles } from './styles';
 import { websites } from './constants';
+import { readSyncStorage } from 'src/popup/scripts/utils';
 
-onReady(() => {
-	chrome.storage.sync.get('favorites', ({ favorites }) => {
-		console.log(favorites);
-	});
+onReady(async () => {
+	const favorites = await readSyncStorage('favorites');
+	console.log(favorites);
 
 	const typefaceOrigin = identifyWebsite(document.location.href);
 	const website = websites.find((el) => el.name === typefaceOrigin.name);

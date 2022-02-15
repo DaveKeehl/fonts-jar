@@ -1,4 +1,4 @@
-import type { Website } from 'types/*';
+import type { Website } from 'types';
 
 /**
  * The content of the button (used to add/remove fonts) that is injected in the page.

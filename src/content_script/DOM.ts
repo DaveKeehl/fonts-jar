@@ -1,4 +1,11 @@
-import type { ExtractionQueries, SupportedWebsite, Typeface, TypefaceOrigin } from 'types';
+import { readSyncStorage } from 'src/popup/scripts/utils';
+import type {
+	ExtractionQueries,
+	SupportedWebsite,
+	Typeface,
+	TypefaceOrigin,
+	TypefaceTuple
+} from 'types';
 import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { injectStyles } from './styles';
@@ -28,7 +35,10 @@ export const onReady = (fn: () => unknown) => {
 		}
 	});
 
-	const config = { subtree: true, childList: true };
+	const config = {
+		subtree: true,
+		childList: true
+	};
 	observer.observe(document, config);
 };
 
@@ -54,7 +64,8 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 			name: origin.name,
 			url: origin.url
 		},
-		added_at: ''
+		added_at: '',
+		collections: []
 	};
 };
 
@@ -130,21 +141,24 @@ const toggleButtonState = (
  * @param button - The injected <button> element.
  * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
  */
-const handleButtonClick = (button: HTMLButtonElement, typeface: Typeface) => {
-	chrome.storage.sync.get('favorites', ({ favorites }) => {
-		const fav = new Map(favorites);
-		const fontInFavorites = fav.has(typeface.slug);
+const handleButtonClick = async (button: HTMLButtonElement, typeface: Typeface) => {
+	const favorites = (await readSyncStorage('favorites')) as TypefaceTuple[];
 
-		toggleButtonState(button, !fontInFavorites, () => {
-			if (!fontInFavorites) {
-				const now = new Date();
-				typeface['added_at'] = now.toString();
-				fav.set(typeface.slug, typeface);
-			} else {
-				fav.delete(typeface.slug);
-			}
-		});
-		chrome.storage.sync.set({ favorites: Array.from(fav) });
+	const fav = new Map(favorites);
+	const fontInFavorites = fav.has(typeface.slug);
+
+	toggleButtonState(button, !fontInFavorites, () => {
+		if (!fontInFavorites) {
+			const now = new Date();
+			typeface['added_at'] = now.toString();
+			fav.set(typeface.slug, typeface);
+		} else {
+			fav.delete(typeface.slug);
+		}
+	});
+
+	chrome.storage.sync.set({
+		favorites: Array.from(fav)
 	});
 };
 
