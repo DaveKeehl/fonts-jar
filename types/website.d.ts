@@ -1,24 +1,3 @@
-// TYPEFACE
-
-export interface Typeface {
-	family: string;
-	slug: string;
-	styles: string[];
-	variableAxes: number;
-	origin: TypefaceOrigin;
-	added_at: string;
-	collections?: string[];
-}
-
-export type TypefaceTuple = [string, Typeface];
-
-export interface TypefaceOrigin {
-	name: SupportedWebsite;
-	url: string;
-}
-
-// WEBSITE
-
 export interface Website {
 	name: SupportedWebsite;
 	regex: string;
@@ -29,7 +8,10 @@ export interface Website {
 		icon: CSSRules;
 	};
 }
+
 export type SupportedWebsite = 'Google Fonts';
+
+// QUERIES
 
 export interface ExtractionQueries {
 	theme: ThemeQuery;
@@ -66,14 +48,3 @@ export interface Theme {
 	quaternary: string;
 }
 export type ThemeType = 'light' | 'dark';
-
-// POPUP
-
-export type CompareFunction = (a: TypefaceTuple, b: TypefaceTuple) => 1 | -1 | 0;
-export type SortMethod = 'bySlug' | 'byDate';
-export type SortDirection = 'ascending' | 'descending';
-
-export interface Sort {
-	method: SortMethod;
-	direction: SortDirection;
-}

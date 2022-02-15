@@ -21,7 +21,7 @@
 		"noEmitOnError": true,
 		"strict": true,
 		"paths": {
-			"types/*": ["types.d.ts"]
+			"types/*": ["types/*"]
 		}
 	},
 	"include": ["./src"]
