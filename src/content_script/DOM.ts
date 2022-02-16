@@ -8,6 +8,7 @@ import type {
 } from 'types';
 import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
+import { handleButtonClick } from './eventHandlers';
 import { injectStyles } from './styles';
 import { slugify, useFirstValidCandidate } from './utils';
 
@@ -15,7 +16,7 @@ import { slugify, useFirstValidCandidate } from './utils';
  * Function that fires when the DOM is ready to run the content_script code.
  * @param callback - The function to be run when the DOM is ready.
  */
-export const onReady = (fn: () => unknown) => {
+export const onReady = (fn: () => unknown, timeout = 600) => {
 	let previousUrl = '';
 	const urls = websites.map((website) => website.regex);
 
@@ -28,7 +29,7 @@ export const onReady = (fn: () => unknown) => {
 			// console.log(`URL changed to ${location.href}`);
 
 			if (isUrlLegal && document.readyState != 'loading') {
-				setTimeout(fn, 1000);
+				setTimeout(fn, timeout);
 			} else {
 				document.addEventListener('DOMContentLoaded', fn);
 			}
@@ -156,7 +157,7 @@ const placeButtonOnScreen = (website: SupportedWebsite): NodeListOf<HTMLButtonEl
  * @param fontInFavorites - Whether the typeface represented by the currently visited page is in the favorites.
  * @param fn - An optional callback function to be run everytime this function is fired.
  */
-const toggleButtonState = (
+export const toggleButtonState = (
 	button: HTMLButtonElement,
 	fontInFavorites: boolean,
 	fn: () => unknown = () => null
@@ -182,32 +183,6 @@ const toggleButtonState = (
 		<span>${buttonContent.add}</span>
 	`;
 	fn();
-};
-
-/**
- * Function that gets fired whenever the injected button is clicked.
- * @param button - The injected <button> element.
- * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
- */
-const handleButtonClick = async (buttons: NodeListOf<HTMLButtonElement>, typeface: Typeface) => {
-	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
-	const fontInFavorites = favorites.has(typeface.slug);
-
-	buttons.forEach((button) => {
-		toggleButtonState(button, !fontInFavorites, () => {
-			if (!fontInFavorites) {
-				const now = new Date();
-				typeface['added_at'] = now.toString();
-				favorites.set(typeface.slug, typeface);
-			} else {
-				favorites.delete(typeface.slug);
-			}
-		});
-	});
-
-	chrome.storage.sync.set({
-		favorites: Array.from(favorites)
-	});
 };
 
 /**
