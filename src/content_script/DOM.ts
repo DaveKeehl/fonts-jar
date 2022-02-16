@@ -1,4 +1,4 @@
-import { readSyncStorage } from 'src/popup/scripts/utils';
+import { readSyncStorage } from 'lib/chrome';
 import type {
 	ExtractionQueries,
 	SupportedWebsite,
@@ -9,7 +9,7 @@ import type {
 import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { injectStyles } from './styles';
-import { slugify } from './utils';
+import { slugify, useFirstValidCandidate } from './utils';
 
 /**
  * Function that fires when the DOM is ready to run the content_script code.
@@ -28,7 +28,7 @@ export const onReady = (fn: () => unknown) => {
 			// console.log(`URL changed to ${location.href}`);
 
 			if (isUrlLegal && document.readyState != 'loading') {
-				setTimeout(fn, 500);
+				setTimeout(fn, 1000);
 			} else {
 				document.addEventListener('DOMContentLoaded', fn);
 			}
@@ -47,20 +47,13 @@ export const onReady = (fn: () => unknown) => {
  * @param queries - The list of selector queries. The function uses the first query that results in a non-null element.
  * @returns The font name.
  */
-const extractFontName = (queries: string[]) => {
-	let title = '';
-
-	for (const query of queries) {
-		const element = document.querySelector(query) as HTMLHeadingElement;
-
-		if (element) {
-			title = element.textContent as string;
-			break;
-		}
-	}
-
-	return title;
-};
+const extractFontName = (queries: string[]) =>
+	useFirstValidCandidate<string, HTMLHeadingElement, string>(
+		queries,
+		(query) => document.querySelector(query) as HTMLHeadingElement,
+		(element) => element.textContent as string,
+		(candidate) => !!candidate
+	);
 
 /**
  * Given a TypefaceOrigin object, this function returns a Typeface object containing the required metadata of the typeface extracted for the currently visited page.
@@ -72,7 +65,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 	const variants = document.querySelectorAll<HTMLSpanElement>(queries.variants);
 	const variableAxes = document.querySelectorAll<HTMLDivElement>(queries.variableAxes);
 
-	const res = {
+	return {
 		family: title,
 		slug: slugify(title),
 		styles: [...variants]
@@ -86,9 +79,6 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 		added_at: '',
 		collections: []
 	};
-
-	console.log(res);
-	return res;
 };
 
 /**
@@ -111,36 +101,53 @@ const createButton = (): HTMLButtonElement => {
 	return button;
 };
 
-/**
- * Function that takes a <button> element and places it on the right place in the DOM.
- * @param button - The button element to be positioned on the screen.
- */
-const placeButtonOnScreen = (website: SupportedWebsite, button: HTMLButtonElement) => {
-	if (website === 'Google Fonts') {
-		const downloadButtonCandidates = [
-			'button.sticky-header__cta-button',
-			'a.specimen__download-button'
-		];
+const placeButtonsOnGoogleFonts = () => {
+	const button = createButton();
 
-		let downloadButton;
+	const downloadButtonCandidates = [
+		'button.sticky-header__cta-button',
+		'a.specimen__download-button'
+	];
 
-		for (const candidate of downloadButtonCandidates) {
-			const element = document.querySelector(candidate) as HTMLElement;
+	const downloadButtons = useFirstValidCandidate<
+		string,
+		NodeListOf<HTMLElement>,
+		NodeListOf<HTMLElement>
+	>(
+		downloadButtonCandidates,
+		(candidate) => document.querySelectorAll<HTMLElement>(candidate),
+		(candidate) => candidate,
+		(candidate) => candidate.length > 0
+	);
 
-			if (element !== null) {
-				downloadButton = element;
-				break;
+	if (downloadButtons.length === 1) {
+		downloadButtons[0].insertAdjacentElement('beforebegin', button);
+	} else if (downloadButtons.length >= 2) {
+		downloadButtons.forEach((downloadButton) => {
+			const parent = downloadButton.parentElement;
+
+			if (parent) {
+				parent.style.display = 'flex';
+				button.style.marginRight = '1rem';
+				parent.innerHTML = '';
+				parent.appendChild(button.cloneNode(true));
+				parent.appendChild(downloadButton);
 			}
-		}
-
-		// const downloadButtonStd = document.querySelector(
-		// 	'button.sticky-header__cta-button'
-		// ) as HTMLElement;
-		if (downloadButton) {
-			console.log(downloadButton);
-			downloadButton.insertAdjacentElement('beforebegin', button);
-		}
+		});
 	}
+};
+
+/**
+ * Function in charge of placing the button(s) on the screen.
+ * @param website - The website the user is on.
+ * @returns All the buttons placed on the page.
+ */
+const placeButtonOnScreen = (website: SupportedWebsite): NodeListOf<HTMLButtonElement> => {
+	if (website === 'Google Fonts') {
+		placeButtonsOnGoogleFonts();
+	}
+
+	return document.querySelectorAll<HTMLButtonElement>('button.addToFavorites');
 };
 
 /**
@@ -182,24 +189,24 @@ const toggleButtonState = (
  * @param button - The injected <button> element.
  * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
  */
-const handleButtonClick = async (button: HTMLButtonElement, typeface: Typeface) => {
-	const favorites = (await readSyncStorage('favorites')) as TypefaceTuple[];
+const handleButtonClick = async (buttons: NodeListOf<HTMLButtonElement>, typeface: Typeface) => {
+	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
+	const fontInFavorites = favorites.has(typeface.slug);
 
-	const fav = new Map(favorites);
-	const fontInFavorites = fav.has(typeface.slug);
-
-	toggleButtonState(button, !fontInFavorites, () => {
-		if (!fontInFavorites) {
-			const now = new Date();
-			typeface['added_at'] = now.toString();
-			fav.set(typeface.slug, typeface);
-		} else {
-			fav.delete(typeface.slug);
-		}
+	buttons.forEach((button) => {
+		toggleButtonState(button, !fontInFavorites, () => {
+			if (!fontInFavorites) {
+				const now = new Date();
+				typeface['added_at'] = now.toString();
+				favorites.set(typeface.slug, typeface);
+			} else {
+				favorites.delete(typeface.slug);
+			}
+		});
 	});
 
 	chrome.storage.sync.set({
-		favorites: Array.from(fav)
+		favorites: Array.from(favorites)
 	});
 };
 
@@ -208,16 +215,8 @@ const handleButtonClick = async (button: HTMLButtonElement, typeface: Typeface) 
  * @param typeface - The typeface metadata needed to create the markup.
  * @param themeToggleButton - The theme toggle <button> element used to switch theme.
  */
-export const injectMarkup = (typeface: Typeface, themeToggleButton: HTMLButtonElement) => {
-	const button = createButton();
+export const injectMarkup = async (typeface: Typeface, themeToggleButton: HTMLButtonElement) => {
 	const website = typeface.origin.name;
-
-	if (website === 'Google Fonts') {
-		// Fix button style when placed in collapsed header
-		document.addEventListener('scroll', () => {
-			button.classList.toggle('collapsed-header', window.scrollY > 130);
-		});
-	}
 
 	// If there is a theme toggle button, attach an event listener to update the styles
 	if (themeToggleButton !== undefined) {
@@ -226,20 +225,28 @@ export const injectMarkup = (typeface: Typeface, themeToggleButton: HTMLButtonEl
 		});
 	}
 
-	// Check if page font is in favorites
-	chrome.storage.sync.get('favorites', ({ favorites }) => {
-		const fav = new Map(favorites);
-		const fontInFavorites = fav.has(typeface.slug);
-		toggleButtonState(button, fontInFavorites);
-	});
+	const buttons = placeButtonOnScreen(typeface.origin.name);
 
-	button.addEventListener('click', () => handleButtonClick(button, typeface));
+	// Fix button style when placed in collapsed header
+	if (website === 'Google Fonts') {
+		document.addEventListener('scroll', () => {
+			buttons.forEach((button) =>
+				button.classList.toggle('collapsed-header', window.scrollY > 130)
+			);
+		});
+	}
+
+	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
+	const fontInFavorites = favorites.has(typeface.slug);
+
+	buttons.forEach((button) => {
+		toggleButtonState(button, fontInFavorites);
+		button.addEventListener('click', () => handleButtonClick(buttons, typeface));
+	});
 
 	// Update button when extension removes font
 	chrome.runtime.onMessage.addListener((request) => {
 		const canUpdateButton = request.message === 'removed-font' && request.font === typeface.slug;
-		toggleButtonState(button, !canUpdateButton);
+		buttons.forEach((button) => toggleButtonState(button, !canUpdateButton));
 	});
-
-	placeButtonOnScreen(typeface.origin.name, button);
 };

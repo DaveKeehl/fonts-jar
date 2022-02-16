@@ -21,7 +21,8 @@
 		"noEmitOnError": true,
 		"strict": true,
 		"paths": {
-			"types/*": ["types/*"]
+			"types/*": ["types/*"],
+			"lib/*": ["lib/*"]
 		}
 	},
 	"include": ["./src"]

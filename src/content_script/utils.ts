@@ -24,3 +24,31 @@ export const minify = (css: string) =>
 		.replace(/\s([^0-9a-zA-Z.#]+)/g, '$1')
 		.replace(/;}/g, '}')
 		.replace(/\/\*.*?\*\//g, '');
+
+/**
+ * Generic function whose goal is to run some code on the first valid element from an array to candidate elements.
+ * @param candidates - The array of candidates. The function will stop iterating at the first candidate that results in a valid element as output of the onCandidateIteration callback function.
+ * @param onCandidateIteration - Callback function whose output is used to determine the validitiy of a candidate elemement.
+ * @param onTruthyCandidate - Callback function whose goal is to produce some output based on the valid candidate element.
+ * @param onCandidateValidation - Callback function that checks whether a candidate element is valid or not.
+ * @returns The output of the onTruthyCandidate callback function.
+ */
+export const useFirstValidCandidate = <T, K, V>(
+	candidates: T[],
+	onCandidateIteration: (candidate: T) => K,
+	onTruthyCandicate: (candidate: K) => V,
+	onCandidateValidation: (candidate: K) => boolean
+) => {
+	let res;
+
+	for (const candidate of candidates) {
+		const element = onCandidateIteration(candidate);
+
+		if (onCandidateValidation(element)) {
+			res = onTruthyCandicate(element);
+			break;
+		}
+	}
+
+	return res as V;
+};

@@ -1,3 +1,4 @@
+import { readSyncStorage, writeSyncStorage } from 'lib/chrome';
 import type { TypefaceTuple } from 'types';
 import { fonts, noFonts, noResults, topBar } from './constants';
 import {
@@ -6,7 +7,7 @@ import {
 	toggleSortDirectionIcon,
 	toggleSortMethodIcon
 } from './DOM';
-import { getSortFunction, readSyncStorage, writeSyncStorage } from './utils';
+import { getSortFunction } from './utils';
 
 /**
  * Function than handles the click event on the sort method (by slug, by date) box in the top bar.

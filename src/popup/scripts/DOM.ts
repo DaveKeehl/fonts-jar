@@ -1,3 +1,4 @@
+import { readSyncStorage } from 'lib/chrome';
 import type { Typeface, TypefaceTuple, CompareFunction, Sort } from 'types';
 import {
 	fonts,
@@ -18,7 +19,7 @@ import {
 	handleSortDirectionBoxClick,
 	handleSearchClear
 } from './eventHandlers';
-import { getSortFunction, isStoredSortValid, readSyncStorage } from './utils';
+import { getSortFunction, isStoredSortValid } from './utils';
 
 export const sort: Sort = {
 	method: 'bySlug',

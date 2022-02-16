@@ -2,7 +2,7 @@ import { identifyTheme, identifyWebsite, getThemeToggleButton } from './detectio
 import { onReady, injectMarkup, extractFontData } from './DOM';
 import { injectStyles } from './styles';
 import { websites } from './constants';
-import { readSyncStorage } from 'src/popup/scripts/utils';
+import { readSyncStorage } from 'lib/chrome';
 
 onReady(async () => {
 	const favorites = await readSyncStorage('favorites');
