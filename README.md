@@ -2,23 +2,18 @@
 
 # Fonts Jar
 
-Useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default.
+Fonts Jar is useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default. The goal is to support an increasingly number of websites, in order to be able to use this extension as a cross-websites utility and typography management tool.
 
-## ✨ Features
+## ✨ Supported websites
 
-- Add, remove and move your fonts between collections
-- Search functionality within the popup
-- Sort either by font family name or by saved date
+Fonts Jar is currently supports the following websites:
+
+- [Google Fonts](https://fonts.google.com/)
 
 ## 🧭 Roadmap
 
-- [x] [Google Fonts](https://fonts.google.com/)
-- [ ] [Adobe Fonts](https://fonts.adobe.com/fonts)
-
-- [ ] [1001 Free Fonts](https://www.1001freefonts.com/)
-- [ ] [dafont](https://www.dafont.com/)
-- [ ] [Font Squirrel](https://www.fontsquirrel.com/)
+You can track the development progress of Fonts Jar by looking at our [roadmap](https://github.com/users/DaveKeehl/projects/6).
 
 ## 🙋🏻‍♀️ Requests
 
-You can request new websites to be supported by creating a new issue.
+You can request new websites to be supported by creating a [new issue](https://github.com/DaveKeehl/fonts-jar/issues/new).
