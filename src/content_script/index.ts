@@ -5,8 +5,8 @@ import { websites } from './constants';
 import { readSyncStorage } from 'lib/chrome';
 
 onReady(async () => {
-	const favorites = await readSyncStorage('favorites');
-	console.log(favorites);
+	// const favorites = await readSyncStorage('favorites');
+	// console.log(favorites);
 
 	const typefaceOrigin = identifyWebsite(document.location.href);
 	const website = websites.find((el) => el.name === typefaceOrigin.name);

@@ -137,8 +137,8 @@ const showSortIcon = (icons: [HTMLOrSVGImageElement, HTMLOrSVGImageElement], ico
  * Populate the popup window when opened.
  */
 export const populatePopup = async () => {
-	const storage = await readSyncStorage(null);
-	console.log(storage);
+	// const storage = await readSyncStorage(null);
+	// console.log(storage);
 
 	const favorites = (await readSyncStorage('favorites')) as TypefaceTuple[];
 
