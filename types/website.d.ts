@@ -11,6 +11,17 @@ export interface Website {
 
 export type SupportedWebsite = 'Google Fonts';
 
+// STYLES
+
+export type CSSRules = {
+	[key: string]: string;
+};
+
+export type WebsitesSpecificStyles = {
+	name: SupportedWebsite;
+	styles: string;
+};
+
 // QUERIES
 
 export interface ExtractionQueries {
@@ -25,15 +36,6 @@ export interface ThemeQuery {
 	darkThemeClass: string;
 	toggle: string;
 }
-
-export type CSSRules = {
-	[key: string]: string;
-};
-
-export type WebsitesSpecificStyles = {
-	name: SupportedWebsite;
-	styles: string;
-};
 
 // THEME
 
