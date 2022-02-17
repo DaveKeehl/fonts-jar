@@ -222,6 +222,9 @@ export const injectMarkup = async (typeface: Typeface, themeToggleButton: HTMLBu
 	// Update button when extension removes font
 	chrome.runtime.onMessage.addListener((request) => {
 		const canUpdateButton = request.message === 'removed-font' && request.font === typeface.slug;
-		buttons.forEach((button) => toggleButtonState(button, !canUpdateButton));
+
+		if (canUpdateButton) {
+			buttons.forEach((button) => toggleButtonState(button, false));
+		}
 	});
 };

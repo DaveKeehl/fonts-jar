@@ -67,18 +67,17 @@ export const handleSearchClear = (event: Event, favorites: TypefaceTuple[]) => {
  * @param slug - The slug of the typeface you want to be removed.
  */
 export const handleRemoveBtnClick = async (font: HTMLDivElement, slug: string) => {
-	const favorites = (await readSyncStorage('favorites')) as TypefaceTuple[];
+	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
+	favorites.delete(slug);
 
-	const fav = new Map(favorites);
-	fav.delete(slug);
 	await writeSyncStorage({
-		favorites: Array.from(fav)
+		favorites: Array.from(favorites)
 	});
 
 	font.style.display = 'none';
 
 	// Hide elements that must not be visible when no typefaces are in the wishlist
-	if (fav.size === 0) {
+	if (favorites.size === 0) {
 		noFonts.classList.remove('hidden');
 		topBar.classList.add('hidden');
 	}
