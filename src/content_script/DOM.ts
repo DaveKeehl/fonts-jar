@@ -1,11 +1,5 @@
-import { readSyncStorage } from 'lib/chrome';
-import type {
-	ExtractionQueries,
-	SupportedWebsite,
-	Typeface,
-	TypefaceOrigin,
-	TypefaceTuple
-} from 'types';
+import { getFavorites } from 'lib/chrome';
+import type { ExtractionQueries, SupportedWebsite, Typeface, TypefaceOrigin } from 'types';
 import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { handleButtonClick } from './eventHandlers';
@@ -16,7 +10,7 @@ import { slugify, useFirstValidCandidate } from './utils';
  * Function that fires when the DOM is ready to run the content_script code.
  * @param callback - The function to be run when the DOM is ready.
  */
-export const onReady = (fn: () => unknown, timeout = 600) => {
+export const onReady = (fn: () => unknown, timeout = 300) => {
 	let previousUrl = '';
 	const urls = websites.map((website) => website.regex);
 
@@ -24,15 +18,23 @@ export const onReady = (fn: () => unknown, timeout = 600) => {
 		const hasUrlChanged = location.href !== previousUrl;
 		const isUrlLegal = urls.some((url) => new RegExp(url).test(location.href));
 
-		if (hasUrlChanged) {
+		if (hasUrlChanged && isUrlLegal) {
 			previousUrl = location.href;
 			// console.log(`URL changed to ${location.href}`);
 
-			if (isUrlLegal && document.readyState != 'loading') {
-				setTimeout(fn, timeout);
-			} else {
-				document.addEventListener('DOMContentLoaded', fn);
-			}
+			const stateCheck = setInterval(() => {
+				if (document.readyState === 'complete') {
+					clearInterval(stateCheck);
+					// document ready
+					setTimeout(fn, timeout);
+					// fn();
+				}
+			}, 100);
+
+			// if (document.readyState != 'loading') {
+			// } else {
+			// 	document.addEventListener('DOMContentLoaded', fn);
+			// }
 		}
 	});
 
@@ -211,20 +213,29 @@ export const injectMarkup = async (typeface: Typeface, themeToggleButton: HTMLBu
 		});
 	}
 
-	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
-	const fontInFavorites = favorites.has(typeface.slug);
+	const favoritesAtStart = await getFavorites();
 
 	buttons.forEach((button) => {
-		toggleButtonState(button, fontInFavorites);
+		toggleButtonState(button, favoritesAtStart.has(typeface.slug));
 		button.addEventListener('click', () => handleButtonClick(buttons, typeface));
 	});
 
 	// Update button when extension removes font
-	chrome.runtime.onMessage.addListener((request) => {
-		const canUpdateButton = request.message === 'removed-font' && request.font === typeface.slug;
+	chrome.runtime.onMessage.addListener(async (request) => {
+		if (request.message === 'removed-font') {
+			if (request.font === typeface.slug) {
+				buttons.forEach((button) => toggleButtonState(button, false));
+			}
+		} else if (request.message === 'changed-tab') {
+			const favorites = await getFavorites();
 
-		if (canUpdateButton) {
-			buttons.forEach((button) => toggleButtonState(button, false));
+			const isFontInFavorites = favorites.has(typeface.slug);
+			const buttonIsActive = buttons[0].classList.contains('active');
+
+			// Check if page data and extension storage are out of sync
+			if (buttonIsActive !== isFontInFavorites) {
+				buttons.forEach((button) => toggleButtonState(button, isFontInFavorites));
+			}
 		}
 	});
 };

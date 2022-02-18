@@ -1,3 +1,5 @@
+import type { TypefaceTuple } from 'types';
+
 /**
  * Utility function to read from the chrome synced storage.
  * @param key - The key of the storage item you want to access.
@@ -32,4 +34,12 @@ export const writeSyncStorage = async (data: { [key: string]: unknown }) => {
 			}
 		});
 	});
+};
+
+/**
+ * Utility function to get a map representation of the favorite fonts from chrome.storage.sync.
+ * @returns A map data structure of the favorite fonts.
+ */
+export const getFavorites = async () => {
+	return new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
 };

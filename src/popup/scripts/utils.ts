@@ -1,17 +1,35 @@
 import type { CompareFunction, Sort, TypefaceTuple } from 'types';
 
+/**
+ * Compare function that allows to sort typefaces by slug in ascending order.
+ * @param a - The first typeface to compare.
+ * @param b - The second typeface to compare.
+ * @returns Whether the first slug either came first, last or was the same as the other one.
+ */
 export const sortAscendingBySlug = (a: TypefaceTuple, b: TypefaceTuple) => {
 	if (a[1].slug < b[1].slug) return -1;
 	if (a[1].slug > b[1].slug) return 1;
 	return 0;
 };
 
+/**
+ * Compare function that allows to sort typefaces by slug in descending order.
+ * @param a - The first typeface to compare.
+ * @param b - The second typeface to compare.
+ * @returns Whether the first slug either came first, last or was the same as the other one.
+ */
 export const sortDescendingBySlug = (a: TypefaceTuple, b: TypefaceTuple) => {
 	if (a[1].slug > b[1].slug) return -1;
 	if (a[1].slug < b[1].slug) return 1;
 	return 0;
 };
 
+/**
+ * Compare function that allows to sort typefaces by date in ascending order.
+ * @param a - The first typeface to compare.
+ * @param b - The second typeface to compare.
+ * @returns Whether the first date either came first, last or was the same as the other one.
+ */
 export const sortAscendingByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
 	const aDate = new Date(a[1].added_at);
 	const bDate = new Date(b[1].added_at);
@@ -21,6 +39,12 @@ export const sortAscendingByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
 	return 0;
 };
 
+/**
+ * Compare function that allows to sort typefaces by date in descending order.
+ * @param a - The first typeface to compare.
+ * @param b - The second typeface to compare.
+ * @returns Whether the first date either came first, last or was the same as the other one.
+ */
 export const sortDescendingByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
 	const aDate = new Date(a[1].added_at);
 	const bDate = new Date(b[1].added_at);
