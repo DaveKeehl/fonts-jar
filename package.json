@@ -11,7 +11,7 @@
 		"build:prepare": "mkdir dist && cp src/manifest.json dist/",
 		"build:assets": "cp -R src/assets/ dist/assets",
 		"build:content_script": "node esbuild.content_script.config.js",
-		"build:background": "cp -R src/background dist/background",
+		"build:background": "node esbuild.background.config.js",
 		"build:popup": "cp -R src/popup dist/popup/ && rm -rf dist/popup/scripts && node esbuild.popup.config.js",
 		"build": "npm run build:prepare && npm run build:background && npm run build:content_script && npm run build:popup && npm run build:assets",
 		"postbuild": "rm -rf fonts-jar.tgz && tar -czf fonts-jar.tgz dist"
