@@ -89,7 +89,7 @@ const createStyles = (website: SupportedWebsite, theme: ThemeType) => {
 export const injectStyles = (website: SupportedWebsite, theme: ThemeType) => {
 	const head = document.querySelector('head') as HTMLHeadElement;
 	const oldStylesheet = document.querySelector(
-		'style[data-extension="font-jar"]'
+		'style[data-extension="fonts-jar"]'
 	) as HTMLStyleElement;
 
 	if (oldStylesheet === null) {
