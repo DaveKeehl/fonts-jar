@@ -2,11 +2,11 @@
 
 # Fonts Jar
 
-Fonts Jar is useful Chrome extension to save your favorite fonts when websites do not have a "add to favorites" feature by default. The goal is to support an increasingly number of websites, in order to be able to use this extension as a cross-websites utility and typography management tool.
+Fonts Jar is a useful Chrome extension to save your favorite fonts when websites do not have an "add to favorites" feature by default. The goal is to support an always increasing number of websites, in order to be able to use this extension as a cross-website utility and typography management tool.
 
 ## ✨ Supported websites
 
-Fonts Jar is currently supports the following websites:
+Fonts Jar currently supports the following websites:
 
 - [Google Fonts](https://fonts.google.com/)
 
