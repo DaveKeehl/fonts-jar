@@ -22,8 +22,9 @@
 		"strict": true,
 		"paths": {
 			"types/*": ["types/*"],
-			"lib/*": ["lib/*"]
+			"lib/*": ["lib/*"],
+			"mock/*": ["mock/*"]
 		}
 	},
-	"include": ["./src"]
+	"include": ["./src", "./tests", "./mock"]
 }
