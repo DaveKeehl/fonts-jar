@@ -206,6 +206,10 @@ header p {
 	border-bottom: 1px solid var(--greyscale-200);
 }
 
+.font:last-child {
+	border-bottom: none;
+}
+
 .font div {
 	width: 100%;
 }
