@@ -27,3 +27,15 @@ You can track the development progress of Fonts Jar by looking at our [roadmap](
 ## 🙋🏻‍♀️ Requests
 
 You can request new websites to be supported by creating a [new issue](https://github.com/DaveKeehl/fonts-jar/issues/new).
+
+## 📚 Versioning
+
+This project uses [Semantic Versioning](https://semver.org/) to keep track of its version number.
+
+## ✍🏻 Changelog
+
+[CHANGELOG](https://github.com/DaveKeehl/fonts-jar/blob/main/CHANGELOG.md)
+
+## 👨🏻‍⚖️ License
+
+[MIT](https://github.com/DaveKeehl/fonts-jar/blob/main/LICENSE)

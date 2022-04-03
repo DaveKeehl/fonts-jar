@@ -1,6 +1,6 @@
 {
 	"name": "fonts-jar",
-	"version": "1.0.0",
+	"version": "0.1.0",
 	"description": "Save your favorite fonts so you never forget they exist.",
 	"scripts": {
 		"clean": "rm -rf dist/ && npm run format",
