@@ -3,7 +3,7 @@
 	"version": "0.1.1",
 	"description": "Save your favorite fonts so you never forget they exist.",
 	"scripts": {
-		"clean": "rm -rf dist/ && npm run format",
+		"clean": "rm -rf dist/ && rm -rf fonts-jar.tgz && npm run format",
 		"format": "npx prettier --write .",
 		"lint": "npx prettier --check . && npx eslint .",
 		"test": "jest",
