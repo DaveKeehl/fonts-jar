@@ -2,7 +2,7 @@ export interface Website {
 	name: SupportedWebsite;
 	regex: {
 		match: RegExp;
-		ignore: RegExp;
+		ignore?: RegExp;
 	};
 	queries: ExtractionQueries;
 	themes: {
