@@ -14,7 +14,10 @@ export const buttonContent = {
 export const websites: Website[] = [
 	{
 		name: 'Google Fonts',
-		regex: 'fonts.google.com/?(.*)/specimen/.*',
+		regex: {
+			match: /fonts.google.com\/?(.*)\/specimen\/.*/,
+			ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?/
+		},
 		queries: {
 			theme: {
 				element: 'body', // Which element holds the dark theme class name

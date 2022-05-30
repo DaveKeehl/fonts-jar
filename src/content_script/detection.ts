@@ -7,7 +7,11 @@ import { websites } from './constants';
  * @returns If the url is supported, an object of type TypefaceOrigin is returned. Otherwise an error is thrown.
  */
 export const identifyWebsite = (url: string): TypefaceOrigin | never => {
-	const origin = websites.find((website) => new RegExp(website.regex).test(url));
+	const origin = websites.find((website) => {
+		const match = new RegExp(website.regex.match).test(url);
+		const ignore = new RegExp(website.regex.ignore).test(url);
+		return match && !ignore;
+	});
 
 	if (origin === undefined) {
 		throw new Error(`The received url (${url}) does not seem to be supported`);
