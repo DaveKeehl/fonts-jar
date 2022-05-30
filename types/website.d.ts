@@ -1,6 +1,9 @@
 export interface Website {
 	name: SupportedWebsite;
-	regex: string;
+	regex: {
+		match: RegExp;
+		ignore: RegExp;
+	};
 	queries: ExtractionQueries;
 	themes: {
 		[key in ThemeType]?: {
