@@ -1,7 +1,7 @@
 {
 	"name": "Fonts Jar",
 	"description": "Save your favorite fonts so you never forget they exist.",
-	"version": "1.0.0",
+	"version": "0.1.1",
 	"manifest_version": 3,
 	"background": {
 		"service_worker": "background/index.js"

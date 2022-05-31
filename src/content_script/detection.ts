@@ -9,7 +9,12 @@ import { websites } from './constants';
 export const identifyWebsite = (url: string): TypefaceOrigin | never => {
 	const origin = websites.find((website) => {
 		const match = new RegExp(website.regex.match).test(url);
-		const ignore = new RegExp(website.regex.ignore).test(url);
+		let ignore = false;
+
+		if (website.regex.ignore !== undefined) {
+			ignore = new RegExp(website.regex.ignore).test(url);
+		}
+
 		return match && !ignore;
 	});
 
