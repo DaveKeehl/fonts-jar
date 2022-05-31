@@ -32,16 +32,14 @@ jobs:
       - name: Installing dependencies
         run: npm install
 
-      - name: Cache build
-        id: cache-build
-        uses: actions/cache@v3
-        with:
-          path: fonts-jar-build
-          key: ${{ runner.os }}-fonts-jar-build
-
       - name: Build
-        if: steps.cache-build.outputs.cache-hit != 'true'
         run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-artifact
+          path: ./fonts-jar.tgz
 
   CD:
     needs: [CI]
@@ -52,16 +50,10 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Cache build
-        id: cache-build
-        uses: actions/cache@v3
+      - name: Download artifact
+        uses: actions/download-artifact@master
         with:
-          path: fonts-jar-build
-          key: ${{ runner.os }}-fonts-jar-build
+          name: build-artifact
+          path: ./fonts-jar.tgz
 
       - run: ls -l
-
-      # - name: List the state of node modules
-      #   if: ${{ steps.cache-build.outputs.cache-hit == 'false' }}
-      #   continue-on-error: true
-      #   run: ls -l
