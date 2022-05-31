@@ -11,7 +11,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 - Website ignore regex is now optional
 - Improved website types
-- Fixed some typos is JSDoc blocks
+- Fixed typos
+- Strengthened regex to ignore websites
 
 ## [0.1.1] - 2022-05-31
 ### Changed
