@@ -16,7 +16,7 @@ export const websites: Website[] = [
 		name: 'Google Fonts',
 		regex: {
 			match: /fonts.google.com\/?(.*)\/specimen\/.*/,
-			ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?/
+			ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?.*preview.text=/
 		},
 		queries: {
 			theme: {
