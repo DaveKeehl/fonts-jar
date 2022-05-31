@@ -8,7 +8,7 @@ import { isUrlLegal, slugify, useFirstValidCandidate } from './utils';
 
 /**
  * Function that fires when the DOM is ready to run the content_script code.
- * @param callback - The function to be run when the DOM is ready.
+ * @param fn - The function to be run when the DOM is ready.
  */
 export const onReady = (fn: () => unknown, timeout = 300) => {
 	let previousUrl = '';
