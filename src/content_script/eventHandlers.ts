@@ -4,7 +4,7 @@ import { toggleButtonState } from './DOM';
 
 /**
  * Function that gets fired whenever the injected button is clicked.
- * @param button - The injected <button> element.
+ * @param buttons - The injected <button> elements.
  * @param typeface - The typeface metadata used to either remove or add the typeface to the wishlist.
  */
 export const handleButtonClick = async (
