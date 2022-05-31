@@ -40,6 +40,7 @@ jobs:
         with:
           name: build-artifact
           path: ./fonts-jar.tgz
+          retention-days: 1
 
   CD:
     needs: [CI]
