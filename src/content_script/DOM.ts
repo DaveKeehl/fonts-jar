@@ -4,7 +4,7 @@ import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { handleButtonClick } from './eventHandlers';
 import { injectStyles } from './styles';
-import { slugify, useFirstValidCandidate } from './utils';
+import { isUrlLegal, slugify, useFirstValidCandidate } from './utils';
 
 /**
  * Function that fires when the DOM is ready to run the content_script code.
@@ -16,9 +16,9 @@ export const onReady = (fn: () => unknown, timeout = 300) => {
 
 	const observer = new MutationObserver(() => {
 		const hasUrlChanged = location.href !== previousUrl;
-		const isUrlLegal = urls.some((url) => new RegExp(url).test(location.href));
+		const hasLegalUrls = urls.some((url) => isUrlLegal(location.href, url));
 
-		if (hasUrlChanged && isUrlLegal) {
+		if (hasUrlChanged && hasLegalUrls) {
 			previousUrl = location.href;
 			// console.log(`URL changed to ${location.href}`);
 

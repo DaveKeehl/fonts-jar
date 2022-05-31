@@ -1,3 +1,5 @@
+import type { WebsiteRegex } from 'types';
+
 /**
  * Given a string, create a camelcase slug.
  * @param text - The string to slugify.
@@ -51,4 +53,15 @@ export const useFirstValidCandidate = <T, K, V>(
 	}
 
 	return res as V;
+};
+
+export const isUrlLegal = (url: string, websiteRegex: WebsiteRegex) => {
+	const match = new RegExp(websiteRegex.match).test(url);
+	let ignore = false;
+
+	if (websiteRegex.ignore !== undefined) {
+		ignore = new RegExp(websiteRegex.ignore).test(url);
+	}
+
+	return match && !ignore;
 };
