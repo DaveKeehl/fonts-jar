@@ -8,7 +8,7 @@ export interface Website {
 	regex: WebsiteRegex;
 	queries: ExtractionQueries;
 	themes: {
-		[key in ThemeType]?: {
+		[key in Theme]?: {
 			primary: string;
 			secondary: string;
 			tertiary: string;
@@ -47,4 +47,4 @@ export interface ThemeQuery {
 
 // THEME
 
-export type ThemeType = 'light' | 'dark';
+export type Theme = 'light' | 'dark';
