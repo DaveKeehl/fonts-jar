@@ -1,4 +1,4 @@
-import type { SupportedWebsite, ThemeType, WebsitesSpecificStyles } from 'types';
+import type { SupportedWebsite, Theme, WebsitesSpecificStyles } from 'types';
 import { websites } from './constants';
 import { minify } from './utils';
 
@@ -9,7 +9,7 @@ import { minify } from './utils';
  * @param theme - The theme name.
  * @returns The minified CSS to be injected in the page.
  */
-const createStyles = (website: SupportedWebsite, theme: ThemeType) => {
+const createStyles = (website: SupportedWebsite, theme: Theme) => {
 	const origin = websites.filter((el) => el.name === website)[0];
 	const themeData = origin.themes[theme];
 
@@ -86,7 +86,7 @@ const createStyles = (website: SupportedWebsite, theme: ThemeType) => {
  * @param website - The website to generate the styles for.
  * @param theme - The theme name.
  */
-export const injectStyles = (website: SupportedWebsite, theme: ThemeType) => {
+export const injectStyles = (website: SupportedWebsite, theme: Theme) => {
 	const head = document.querySelector('head') as HTMLHeadElement;
 	const oldStylesheet = document.querySelector(
 		'style[data-extension="fonts-jar"]'

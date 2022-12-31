@@ -1,4 +1,4 @@
-import type { SupportedWebsite, ThemeType, TypefaceOrigin } from 'types';
+import type { SupportedWebsite, Theme, TypefaceOrigin } from 'types';
 import { websites } from './constants';
 import { isUrlLegal } from './utils';
 
@@ -25,7 +25,7 @@ export const identifyWebsite = (url: string): TypefaceOrigin | never => {
  * @param website - The website to extract the theme from.
  * @returns The theme name.
  */
-export const identifyTheme = (website: SupportedWebsite): ThemeType => {
+export const identifyTheme = (website: SupportedWebsite): Theme => {
 	const origin = websites.filter((el) => el.name === website)[0];
 	const themeQuery = origin.queries.theme;
 	const element = document.querySelector(themeQuery.element) as Element;
