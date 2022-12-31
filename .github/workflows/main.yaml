@@ -17,7 +17,7 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '14'
+          node-version: '18'
 
       - name: Cache dependencies
         uses: actions/cache@v3
@@ -57,4 +57,11 @@ jobs:
           name: build-artifact
           path: ./fonts-jar.tgz
 
-      - run: ls -l
+      # - name: Upload to Chrome Web Store
+      #   uses: mnao305/chrome-extension-upload@2.2.0
+      #   with:
+      #     file-path: ./fonts-jar.tgz
+      #     extension-id: fonts-jar
+      #     client-id: ${{ secrets.CLIENT_ID }}
+      #     refresh-token: ${{ secrets.REFRESH_TOKEN }}
+      #     publish-target: trustedTesters
