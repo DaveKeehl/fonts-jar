@@ -33,6 +33,8 @@ export const handleSortDirectionBoxClick = (favorites: TypefaceTuple[]) => {
  * @param favorites - The favorites to filter.
  */
 export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple[]) => {
+	if (!noResults || !fonts) throw new Error('Missing HTML elements');
+
 	const target = event.target as HTMLInputElement;
 	const text = target.value.trim().toLowerCase();
 
@@ -51,6 +53,8 @@ export const handleSearchKeyup = (event: KeyboardEvent, favorites: TypefaceTuple
 };
 
 export const handleSearchClear = (event: Event, favorites: TypefaceTuple[]) => {
+	if (!noResults || !fonts) throw new Error('Missing HTML elements');
+
 	const target = event.target as HTMLInputElement;
 
 	if (target.value === '') {
@@ -67,6 +71,8 @@ export const handleSearchClear = (event: Event, favorites: TypefaceTuple[]) => {
  * @param slug - The slug of the typeface you want to be removed.
  */
 export const handleRemoveBtnClick = async (font: HTMLDivElement, slug: string) => {
+	if (!noFonts || !topBar) throw new Error('Missing HTML elements');
+
 	const favorites = new Map((await readSyncStorage('favorites')) as TypefaceTuple[]);
 	favorites.delete(slug);
 

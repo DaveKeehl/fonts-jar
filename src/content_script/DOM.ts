@@ -51,14 +51,14 @@ export const onReady = (fn: () => unknown, timeout = 300) => {
  * @returns The font name.
  */
 const extractFontName = (queries: string[]) => {
-	const fontName = useFirstValidCandidate<string, HTMLHeadingElement, string>(
+	const fontName = useFirstValidCandidate(
 		queries,
-		(query) => document.querySelector(query) as HTMLHeadingElement,
+		(query) => document.querySelector<HTMLHeadingElement>(query),
 		(element) => element.textContent as string,
 		(candidate) => !!candidate
 	);
 
-	if (!fontName) throw new Error("Couldn't extract font name");
+	if (!fontName) throw new Error("Couldn't extract the font name");
 
 	return fontName;
 };
@@ -80,10 +80,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 			.map((variant) => (variant.textContent !== null ? variant.textContent.trim() : ''))
 			.filter((variant) => variant !== ''),
 		variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
-		origin: {
-			name: origin.name,
-			url: origin.url
-		},
+		origin,
 		added_at: '',
 		collections: []
 	};
@@ -95,7 +92,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
  */
 const createButton = (): HTMLButtonElement => {
 	const button = document.createElement('button');
-	button.innerHTML = `
+	button.innerHTML = /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
@@ -110,16 +107,8 @@ const createButton = (): HTMLButtonElement => {
 };
 
 const placeButtonsOnGoogleFonts = () => {
-	const button = createButton();
-
-	const downloadButtonCandidates = ['a.breadcrumb__action--download'];
-
-	const downloadButtons = useFirstValidCandidate<
-		string,
-		NodeListOf<HTMLElement>,
-		NodeListOf<HTMLElement>
-	>(
-		downloadButtonCandidates,
+	const downloadButtons = useFirstValidCandidate(
+		['a.breadcrumb__action--download'],
 		(candidate) => document.querySelectorAll<HTMLElement>(candidate),
 		(candidate) => candidate,
 		(candidate) => candidate.length > 0
@@ -131,6 +120,8 @@ const placeButtonsOnGoogleFonts = () => {
 		const parent = downloadButton.parentElement;
 
 		if (parent) {
+			const button = createButton();
+
 			parent.style.display = 'flex';
 			button.style.marginRight = '1rem';
 			parent.innerHTML = '';
@@ -145,10 +136,8 @@ const placeButtonsOnGoogleFonts = () => {
  * @param website - The website the user is on.
  * @returns All the buttons placed on the page.
  */
-const placeButtonOnScreen = (website: SupportedWebsite): NodeListOf<HTMLButtonElement> => {
-	if (website === 'Google Fonts') {
-		placeButtonsOnGoogleFonts();
-	}
+const placeButtonOnScreen = (website: SupportedWebsite) => {
+	if (website === 'Google Fonts') placeButtonsOnGoogleFonts();
 
 	return document.querySelectorAll<HTMLButtonElement>('button.addToFavorites');
 };
@@ -166,7 +155,7 @@ export const toggleButtonState = (
 ) => {
 	button.classList.toggle('active', fontInFavorites);
 	button.innerHTML = fontInFavorites
-		? `
+		? /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
@@ -174,7 +163,7 @@ export const toggleButtonState = (
 		</svg>
 		<span>${buttonContent.remove}</span>
 	`
-		: `
+		: /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"

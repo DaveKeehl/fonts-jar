@@ -19,7 +19,7 @@ const createStyles = (website: SupportedWebsite, theme: Theme) => {
 
 	const { button, icon } = origin.styles;
 
-	const baseStyles = `
+	const baseStyles = /* css */ `
 		button.addToFavorites {
 			display: flex;
 			justify-content: center;
@@ -68,7 +68,7 @@ const createStyles = (website: SupportedWebsite, theme: Theme) => {
 	const websiteSpecificStyles: WebsitesSpecificStyles[] = [
 		{
 			name: 'Google Fonts',
-			styles: `
+			styles: /* css */ `
 				button.addToFavorites.collapsed-header {
 					margin-right: 0.75rem;
 				}
@@ -88,16 +88,17 @@ const createStyles = (website: SupportedWebsite, theme: Theme) => {
  */
 export const injectStyles = (website: SupportedWebsite, theme: Theme) => {
 	const head = document.querySelector('head') as HTMLHeadElement;
-	const oldStylesheet = document.querySelector(
+	const oldStylesheet = document.querySelector<HTMLStyleElement>(
 		'style[data-extension="fonts-jar"]'
-	) as HTMLStyleElement;
+	);
 
-	if (oldStylesheet === null) {
-		const stylesheet = document.createElement('style');
-		stylesheet.setAttribute('data-extension', 'fonts-jar');
-		head.appendChild(stylesheet);
-		stylesheet.innerHTML = createStyles(website, theme);
-	} else {
+	if (oldStylesheet) {
 		oldStylesheet.innerHTML = createStyles(website, theme);
+		return;
 	}
+
+	const stylesheet = document.createElement('style');
+	stylesheet.setAttribute('data-extension', 'fonts-jar');
+	head.appendChild(stylesheet);
+	stylesheet.innerHTML = createStyles(website, theme);
 };

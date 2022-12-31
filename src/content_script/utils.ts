@@ -38,7 +38,7 @@ export const minify = (css: string) =>
  */
 export const useFirstValidCandidate = <T, K, V>(
 	candidates: T[],
-	onCandidateIteration: (candidate: T) => K,
+	onCandidateIteration: (candidate: T) => K | null,
 	onTruthyCandidate: (candidate: K) => V,
 	onCandidateValidation: (candidate: K) => boolean
 ) => {
@@ -46,6 +46,8 @@ export const useFirstValidCandidate = <T, K, V>(
 
 	for (const candidate of candidates) {
 		const element = onCandidateIteration(candidate);
+
+		if (!element) continue;
 
 		if (onCandidateValidation(element)) {
 			res = onTruthyCandidate(element);

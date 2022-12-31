@@ -38,5 +38,9 @@ export const identifyTheme = (website: SupportedWebsite): Theme => {
  * @returns The theme toggle button
  */
 export const getThemeToggleButton = (query: string) => {
-	return document.querySelector(query) as HTMLButtonElement;
+	const button = document.querySelector<HTMLButtonElement>(query);
+
+	if (!button) throw new Error('No theme toggle button');
+
+	return button;
 };
