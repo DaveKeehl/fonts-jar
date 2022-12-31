@@ -50,13 +50,18 @@ export const onReady = (fn: () => unknown, timeout = 300) => {
  * @param queries - The list of selector queries. The function uses the first query that results in a non-null element.
  * @returns The font name.
  */
-const extractFontName = (queries: string[]) =>
-	useFirstValidCandidate<string, HTMLHeadingElement, string>(
+const extractFontName = (queries: string[]) => {
+	const fontName = useFirstValidCandidate<string, HTMLHeadingElement, string>(
 		queries,
 		(query) => document.querySelector(query) as HTMLHeadingElement,
 		(element) => element.textContent as string,
 		(candidate) => !!candidate
 	);
+
+	if (!fontName) throw new Error("Couldn't extract font name");
+
+	return fontName;
+};
 
 /**
  * Given a TypefaceOrigin object, this function returns a Typeface object containing the required metadata of the typeface extracted for the currently visited page.
@@ -107,10 +112,7 @@ const createButton = (): HTMLButtonElement => {
 const placeButtonsOnGoogleFonts = () => {
 	const button = createButton();
 
-	const downloadButtonCandidates = [
-		'button.sticky-header__cta-button',
-		'a.specimen__download-button'
-	];
+	const downloadButtonCandidates = ['a.breadcrumb__action--download'];
 
 	const downloadButtons = useFirstValidCandidate<
 		string,
@@ -123,21 +125,19 @@ const placeButtonsOnGoogleFonts = () => {
 		(candidate) => candidate.length > 0
 	);
 
-	if (downloadButtons.length === 1) {
-		downloadButtons[0].insertAdjacentElement('beforebegin', button);
-	} else if (downloadButtons.length >= 2) {
-		downloadButtons.forEach((downloadButton) => {
-			const parent = downloadButton.parentElement;
+	if (!downloadButtons) throw new Error('No download buttons');
 
-			if (parent) {
-				parent.style.display = 'flex';
-				button.style.marginRight = '1rem';
-				parent.innerHTML = '';
-				parent.appendChild(button.cloneNode(true));
-				parent.appendChild(downloadButton);
-			}
-		});
-	}
+	downloadButtons.forEach((downloadButton) => {
+		const parent = downloadButton.parentElement;
+
+		if (parent) {
+			parent.style.display = 'flex';
+			button.style.marginRight = '1rem';
+			parent.innerHTML = '';
+			parent.appendChild(button.cloneNode(true));
+			parent.appendChild(downloadButton);
+		}
+	});
 };
 
 /**
