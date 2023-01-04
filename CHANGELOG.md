@@ -13,6 +13,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Improved website types
 - Fixed typos
 - Strengthened regex to ignore websites
+- Refactored code to increase code quality
+- Updated selectors to match the updated Google Fonts website
+- Updated github workflow
 
 ## [0.1.1] - 2022-05-31
 ### Changed
