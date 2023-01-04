@@ -10,7 +10,7 @@ export interface Typeface {
 	collections: string[];
 }
 
-export type TypefaceTuple = [string, Typeface];
+export type TypefaceTuple = [string, Typeface]; // [<typeface_name>, <typeface_data>]
 
 export interface TypefaceOrigin {
 	name: SupportedWebsite;

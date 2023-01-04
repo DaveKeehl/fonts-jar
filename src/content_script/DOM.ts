@@ -4,11 +4,11 @@ import { buttonContent, websites } from './constants';
 import { identifyTheme } from './detection';
 import { handleButtonClick } from './eventHandlers';
 import { injectStyles } from './styles';
-import { slugify, useFirstValidCandidate } from './utils';
+import { isUrlLegal, slugify, useFirstValidCandidate } from './utils';
 
 /**
  * Function that fires when the DOM is ready to run the content_script code.
- * @param callback - The function to be run when the DOM is ready.
+ * @param fn - The function to be run when the DOM is ready.
  */
 export const onReady = (fn: () => unknown, timeout = 300) => {
 	let previousUrl = '';
@@ -16,9 +16,9 @@ export const onReady = (fn: () => unknown, timeout = 300) => {
 
 	const observer = new MutationObserver(() => {
 		const hasUrlChanged = location.href !== previousUrl;
-		const isUrlLegal = urls.some((url) => new RegExp(url).test(location.href));
+		const hasLegalUrls = urls.some((url) => isUrlLegal(location.href, url));
 
-		if (hasUrlChanged && isUrlLegal) {
+		if (hasUrlChanged && hasLegalUrls) {
 			previousUrl = location.href;
 			// console.log(`URL changed to ${location.href}`);
 
@@ -50,13 +50,18 @@ export const onReady = (fn: () => unknown, timeout = 300) => {
  * @param queries - The list of selector queries. The function uses the first query that results in a non-null element.
  * @returns The font name.
  */
-const extractFontName = (queries: string[]) =>
-	useFirstValidCandidate<string, HTMLHeadingElement, string>(
+const extractFontName = (queries: string[]) => {
+	const fontName = useFirstValidCandidate(
 		queries,
-		(query) => document.querySelector(query) as HTMLHeadingElement,
+		(query) => document.querySelector<HTMLHeadingElement>(query),
 		(element) => element.textContent as string,
 		(candidate) => !!candidate
 	);
+
+	if (!fontName) throw new Error("Couldn't extract the font name");
+
+	return fontName;
+};
 
 /**
  * Given a TypefaceOrigin object, this function returns a Typeface object containing the required metadata of the typeface extracted for the currently visited page.
@@ -75,10 +80,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
 			.map((variant) => (variant.textContent !== null ? variant.textContent.trim() : ''))
 			.filter((variant) => variant !== ''),
 		variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
-		origin: {
-			name: origin.name,
-			url: origin.url
-		},
+		origin,
 		added_at: '',
 		collections: []
 	};
@@ -90,7 +92,7 @@ export const extractFontData = (origin: TypefaceOrigin, queries: ExtractionQueri
  */
 const createButton = (): HTMLButtonElement => {
 	const button = document.createElement('button');
-	button.innerHTML = `
+	button.innerHTML = /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
@@ -105,39 +107,28 @@ const createButton = (): HTMLButtonElement => {
 };
 
 const placeButtonsOnGoogleFonts = () => {
-	const button = createButton();
-
-	const downloadButtonCandidates = [
-		'button.sticky-header__cta-button',
-		'a.specimen__download-button'
-	];
-
-	const downloadButtons = useFirstValidCandidate<
-		string,
-		NodeListOf<HTMLElement>,
-		NodeListOf<HTMLElement>
-	>(
-		downloadButtonCandidates,
+	const downloadButtons = useFirstValidCandidate(
+		['a.breadcrumb__action--download'],
 		(candidate) => document.querySelectorAll<HTMLElement>(candidate),
 		(candidate) => candidate,
 		(candidate) => candidate.length > 0
 	);
 
-	if (downloadButtons.length === 1) {
-		downloadButtons[0].insertAdjacentElement('beforebegin', button);
-	} else if (downloadButtons.length >= 2) {
-		downloadButtons.forEach((downloadButton) => {
-			const parent = downloadButton.parentElement;
+	if (!downloadButtons) throw new Error('No download buttons');
 
-			if (parent) {
-				parent.style.display = 'flex';
-				button.style.marginRight = '1rem';
-				parent.innerHTML = '';
-				parent.appendChild(button.cloneNode(true));
-				parent.appendChild(downloadButton);
-			}
-		});
-	}
+	downloadButtons.forEach((downloadButton) => {
+		const parent = downloadButton.parentElement;
+
+		if (parent) {
+			const button = createButton();
+
+			parent.style.display = 'flex';
+			button.style.marginRight = '1rem';
+			parent.innerHTML = '';
+			parent.appendChild(button.cloneNode(true));
+			parent.appendChild(downloadButton);
+		}
+	});
 };
 
 /**
@@ -145,10 +136,8 @@ const placeButtonsOnGoogleFonts = () => {
  * @param website - The website the user is on.
  * @returns All the buttons placed on the page.
  */
-const placeButtonOnScreen = (website: SupportedWebsite): NodeListOf<HTMLButtonElement> => {
-	if (website === 'Google Fonts') {
-		placeButtonsOnGoogleFonts();
-	}
+const placeButtonOnScreen = (website: SupportedWebsite) => {
+	if (website === 'Google Fonts') placeButtonsOnGoogleFonts();
 
 	return document.querySelectorAll<HTMLButtonElement>('button.addToFavorites');
 };
@@ -166,7 +155,7 @@ export const toggleButtonState = (
 ) => {
 	button.classList.toggle('active', fontInFavorites);
 	button.innerHTML = fontInFavorites
-		? `
+		? /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"
@@ -174,7 +163,7 @@ export const toggleButtonState = (
 		</svg>
 		<span>${buttonContent.remove}</span>
 	`
-		: `
+		: /* html */ `
 		<svg xmlns="http://www.w3.org/2000/svg" width="192" height="192" fill="#000000" viewBox="0 0 256 256">
 			<rect width="256" height="256" fill="none"></rect>
 			<line x1="40" y1="128" x2="216" y2="128" fill="none" stroke="#000000" stroke-linecap="round" stroke-linejoin="round"

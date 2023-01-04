@@ -1,0 +1,59 @@
+name: CI/CD
+
+on:
+  push:
+    branches:
+      - main
+      - develop
+
+jobs:
+  CI:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+          cache: 'npm'
+
+      - name: Instal dependencies
+        run: npm install
+
+      - name: Build
+        run: npm run build
+
+      - name: Upload build artifact
+        uses: actions/upload-artifact@master
+        with:
+          name: build-artifact
+          path: ./fonts-jar.tgz
+          retention-days: 1
+
+  CD:
+    needs: [CI]
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+
+      - name: Download artifact
+        uses: actions/download-artifact@master
+        with:
+          name: build-artifact
+          path: ./fonts-jar.tgz
+
+      # - name: Upload to Chrome Web Store
+      #   uses: mnao305/chrome-extension-upload@2.2.0
+      #   with:
+      #     file-path: ./fonts-jar.tgz
+      #     extension-id: fonts-jar
+      #     client-id: ${{ secrets.CLIENT_ID }}
+      #     refresh-token: ${{ secrets.REFRESH_TOKEN }}
+      #     publish-target: trustedTesters

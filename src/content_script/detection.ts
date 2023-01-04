@@ -1,5 +1,6 @@
-import type { SupportedWebsite, ThemeType, TypefaceOrigin } from 'types';
+import type { SupportedWebsite, Theme, TypefaceOrigin } from 'types';
 import { websites } from './constants';
+import { isUrlLegal } from './utils';
 
 /**
  * Given a url, this function checks whether the website is either supported or not.
@@ -7,16 +8,7 @@ import { websites } from './constants';
  * @returns If the url is supported, an object of type TypefaceOrigin is returned. Otherwise an error is thrown.
  */
 export const identifyWebsite = (url: string): TypefaceOrigin | never => {
-	const origin = websites.find((website) => {
-		const match = new RegExp(website.regex.match).test(url);
-		let ignore = false;
-
-		if (website.regex.ignore !== undefined) {
-			ignore = new RegExp(website.regex.ignore).test(url);
-		}
-
-		return match && !ignore;
-	});
+	const origin = websites.find((website) => isUrlLegal(url, website.regex));
 
 	if (origin === undefined) {
 		throw new Error(`The received url (${url}) does not seem to be supported`);
@@ -33,7 +25,7 @@ export const identifyWebsite = (url: string): TypefaceOrigin | never => {
  * @param website - The website to extract the theme from.
  * @returns The theme name.
  */
-export const identifyTheme = (website: SupportedWebsite): ThemeType => {
+export const identifyTheme = (website: SupportedWebsite): Theme => {
 	const origin = websites.filter((el) => el.name === website)[0];
 	const themeQuery = origin.queries.theme;
 	const element = document.querySelector(themeQuery.element) as Element;
@@ -46,5 +38,9 @@ export const identifyTheme = (website: SupportedWebsite): ThemeType => {
  * @returns The theme toggle button
  */
 export const getThemeToggleButton = (query: string) => {
-	return document.querySelector(query) as HTMLButtonElement;
+	const button = document.querySelector<HTMLButtonElement>(query);
+
+	if (!button) throw new Error('No theme toggle button');
+
+	return button;
 };

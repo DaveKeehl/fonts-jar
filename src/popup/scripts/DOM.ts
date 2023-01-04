@@ -44,7 +44,7 @@ export const createMarkupFromTypeface = ({
 
 	font.classList.add('font');
 	font.classList.add(`font-${slug}`);
-	font.innerHTML = `
+	font.innerHTML = /* html */ `
 		<div>
 			<a href="${origin.url}" target="_blank">${family}</a>
 			<p>${stylesText} ${variableAxesText}</p>
@@ -59,7 +59,8 @@ export const createMarkupFromTypeface = ({
 			</svg>
 		</div>
 	`;
-	fonts.appendChild(font);
+
+	fonts?.appendChild(font);
 
 	return font;
 };
@@ -72,6 +73,8 @@ export const createMarkupForTypefaces = (
 	favorites: TypefaceTuple[],
 	compareFunction: CompareFunction
 ) => {
+	if (!fonts) throw new Error('No fonts div element');
+
 	fonts.innerHTML = '';
 	const sortedFavorites = [...favorites].sort(compareFunction);
 
@@ -100,6 +103,8 @@ const toggleSortIcon = (icons: HTMLOrSVGImageElement[], fn: () => void) => {
  * This function is also in charge of toggling the sort method being used.
  */
 export const toggleSortMethodIcon = () => {
+	if (!alphabetic || !clock) throw new Error('No sort method icons');
+
 	toggleSortIcon([alphabetic, clock], () => {
 		if (sort.method === 'byDate') {
 			sort.method = 'bySlug';
@@ -114,6 +119,8 @@ export const toggleSortMethodIcon = () => {
  * This function is also in charge of toggling the sort direction being used.
  */
 export const toggleSortDirectionIcon = () => {
+	if (!ascending || !descending) throw new Error('No sort direction icons');
+
 	toggleSortIcon([ascending, descending], () => {
 		if (sort.direction === 'ascending') {
 			sort.direction = 'descending';
@@ -137,6 +144,20 @@ const showSortIcon = (icons: [HTMLOrSVGImageElement, HTMLOrSVGImageElement], ico
  * Populate the popup window when opened.
  */
 export const populatePopup = async () => {
+	if (
+		!noFonts ||
+		!topBar ||
+		!alphabetic ||
+		!clock ||
+		!ascending ||
+		!descending ||
+		!sortMethodBox ||
+		!sortDirectionBox ||
+		!search
+	) {
+		throw new Error('Missing icons');
+	}
+
 	// const storage = await readSyncStorage(null);
 	// console.log(storage);
 
@@ -144,27 +165,28 @@ export const populatePopup = async () => {
 
 	if (favorites === undefined || favorites.length === 0) {
 		noFonts.classList.remove('hidden');
-	} else {
-		topBar.classList.remove('hidden');
-
-		// When popup is opened, retrieve from storage the lastly used sort method
-		const storedSort = (await readSyncStorage('sort')) as Sort;
-
-		// Only use the stored sorting information if they exist and are valid
-		if (isStoredSortValid(storedSort)) {
-			sort.method = storedSort.method;
-			sort.direction = storedSort.direction;
-		}
-
-		showSortIcon([alphabetic, clock], sort.method === 'bySlug' ? 0 : 1);
-		showSortIcon([ascending, descending], sort.direction === 'ascending' ? 0 : 1);
-
-		createMarkupForTypefaces(favorites, getSortFunction(sort));
-
-		// Register all event listeners
-		sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
-		sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
-		search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
-		search.addEventListener('search', (event) => handleSearchClear(event, favorites));
+		return;
 	}
+
+	topBar.classList.remove('hidden');
+
+	// When popup is opened, retrieve from storage the lastly used sort method
+	const storedSort = (await readSyncStorage('sort')) as Sort;
+
+	// Only use the stored sorting information if they exist and are valid
+	if (isStoredSortValid(storedSort)) {
+		sort.method = storedSort.method;
+		sort.direction = storedSort.direction;
+	}
+
+	showSortIcon([alphabetic, clock], sort.method === 'bySlug' ? 0 : 1);
+	showSortIcon([ascending, descending], sort.direction === 'ascending' ? 0 : 1);
+
+	createMarkupForTypefaces(favorites, getSortFunction(sort));
+
+	// Register all event listeners
+	sortMethodBox.addEventListener('click', () => handleSortMethodBoxClick(favorites));
+	sortDirectionBox.addEventListener('click', () => handleSortDirectionBoxClick(favorites));
+	search.addEventListener('keyup', (event) => handleSearchKeyup(event, favorites));
+	search.addEventListener('search', (event) => handleSearchClear(event, favorites));
 };

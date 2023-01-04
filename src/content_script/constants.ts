@@ -16,7 +16,7 @@ export const websites: Website[] = [
 		name: 'Google Fonts',
 		regex: {
 			match: /fonts.google.com\/?(.*)\/specimen\/.*/,
-			ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?/
+			ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?.*preview.text=/
 		},
 		queries: {
 			theme: {
@@ -24,7 +24,7 @@ export const websites: Website[] = [
 				darkThemeClass: 'gf-dark-theme',
 				toggle: 'button.theme-toggle'
 			},
-			titleElement: ['div.sticky-header h1', 'div.breadcrumb__content h1'],
+			titleElement: ['gf-specimen-header h1'],
 			variants: 'span.variant__style',
 			variableAxes: 'div.variable-axes__preview div.axis-container'
 		},
@@ -44,18 +44,18 @@ export const websites: Website[] = [
 		},
 		styles: {
 			button: {
-				gap: '0.25rem',
+				gap: '4px',
 				background: 'none',
 				border: '1px solid',
-				borderRadius: '0.25rem',
-				padding: '7px 24px',
+				borderRadius: '36px',
+				padding: '4px 15px',
 				margin: '0 -2rem 0 0',
 				fontSize: '14px',
 				fontWeight: '500'
 			},
 			icon: {
 				size: '20px',
-				padding: '2px'
+				padding: '0px'
 			}
 		}
 	}

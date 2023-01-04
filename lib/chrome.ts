@@ -1,4 +1,5 @@
 import { websites } from '../src/content_script/constants';
+import { isUrlLegal } from '../src/content_script/utils';
 import type { TypefaceTuple } from 'types';
 
 /**
@@ -60,7 +61,7 @@ export const getCollections = (favorites: TypefaceTuple[]) => {
 
 /**
  * Function that checks whether a property key exists within a given object.
- * @param object - The object that might have the key in.
+ * @param arg - The object that might have the key in.
  * @param key - The key to check in the object.
  * @returns It returns the key value if the key exists, else either undefined (if it's not an object in the first place) or false (if the object doesn't have that key).
  */
@@ -147,9 +148,9 @@ export const hasLegalOrigin = (favorite: unknown) => {
 	const websitesRegex = websites.map((website) => website.regex);
 
 	const isValidName = websiteNames.some((websiteName) => websiteName === name);
-	const isValidUrl = websitesRegex.some((websiteRegex) => new RegExp(websiteRegex).test(url));
+	const hasValidUrl = websitesRegex.some((websiteRegex) => isUrlLegal(url, websiteRegex));
 
-	return origin && isValidName && isValidUrl;
+	return origin && isValidName && hasValidUrl;
 };
 
 /**
