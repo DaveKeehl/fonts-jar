@@ -17,11 +17,13 @@ jobs:
           node-version: "18"
           cache: "npm"
 
-      - name: Instal dependencies
+      - name: Install dependencies
         run: npm install
 
       - name: Build and zip extension artifact
         run: npm run package
+
+      - run: cd build; ls -l
 
       - name: Upload build artifact
         uses: actions/upload-artifact@master
@@ -39,14 +41,17 @@ jobs:
         with:
           fetch-depth: 0
 
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: "18"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm install
+
       - name: Build and zip extension artifact
         run: npm run package
-
-      - name: Download artifact
-        uses: actions/download-artifact@master
-        with:
-          name: build-artifact
-          path: ./build/chrome-mv3-prod.zip
 
       # - name: Browser Platform Publish
       #   uses: PlasmoHQ/bpp@v3
