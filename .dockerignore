@@ -1,8 +1,0 @@
-node_modules/*
-dist/*
-*.config.*
-*.js
-lib-cov
-coverage/*
-*.lcov
-.DS_Store

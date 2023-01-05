@@ -1,4 +1,4 @@
-![](./banner.png)
+![](./assets/banner.png)
 
 # Fonts Jar
 

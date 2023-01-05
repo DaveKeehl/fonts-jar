@@ -18,8 +18,8 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '18'
-          cache: 'npm'
+          node-version: "18"
+          cache: "npm"
 
       - name: Instal dependencies
         run: npm install
@@ -27,12 +27,12 @@ jobs:
       - name: Build
         run: npm run build
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: build-artifact
-          path: ./fonts-jar.tgz
-          retention-days: 1
+      # - name: Upload build artifact
+      #   uses: actions/upload-artifact@master
+      #   with:
+      #     name: build-artifact
+      #     path: ./fonts-jar.tgz
+      #     retention-days: 1
 
   CD:
     needs: [CI]
@@ -43,17 +43,17 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Download artifact
-        uses: actions/download-artifact@master
-        with:
-          name: build-artifact
-          path: ./fonts-jar.tgz
-
-      # - name: Upload to Chrome Web Store
-      #   uses: mnao305/chrome-extension-upload@2.2.0
+      # - name: Download artifact
+      #   uses: actions/download-artifact@master
       #   with:
-      #     file-path: ./fonts-jar.tgz
-      #     extension-id: fonts-jar
-      #     client-id: ${{ secrets.CLIENT_ID }}
-      #     refresh-token: ${{ secrets.REFRESH_TOKEN }}
-      #     publish-target: trustedTesters
+      #     name: build-artifact
+      #     path: ./fonts-jar.tgz
+
+      # - name: Build and zip extension artifact
+      #   run: npm run package
+
+      # - name: Browser Platform Publish
+      #   uses: PlasmoHQ/bpp@v3
+      #   with:
+      #     keys: ${{ secrets.SUBMIT_KEYS }}
+      #     artifact: build/chrome-mv3-prod.zip
