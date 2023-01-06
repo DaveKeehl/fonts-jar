@@ -5,7 +5,7 @@ export const Header = () => {
     <header className="flex flex-row items-center bg-header px-6 py-5 font-poppins">
       <img
         src={logo}
-        alt="Fonts Jar Logo"
+        alt="Fonts Jar logo"
         className="mr-4 aspect-square w-10 drop-shadow-logo saturate-150"
       />
       <div className="flex flex-col">
