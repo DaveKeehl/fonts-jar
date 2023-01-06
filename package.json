@@ -19,6 +19,7 @@
     "package": "plasmo package"
   },
   "dependencies": {
+    "@plasmohq/storage": "^0.14.0",
     "jotai": "^1.12.1",
     "phosphor-react": "^1.4.1",
     "plasmo": "0.61.2",

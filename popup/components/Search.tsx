@@ -1,11 +1,10 @@
 import type React from "react"
-import { useAtom } from "jotai"
 import { MagnifyingGlass } from "phosphor-react"
 
-import { searchQueryAtom } from "../atoms"
+import { useStorage } from "@plasmohq/storage/hook"
 
 export const Search = () => {
-  const [searchQuery, setSearchQuery] = useAtom(searchQueryAtom)
+  const [searchQuery, setSearchQuery] = useStorage("searchQuery", "")
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(e.target.value)

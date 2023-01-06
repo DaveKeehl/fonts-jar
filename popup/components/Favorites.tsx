@@ -1,16 +1,16 @@
-import { useAtomValue } from "jotai"
+import { useStorage } from "@plasmohq/storage/hook"
 
 import { Favorite } from "./Favorite"
 import { NothingToShow } from "./NothingToShow"
 
-import { searchQueryAtom, sortDirectionAtom, sortMethodAtom } from "../atoms"
 import { validTypefaces as favorites } from "../../mocks/favorites"
 import { getSortFunction } from "../utils"
+import type { ISorting } from "~types/sorting"
 
 export const Favorites = () => {
-  const searchQuery = useAtomValue(searchQueryAtom)
-  const method = useAtomValue(sortMethodAtom)
-  const direction = useAtomValue(sortDirectionAtom)
+  const [searchQuery] = useStorage("searchQuery", "")
+  const [method] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
+  const [direction] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
 
   const results = [...favorites]
     .sort(getSortFunction({ method, direction }))

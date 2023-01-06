@@ -1,11 +1,12 @@
-import { useAtom } from "jotai"
 import { Clock, TextAa } from "phosphor-react"
+import { useStorage } from "@plasmohq/storage/hook"
 
-import { sortMethodAtom } from "../atoms"
 import { SortBox } from "./SortBox"
 
+import type { ISorting } from "~types/sorting"
+
 export const SortMethod = () => {
-  const [method, setMethod] = useAtom(sortMethodAtom)
+  const [method, setMethod] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
 
   const toggleMethod = () => setMethod(method === "alphabetical" ? "time" : "alphabetical")
 
