@@ -39,9 +39,10 @@ export const Favorite = ({ favorite }: IFavorite) => {
           className="mb-[2px] block text-lg font-medium no-underline [line-height:1.2] hover:cursor-ne-resize hover:underline">
           {family}
         </a>
-        <p className="text-sm text-greyscale-700 opacity-70">
+        {/* <p className="text-sm text-greyscale-600 opacity-90">
           {stylesText} {variableAxesText}
-        </p>
+        </p> */}
+        <p className="text-sm text-greyscale-600 opacity-90">{origin.name}</p>
       </div>
       <div
         className="rounded bg-red-500 p-1 opacity-0 transition-colors duration-100 hover:cursor-pointer hover:bg-red-600 active:bg-red-500 group-hover:opacity-100"
