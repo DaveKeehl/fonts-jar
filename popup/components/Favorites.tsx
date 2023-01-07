@@ -3,12 +3,12 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Favorite } from "./Favorite"
 import { NothingToShow } from "./NothingToShow"
 
-import { validTypefaces as favorites } from "../../mocks/favorites"
 import { getSortFunction } from "../utils"
 import type { ISorting } from "~types/sorting"
 
 export const Favorites = () => {
   const [searchQuery] = useStorage("searchQuery", "")
+  const [favorites] = useStorage("favorites", [])
   const [method] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
   const [direction] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
 
