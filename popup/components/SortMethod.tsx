@@ -1,3 +1,4 @@
+import { useCallback } from "react"
 import { Clock, TextAa } from "phosphor-react"
 import { useStorage } from "@plasmohq/storage/hook"
 
@@ -8,7 +9,10 @@ import type { ISorting } from "~types/sorting"
 export const SortMethod = () => {
   const [method, setMethod] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
 
-  const toggleMethod = () => setMethod(method === "alphabetical" ? "time" : "alphabetical")
+  const toggleMethod = useCallback(
+    () => setMethod(method === "alphabetical" ? "time" : "alphabetical"),
+    [method]
+  )
 
   return (
     <SortBox onClick={toggleMethod}>
