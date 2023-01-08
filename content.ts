@@ -4,7 +4,6 @@ import { identifyTheme, identifyWebsite, getThemeToggleButton } from "./content/
 import { onReady, injectMarkup, extractFontData } from "./content/DOM"
 import { injectStyles } from "./content/styles"
 import { websites } from "./content/constants"
-import { storage } from "./content/storage"
 
 export const config: PlasmoContentScript = {
   matches: ["https://fonts.google.com/*"],

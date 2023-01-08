@@ -8,22 +8,22 @@ interface IFavorite {
 }
 
 export const Favorite = ({ favorite }: IFavorite) => {
-  const [favorites, setFavorites] = useStorage("favorites", [])
+  const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
 
-  const { origin, family, styles, variableAxes, slug } = favorite
+  const { origin, family, /** styles, variableAxes **/ slug } = favorite
 
-  const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
-  const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
+  // const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
+  // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
 
   const handleClick = () => {
-    const favoritesMap = new Map(favorites as TypefaceTuple[])
+    const favoritesMap = new Map(favorites)
     favoritesMap.delete(slug)
     setFavorites(Array.from(favoritesMap))
 
     // Send message to the content_script that a font has been removed from wishlist.
     // The content_script uses this message to change the state of the add/remove wishlist button.
     chrome.tabs.query({ active: true, currentWindow: true }, function (tabs) {
-      chrome.tabs.sendMessage(tabs[0].id as number, {
+      chrome.tabs.sendMessage(tabs[0].id, {
         message: "removed-font",
         font: slug
       })
