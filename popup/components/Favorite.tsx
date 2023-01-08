@@ -47,7 +47,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
       <div
         className="rounded bg-red-500 p-1 opacity-0 transition-colors duration-100 hover:cursor-pointer hover:bg-red-600 active:bg-red-500 group-hover:opacity-100"
         onClick={handleClick}>
-        <X size={16} weight="bold" color="white" className="" />
+        <X size={16} weight="bold" color="white" />
       </div>
     </div>
   )
