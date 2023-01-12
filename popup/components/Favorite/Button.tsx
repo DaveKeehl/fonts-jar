@@ -1,27 +1,28 @@
-interface IButton {
+import { cva, type VariantProps } from "cva"
+
+interface IButton extends VariantProps<typeof button> {
   children: React.ReactNode
-  state: "default" | "danger"
   onClick?: () => void
 }
 
-export const Button = ({ children, state, onClick }: IButton) => {
-  const colors: { [key in IButton["state"]]: { bg: string; bgHover: string; bgActive: string } } = {
-    default: {
-      bg: "bg-greyscale-200",
-      bgHover: "hover:bg-greyscale-300",
-      bgActive: "active:bg-greyscale-200"
+const button = cva(
+  "flex aspect-square w-7 items-center justify-center rounded p-1 transition-colors duration-100 hover:cursor-pointer",
+  {
+    variants: {
+      intent: {
+        primary: "bg-greyscale-200 hover:bg-greyscale-300 active:bg-greyscale-200",
+        danger: "bg-red-500 hover:bg-red-600 active:bg-red-500"
+      }
     },
-    danger: {
-      bg: "bg-red-500",
-      bgHover: "hover:bg-red-600",
-      bgActive: "active:bg-red-500"
+    defaultVariants: {
+      intent: "primary"
     }
   }
+)
 
+export const Button = ({ children, intent, onClick }: IButton) => {
   return (
-    <div
-      className={`flex aspect-square w-7 items-center justify-center rounded ${colors[state].bg} p-1 transition-colors duration-100 hover:cursor-pointer ${colors[state].bgHover} ${colors[state].bgActive}`}
-      onClick={onClick}>
+    <div className={button({ intent })} onClick={onClick}>
       {children}
     </div>
   )

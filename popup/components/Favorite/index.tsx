@@ -50,10 +50,10 @@ export const Favorite = ({ favorite }: IFavorite) => {
         <p className="text-sm text-greyscale-600 opacity-90">{origin.name}</p>
       </div>
       <div className="flex gap-2 opacity-0 group-hover:opacity-100">
-        <Button state="default" onClick={handleAssignTypefaceToCollections}>
+        <Button intent="primary" onClick={handleAssignTypefaceToCollections}>
           <FolderPlus size={20} color="black" />
         </Button>
-        <Button state="danger" onClick={handleRemoveTypeface}>
+        <Button intent="danger" onClick={handleRemoveTypeface}>
           <X size={16} weight="bold" color="white" />
         </Button>
       </div>
