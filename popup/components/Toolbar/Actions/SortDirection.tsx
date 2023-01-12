@@ -1,10 +1,11 @@
+import { useCallback } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { ArrowDownRight, ArrowUpRight } from "phosphor-react"
 
-import { SortBox } from "./SortBox"
+import { ToolbarAction } from "../ToolbarAction"
 
 import type { ISorting } from "~types/sorting"
-import { useCallback } from "react"
+import { ICON_SIZE } from "."
 
 export const SortDirection = () => {
   const [direction, setDirection] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
@@ -15,8 +16,12 @@ export const SortDirection = () => {
   )
 
   return (
-    <SortBox onClick={toggleDirection}>
-      {direction === "ascending" ? <ArrowUpRight size={20} /> : <ArrowDownRight size={20} />}
-    </SortBox>
+    <ToolbarAction onClick={toggleDirection}>
+      {direction === "ascending" ? (
+        <ArrowUpRight size={ICON_SIZE} />
+      ) : (
+        <ArrowDownRight size={ICON_SIZE} />
+      )}
+    </ToolbarAction>
   )
 }

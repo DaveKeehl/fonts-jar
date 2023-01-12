@@ -1,7 +1,8 @@
 import { useStorage } from "@plasmohq/storage/hook"
-import { X } from "phosphor-react"
+import { FolderPlus, X } from "phosphor-react"
 
 import type { ITypeface, TypefaceTuple } from "types/typeface"
+import { Button } from "./Button"
 
 interface IFavorite {
   favorite: ITypeface
@@ -15,7 +16,11 @@ export const Favorite = ({ favorite }: IFavorite) => {
   // const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
   // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
 
-  const handleClick = () => {
+  const handleAssignTypefaceToCollections = () => {
+    alert("Assign typeface to collections")
+  }
+
+  const handleRemoveTypeface = () => {
     const favoritesMap = new Map(favorites)
     favoritesMap.delete(slug)
     setFavorites(Array.from(favoritesMap))
@@ -44,10 +49,13 @@ export const Favorite = ({ favorite }: IFavorite) => {
         </p> */}
         <p className="text-sm text-greyscale-600 opacity-90">{origin.name}</p>
       </div>
-      <div
-        className="rounded bg-red-500 p-1 opacity-0 transition-colors duration-100 hover:cursor-pointer hover:bg-red-600 active:bg-red-500 group-hover:opacity-100"
-        onClick={handleClick}>
-        <X size={16} weight="bold" color="white" />
+      <div className="flex gap-2 opacity-0 group-hover:opacity-100">
+        <Button state="default" onClick={handleAssignTypefaceToCollections}>
+          <FolderPlus size={20} color="black" />
+        </Button>
+        <Button state="danger" onClick={handleRemoveTypeface}>
+          <X size={16} weight="bold" color="white" />
+        </Button>
       </div>
     </div>
   )
