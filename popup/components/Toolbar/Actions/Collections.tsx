@@ -1,13 +1,16 @@
 import { useCallback, useState } from "react"
 import { Folder, FolderOpen } from "phosphor-react"
+import { useSetAtom } from "jotai"
 
 import { ICON_SIZE } from "."
 import { ToolbarAction } from "../ToolbarAction"
+import { isModalOpenAtom } from "~popup/atoms"
 
 export const Collections = () => {
   const [hover, setHover] = useState(false)
+  const setIsModalOpen = useSetAtom(isModalOpenAtom)
 
-  const handleClick = useCallback(() => alert("Open collections manager"), [])
+  const handleClick = useCallback(() => setIsModalOpen(true), [])
 
   return (
     <ToolbarAction
