@@ -13,7 +13,10 @@
 
   body {
     width: 350px;
+    height: 500px;
     font-family: "Poppins", sans-serif;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
   }
 }
 
@@ -29,4 +32,8 @@
 .search input::-webkit-search-cancel-button:hover {
   opacity: 0.7;
   cursor: pointer;
+}
+
+.body-open {
+  box-shadow: 0px 4px 48px (rgba(0, 0, 0, 0.45));
 }

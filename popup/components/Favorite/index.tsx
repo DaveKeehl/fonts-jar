@@ -3,7 +3,10 @@ import { useSetAtom } from "jotai"
 import { FolderPlus, X } from "phosphor-react"
 
 import type { ITypeface, TypefaceTuple } from "types/typeface"
-import { isModalOpenAtom } from "~popup/atoms"
+import {
+  isCollectionAssignmentOpenAtom,
+  selectedTypefaceAtom
+} from "~popup/atoms"
 import { Button } from "./Button"
 
 interface IFavorite {
@@ -12,14 +15,18 @@ interface IFavorite {
 
 export const Favorite = ({ favorite }: IFavorite) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const setIsModalOpen = useSetAtom(isModalOpenAtom)
+  const setIsModalOpen = useSetAtom(isCollectionAssignmentOpenAtom)
+  const setSelectedTypeface = useSetAtom(selectedTypefaceAtom)
 
   const { origin, family, /** styles, variableAxes **/ slug } = favorite
 
   // const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
   // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
 
-  const openModal = () => setIsModalOpen(true)
+  const openModal = () => {
+    setIsModalOpen(true)
+    setSelectedTypeface(favorite.slug)
+  }
 
   const handleRemoveTypeface = () => {
     const favoritesMap = new Map(favorites)
@@ -37,7 +44,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   }
 
   return (
-    <div className="group flex items-center justify-between border-b border-greyscale-200 px-4 py-3 last:border-none">
+    <div className="group flex items-center justify-between border-b border-greyscale-200 px-4 py-3 ">
       <div>
         <a
           href={origin.url}

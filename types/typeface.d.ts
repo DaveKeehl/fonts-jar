@@ -16,7 +16,8 @@ export interface ITypefaceOrigin {
   url: string
 }
 
-export type Collections = {
+export interface ICollection {
   name: string // the name of the collection
-  typefaces: string[] // array of slugs
-}[]
+  typefaces: string[] // array of slugs,
+  hidden: boolean
+}

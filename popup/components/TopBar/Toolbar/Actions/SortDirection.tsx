@@ -8,7 +8,10 @@ import type { ISorting } from "~types/sorting"
 import { ICON_SIZE } from "."
 
 export const SortDirection = () => {
-  const [direction, setDirection] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
+  const [direction, setDirection] = useStorage<ISorting["direction"]>(
+    "sortDirection",
+    "ascending"
+  )
 
   const toggleDirection = useCallback(
     () => setDirection(direction === "ascending" ? "descending" : "ascending"),

@@ -4,11 +4,11 @@ import { useSetAtom } from "jotai"
 
 import { ICON_SIZE } from "."
 import { ToolbarAction } from "../ToolbarAction"
-import { isModalOpenAtom } from "~popup/atoms"
+import { isCollectionsManagerOpenAtom } from "~popup/atoms"
 
 export const Collections = () => {
   const [hover, setHover] = useState(false)
-  const setIsModalOpen = useSetAtom(isModalOpenAtom)
+  const setIsModalOpen = useSetAtom(isCollectionsManagerOpenAtom)
 
   const handleClick = useCallback(() => setIsModalOpen(true), [])
 

@@ -8,7 +8,10 @@ import type { ISorting } from "~types/sorting"
 import { ICON_SIZE } from "."
 
 export const SortMethod = () => {
-  const [method, setMethod] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
+  const [method, setMethod] = useStorage<ISorting["method"]>(
+    "sortMethod",
+    "alphabetical"
+  )
 
   const toggleMethod = useCallback(
     () => setMethod(method === "alphabetical" ? "time" : "alphabetical"),
@@ -17,7 +20,11 @@ export const SortMethod = () => {
 
   return (
     <ToolbarAction onClick={toggleMethod}>
-      {method === "alphabetical" ? <TextAa size={ICON_SIZE} /> : <Clock size={ICON_SIZE} />}
+      {method === "alphabetical" ? (
+        <TextAa size={ICON_SIZE} />
+      ) : (
+        <Clock size={ICON_SIZE} />
+      )}
     </ToolbarAction>
   )
 }
