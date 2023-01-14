@@ -47,7 +47,13 @@ export const CollectionAssignment = () => {
     <Modal
       isModalOpen={modalOpen === "collection-assignment"}
       contentLabel="Collection Assignment Modal">
-      <div className="flex max-w-[300px] flex-col gap-3 py-[18px] px-4">
+      <div className="flex max-w-[300px] flex-col gap-4 py-[18px] px-4">
+        <div>
+          <h2 className="mb-2 text-xl font-semibold">Assign to collection</h2>
+          <p className="text-sm">
+            🏷️ Choose the collections <i>{selectedTypeface}</i> belongs to.
+          </p>
+        </div>
         <Search
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -55,13 +61,13 @@ export const CollectionAssignment = () => {
           iconClassName="left-3"
         />
         {filteredCollections.length === 0 ? (
-          <p className="text-base">No collections.</p>
+          <p className="text-base">No results.</p>
         ) : (
           <div className="flex w-full flex-col justify-start gap-1">
-            {collections.map(({ name, typefaces }, idx) => (
+            {collections.map(({ name, typefaces }) => (
               <label
                 key={crypto.randomUUID()}
-                className="flex items-center gap-2 text-base">
+                className="flex items-center gap-2 text-base hover:cursor-pointer">
                 <input
                   type="checkbox"
                   id={name}
