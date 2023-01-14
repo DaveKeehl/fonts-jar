@@ -136,7 +136,7 @@ export const CollectionsManager = () => {
                       value={name}
                       onChange={(e) => handleUpdateName(e, name)}
                     />
-                    <p className="-mt-[1px] text-greyscale-600">
+                    <p className="-mt-[1px] truncate text-greyscale-600">
                       {typefaces.length === 0
                         ? "No fonts added"
                         : typefaces
