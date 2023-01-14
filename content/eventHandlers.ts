@@ -1,4 +1,4 @@
-import type { ITypeface, TypefaceTuple } from "types/typeface"
+import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
 import { storage } from "./storage"
 import { toggleButtonState } from "./DOM"
 
@@ -12,12 +12,22 @@ export const handleButtonClick = async (
   typeface: ITypeface
 ) => {
   const favorites = new Map((await storage.get("favorites")) as TypefaceTuple[])
+  let collections = (await storage.get("collections")) as ICollection[]
   const fontInFavorites = favorites.has(typeface.slug)
 
   buttons.forEach((button) => {
-    toggleButtonState(button, !fontInFavorites, () => {
+    toggleButtonState(button, !fontInFavorites, async () => {
       if (fontInFavorites) {
         favorites.delete(typeface.slug)
+        collections = collections.map((collection) => {
+          if (!collection.typefaces.includes(typeface.slug)) return collection
+          return {
+            ...collection,
+            typefaces: collection.typefaces.filter(
+              (slug) => slug !== typeface.slug
+            )
+          }
+        })
         return
       }
 
@@ -28,4 +38,5 @@ export const handleButtonClick = async (
   })
 
   storage.set("favorites", Array.from(favorites))
+  storage.set("collections", collections)
 }
