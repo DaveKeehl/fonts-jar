@@ -19,11 +19,11 @@ export const Favorites = () => {
 
   const results = [...favorites]
     .filter((favorite) => {
-      const collection = collections.find((collection) =>
+      const results = collections.filter((collection) =>
         collection.typefaces.includes(favorite[1].slug)
       )
-      if (collection) return !collection.hidden
-      return true
+      if (results.length === 0) return true
+      return results.some((collection) => !collection.hidden)
     })
     .filter((favorite) => {
       const cleanQuery = searchQuery.trim().toLowerCase()
