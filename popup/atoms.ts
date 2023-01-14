@@ -1,7 +1,6 @@
 import { atom } from "jotai"
 
-// MODALS
-export const isCollectionsManagerOpenAtom = atom(false)
-export const isCollectionAssignmentOpenAtom = atom(false)
+type Modal = "collections-manager" | "collection-assignment"
+export const modalOpenAtom = atom<"" | Modal>("")
 
 export const selectedTypefaceAtom = atom("")

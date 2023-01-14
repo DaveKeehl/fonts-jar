@@ -1,19 +1,18 @@
 import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
-import { useAtom } from "jotai"
+import { useAtomValue } from "jotai"
 import { Eye, EyeClosed, Trash } from "phosphor-react"
 
-import { isCollectionsManagerOpenAtom } from "~popup/atoms"
-import type { ICollection } from "~types/typeface"
 import { Search } from "../Search"
 import { Modal } from "./Modal"
 
-export const CollectionsManagerModal = () => {
+import { modalOpenAtom } from "~popup/atoms"
+import type { ICollection } from "~types/typeface"
+
+export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [newCollection, setNewCollection] = useState("")
-  const [isCollectionsManagerOpen, setIsCollectionsManagerOpen] = useAtom(
-    isCollectionsManagerOpenAtom
-  )
+  const modalOpen = useAtomValue(modalOpenAtom)
   const [collections, setCollections] = useStorage<ICollection[]>(
     "collections",
     []
@@ -95,12 +94,9 @@ export const CollectionsManagerModal = () => {
     e.currentTarget.blur()
   }
 
-  const closeModal = () => setIsCollectionsManagerOpen(false)
-
   return (
     <Modal
-      isModalOpen={isCollectionsManagerOpen}
-      closeModal={closeModal}
+      isModalOpen={modalOpen === "collections-manager"}
       contentLabel="Collections Manager Modal">
       <div className="flex flex-col gap-4 px-5 py-6">
         <div>

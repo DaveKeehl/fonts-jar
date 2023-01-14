@@ -2,12 +2,10 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { useSetAtom } from "jotai"
 import { FolderPlus, X } from "phosphor-react"
 
-import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
-import {
-  isCollectionAssignmentOpenAtom,
-  selectedTypefaceAtom
-} from "~popup/atoms"
 import { Button } from "./Button"
+
+import { modalOpenAtom, selectedTypefaceAtom } from "~popup/atoms"
+import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
 
 interface IFavorite {
   favorite: ITypeface
@@ -15,7 +13,7 @@ interface IFavorite {
 
 export const Favorite = ({ favorite }: IFavorite) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const setIsModalOpen = useSetAtom(isCollectionAssignmentOpenAtom)
+  const setIsModalOpen = useSetAtom(modalOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceAtom)
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
 
@@ -25,7 +23,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
 
   const openModal = () => {
-    setIsModalOpen(true)
+    setIsModalOpen("collection-assignment")
     setSelectedTypeface(favorite.slug)
   }
 

@@ -1,19 +1,16 @@
-import { useStorage } from "@plasmohq/storage/hook"
-import { useAtom, useAtomValue } from "jotai"
 import { useState } from "react"
-import {
-  isCollectionAssignmentOpenAtom,
-  selectedTypefaceAtom
-} from "~popup/atoms"
-import type { ICollection } from "~types/typeface"
+import { useStorage } from "@plasmohq/storage/hook"
+import { useAtomValue } from "jotai"
+
+import { modalOpenAtom, selectedTypefaceAtom } from "~popup/atoms"
 import { Search } from "../Search"
 import { Modal } from "./Modal"
 
-export const CollectionAssignmentModal = () => {
+import type { ICollection } from "~types/typeface"
+
+export const CollectionAssignment = () => {
   const [searchQuery, setSearchQuery] = useState("")
-  const [isCollectionAssignmentOpen, setIsCollectionAssignmentOpen] = useAtom(
-    isCollectionAssignmentOpenAtom
-  )
+  const modalOpen = useAtomValue(modalOpenAtom)
   const selectedTypeface = useAtomValue(selectedTypefaceAtom)
   const [collections, setCollections] = useStorage<ICollection[]>(
     "collections",
@@ -48,8 +45,7 @@ export const CollectionAssignmentModal = () => {
 
   return (
     <Modal
-      isModalOpen={isCollectionAssignmentOpen}
-      closeModal={() => setIsCollectionAssignmentOpen(false)}
+      isModalOpen={modalOpen === "collection-assignment"}
       contentLabel="Collection Assignment Modal">
       <div className="flex max-w-[300px] flex-col gap-3 py-[18px] px-4">
         <Search

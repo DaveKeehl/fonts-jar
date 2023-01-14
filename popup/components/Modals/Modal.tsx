@@ -1,20 +1,20 @@
+import { useSetAtom } from "jotai"
 import ReactModal from "react-modal"
+
+import { modalOpenAtom } from "~popup/atoms"
 
 ReactModal.setAppElement("#root")
 
 interface IModal {
   isModalOpen: boolean
-  closeModal: () => void
   contentLabel: string
   children: React.ReactNode
 }
 
-export const Modal = ({
-  children,
-  isModalOpen,
-  closeModal,
-  contentLabel
-}: IModal) => {
+export const Modal = ({ children, isModalOpen, contentLabel }: IModal) => {
+  const setModalOpen = useSetAtom(modalOpenAtom)
+  const closeModal = () => setModalOpen("")
+
   return (
     <ReactModal
       isOpen={isModalOpen}
