@@ -2,6 +2,7 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 import { Eye, EyeClosed, Trash } from "phosphor-react"
+import capitalize from "lodash/capitalize"
 
 import { Search } from "../Search"
 import { Modal } from "./Modal"
@@ -113,44 +114,61 @@ export const CollectionsManager = () => {
         />
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-[3px]">
-            {filteredCollections.map(({ name, hidden }, idx) => (
-              <div
-                key={idx}
-                className="flex items-center justify-between gap-4 border-b-[1px] border-greyscale-200 py-[6px] last:border-0">
-                <input
-                  type="text"
-                  className="text-base font-normal leading-[24px] focus-visible:outline-0"
-                  value={name}
-                  onChange={(e) => handleUpdateName(e, name)}
-                />
-                <div className="flex gap-3">
-                  <div onClick={() => toggleVisibility(name)}>
-                    {hidden ? (
-                      <EyeClosed
-                        size={20}
-                        weight="bold"
-                        color="black"
-                        className="opacity-40 hover:cursor-pointer"
-                      />
-                    ) : (
-                      <Eye
-                        size={20}
-                        weight="bold"
-                        color="black"
-                        className="hover:cursor-pointer"
-                      />
-                    )}
+            {filteredCollections.length === 0 ? (
+              <p className="text-base">No results.</p>
+            ) : (
+              filteredCollections.map(({ name, typefaces, hidden }, idx) => (
+                <div
+                  key={idx}
+                  className="flex items-center justify-between gap-4 border-b-[1px] border-greyscale-200 py-[6px] last:border-0">
+                  <div>
+                    <input
+                      type="text"
+                      className="text-base font-normal leading-[24px] focus-visible:outline-0"
+                      value={name}
+                      onChange={(e) => handleUpdateName(e, name)}
+                    />
+                    <p className="-mt-[1px] text-greyscale-600">
+                      {typefaces.length === 0
+                        ? "No fonts added"
+                        : typefaces
+                            .map((typeface) =>
+                              typeface
+                                .split(" ")
+                                .map((word) => capitalize(word))
+                            )
+                            .join(", ")}
+                    </p>
                   </div>
-                  <Trash
-                    size={20}
-                    weight="bold"
-                    color="red"
-                    className="hover:cursor-pointer"
-                    onClick={() => handleDelete(name)}
-                  />
+                  <div className="flex gap-3">
+                    <div onClick={() => toggleVisibility(name)}>
+                      {hidden ? (
+                        <EyeClosed
+                          size={20}
+                          weight="bold"
+                          color="black"
+                          className="opacity-40 hover:cursor-pointer"
+                        />
+                      ) : (
+                        <Eye
+                          size={20}
+                          weight="bold"
+                          color="black"
+                          className="hover:cursor-pointer"
+                        />
+                      )}
+                    </div>
+                    <Trash
+                      size={20}
+                      weight="bold"
+                      color="red"
+                      className="hover:cursor-pointer"
+                      onClick={() => handleDelete(name)}
+                    />
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))
+            )}
           </div>
           <form className="flex w-full gap-2" onSubmit={handleSubmit}>
             <input
