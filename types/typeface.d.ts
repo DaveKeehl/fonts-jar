@@ -1,18 +1,23 @@
-import { SupportedWebsite } from '../types';
+import { SupportedWebsite } from "./website"
 
-export interface Typeface {
-	family: string;
-	slug: string;
-	styles: string[];
-	variableAxes: number;
-	origin: TypefaceOrigin;
-	added_at: string;
-	collections: string[];
+export interface ITypeface {
+  family: string
+  slug: string
+  styles: string[]
+  variableAxes: number
+  origin: ITypefaceOrigin
+  added_at: string
 }
 
-export type TypefaceTuple = [string, Typeface]; // [<typeface_name>, <typeface_data>]
+export type TypefaceTuple = [string, ITypeface] // [<typeface_name>, <typeface_data>]
 
-export interface TypefaceOrigin {
-	name: SupportedWebsite;
-	url: string;
+export interface ITypefaceOrigin {
+  name: SupportedWebsite
+  url: string
+}
+
+export interface ICollection {
+  name: string // the name of the collection
+  typefaces: string[] // array of slugs,
+  hidden: boolean
 }
