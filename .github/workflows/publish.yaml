@@ -1,9 +1,14 @@
-name: CI
+name: Publish
 
-on: [push]
+on:
+  push:
+    branches:
+      - "main"
+
+concurrency: ${{ github.workflow }}-${{ github.ref }}
 
 jobs:
-  CI:
+  CD:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout code
@@ -20,15 +25,11 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint
-        run: npm run lint
-
       - name: Build and zip extension artifact
         run: npm run build -- --zip
 
-      - name: Upload build artifact
-        uses: actions/upload-artifact@master
-        with:
-          name: fonts-jar
-          path: ./build/chrome-mv3-prod.zip
-          retention-days: 1
+      # - name: Browser Platform Publish
+      #   uses: PlasmoHQ/bpp@v3
+      #   with:
+      #     keys: ${{ secrets.SUBMIT_KEYS }}
+      #     artifact: build/chrome-mv3-prod.zip
