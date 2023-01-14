@@ -55,7 +55,7 @@ export const Favorites = () => {
   }
 
   return (
-    <div id="favorites">
+    <div id="favorites" className="h-[400px] overflow-auto">
       {results.map((favorite) => (
         <Favorite key={crypto.randomUUID()} favorite={favorite[1]} />
       ))}

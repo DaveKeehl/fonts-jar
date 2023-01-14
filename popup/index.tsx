@@ -7,13 +7,13 @@ import "../style.css"
 
 function IndexPopup() {
   return (
-    <>
+    <div className="overflow-hidden">
       <Header />
       <TopBar />
       <Favorites />
       <CollectionsManager />
       <CollectionAssignment />
-    </>
+    </div>
   )
 }
 
