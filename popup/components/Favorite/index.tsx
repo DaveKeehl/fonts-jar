@@ -2,7 +2,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { useSetAtom } from "jotai"
 import { FolderPlus, X } from "phosphor-react"
 
-import type { ITypeface, TypefaceTuple } from "types/typeface"
+import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
 import {
   isCollectionAssignmentOpenAtom,
   selectedTypefaceAtom
@@ -17,6 +17,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const setIsModalOpen = useSetAtom(isCollectionAssignmentOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceAtom)
+  const [, setCollections] = useStorage<ICollection[]>("collections", [])
 
   const { origin, family, /** styles, variableAxes **/ slug } = favorite
 
@@ -32,6 +33,17 @@ export const Favorite = ({ favorite }: IFavorite) => {
     const favoritesMap = new Map(favorites)
     favoritesMap.delete(slug)
     setFavorites(Array.from(favoritesMap))
+    setCollections((prev) =>
+      prev.map((collection) => {
+        if (!collection.typefaces.includes(favorite.slug)) return collection
+        return {
+          ...collection,
+          typefaces: collection.typefaces.filter(
+            (font) => font !== favorite.slug
+          )
+        }
+      })
+    )
 
     // Send message to the content_script that a font has been removed from wishlist.
     // The content_script uses this message to change the state of the add/remove wishlist button.

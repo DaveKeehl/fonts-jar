@@ -59,12 +59,27 @@ export const CollectionsManagerModal = () => {
         if (collection.name !== name) return collection
         return {
           ...collection,
-          name: e.target.value.trim()
+          name: e.target.value
         }
       })
     )
-    e.currentTarget.focus()
+    // e.currentTarget.focus()
   }
+
+  // const handleUpdateNameAfterLostFocus = (
+  //   e: React.ChangeEvent<HTMLInputElement>,
+  //   name: string
+  // ) => {
+  //   setCollections((prev) =>
+  //     prev.map((collection) => {
+  //       if (collection.name !== name) return collection
+  //       return {
+  //         ...collection,
+  //         name: name.trim()
+  //       }
+  //     })
+  //   )
+  // }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -87,7 +102,7 @@ export const CollectionsManagerModal = () => {
       isModalOpen={isCollectionsManagerOpen}
       closeModal={closeModal}
       contentLabel="Collections Manager Modal">
-      <div className="flex flex-col gap-4">
+      <div className="flex flex-col gap-4 px-5 py-6">
         <div>
           <h2 className="mb-2 text-xl font-semibold">Collections</h2>
           <p className="text-sm">
@@ -102,13 +117,13 @@ export const CollectionsManagerModal = () => {
         />
         <div className="flex flex-col gap-4">
           <div className="flex flex-col gap-[3px]">
-            {filteredCollections.map(({ name, hidden }) => (
+            {filteredCollections.map(({ name, hidden }, idx) => (
               <div
-                key={name}
+                key={idx}
                 className="flex items-center justify-between gap-4 border-b-[1px] border-greyscale-200 py-[6px] last:border-0">
                 <input
                   type="text"
-                  className="text-base font-normal leading-[24px]"
+                  className="text-base font-normal leading-[24px] focus-visible:outline-0"
                   value={name}
                   onChange={(e) => handleUpdateName(e, name)}
                 />

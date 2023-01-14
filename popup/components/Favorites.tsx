@@ -5,7 +5,7 @@ import { NothingToShow } from "./NothingToShow"
 
 import { getSortFunction } from "../utils"
 import type { ISorting } from "types/sorting"
-import type { TypefaceTuple } from "types/typeface"
+import type { ICollection, TypefaceTuple } from "types/typeface"
 
 export const Favorites = () => {
   const [searchQuery] = useStorage("searchQuery", "")
@@ -15,9 +15,16 @@ export const Favorites = () => {
     "sortDirection",
     "ascending"
   )
+  const [collections] = useStorage<ICollection[]>("collections", [])
 
   const results = [...favorites]
-    .sort(getSortFunction({ method, direction }))
+    .filter((favorite) => {
+      const collection = collections.find((collection) =>
+        collection.typefaces.includes(favorite[1].slug)
+      )
+      if (collection) return !collection.hidden
+      return true
+    })
     .filter((favorite) => {
       const cleanQuery = searchQuery.trim().toLowerCase()
       const { family, origin } = favorite[1]
@@ -37,13 +44,14 @@ export const Favorites = () => {
         queryContainsOrigin
       )
     })
+    .sort(getSortFunction({ method, direction }))
 
   if (favorites.length === 0) {
     return <NothingToShow>No fonts added</NothingToShow>
   }
 
   if (results.length === 0) {
-    return <NothingToShow>No results</NothingToShow>
+    return <NothingToShow>No fonts visible</NothingToShow>
   }
 
   return (
