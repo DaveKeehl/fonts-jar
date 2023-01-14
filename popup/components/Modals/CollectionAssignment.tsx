@@ -13,14 +13,9 @@ export const CollectionAssignment = () => {
   const modalOpen = useAtomValue(modalOpenAtom)
   const selectedTypefaceSlug = useAtomValue(selectedTypefaceSlugAtom)
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [collections, setCollections] = useStorage<ICollection[]>(
-    "collections",
-    []
-  )
+  const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
 
-  const selectedTypeface = favorites.find(
-    (favorite) => favorite[0] === selectedTypefaceSlug
-  )
+  const selectedTypeface = favorites.find((favorite) => favorite[0] === selectedTypefaceSlug)
 
   const filteredCollections = [...collections].filter(({ name }) => {
     const cleanQuery = searchQuery.trim().toLowerCase()
@@ -42,9 +37,7 @@ export const CollectionAssignment = () => {
           ...collection,
           typefaces: e.target.checked
             ? [...collection.typefaces, selectedTypefaceSlug]
-            : collection.typefaces.filter(
-                (font) => font !== selectedTypefaceSlug
-              )
+            : collection.typefaces.filter((font) => font !== selectedTypefaceSlug)
         }
       })
     )
@@ -59,8 +52,7 @@ export const CollectionAssignment = () => {
           <h2 className="mb-2 text-xl font-semibold">Assign to collection</h2>
           {selectedTypeface && (
             <p className="text-sm">
-              🏷️ Choose the collections <i>{selectedTypeface[1].family}</i>{" "}
-              belongs to.
+              🏷️ Choose the collections <i>{selectedTypeface[1].family}</i> belongs to.
             </p>
           )}
         </div>
