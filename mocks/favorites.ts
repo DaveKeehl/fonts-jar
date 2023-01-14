@@ -5,7 +5,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "poppins",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",
@@ -39,7 +38,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "robotoSerif",
     {
       added_at: "Fri Feb 18 2022 14:18:39 GMT+0100 (Central European Standard Time)",
-      collections: ["body", "serif"],
       family: "Roboto Serif",
       origin: {
         name: "Google Fonts",
@@ -73,7 +71,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "openSans",
     {
       added_at: "Sat Feb 19 2022 11:30:01 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Open Sans",
       origin: {
         name: "Google Fonts",
@@ -101,7 +98,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "montserrat",
     {
       added_at: "Sat Feb 19 2022 11:30:39 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Montserrat",
       origin: {
         name: "Google Fonts",
@@ -135,7 +131,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "raleway",
     {
       added_at: "Sat Feb 19 2022 11:32:07 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Raleway",
       origin: {
         name: "Google Fonts",
@@ -169,7 +164,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "oswald",
     {
       added_at: "Sat Feb 19 2022 11:32:09 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Oswald",
       origin: {
         name: "Google Fonts",
@@ -191,7 +185,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "inter",
     {
       added_at: "Sat Feb 19 2022 11:32:12 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Inter",
       origin: {
         name: "Google Fonts",
@@ -216,7 +209,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "playfairDisplay",
     {
       added_at: "Sat Feb 19 2022 11:32:15 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Playfair Display",
       origin: {
         name: "Google Fonts",
@@ -244,7 +236,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "workSans",
     {
       added_at: "Sat Feb 19 2022 11:32:18 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Work Sans",
       origin: {
         name: "Google Fonts",
@@ -278,7 +269,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "barlow",
     {
       added_at: "Sat Feb 19 2022 11:32:21 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Barlow",
       origin: {
         name: "Google Fonts",
@@ -312,7 +302,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "karla",
     {
       added_at: "Sat Feb 19 2022 11:32:23 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Karla",
       origin: {
         name: "Google Fonts",
@@ -342,7 +331,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "bebasNeue",
     {
       added_at: "Sat Feb 19 2022 11:32:25 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Bebas Neue",
       origin: {
         name: "Google Fonts",
@@ -357,7 +345,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "notoSerifDisplay",
     {
       added_at: "Sat Feb 19 2022 11:32:28 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Noto Serif Display",
       origin: {
         name: "Google Fonts",
@@ -391,7 +378,6 @@ export const validTypefaces: TypefaceTuple[] = [
     "overpass",
     {
       added_at: "Sat Feb 19 2022 11:32:31 GMT+0100 (Central European Standard Time)",
-      collections: [],
       family: "Overpass",
       origin: {
         name: "Google Fonts",
@@ -539,7 +525,6 @@ export const invalidOrigin: TypefaceTuple[] = [
     "openSans",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",
@@ -576,7 +561,6 @@ export const notMatchingSlugs: TypefaceTuple[] = [
     "openSans",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",
@@ -650,7 +634,6 @@ export const invalidStyles: TypefaceTuple[] = [
     "poppins",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",
@@ -668,7 +651,6 @@ export const invalidVariableAxes: TypefaceTuple[] = [
     "poppins",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",

@@ -3,5 +3,5 @@ interface INothingToShow {
 }
 
 export const NothingToShow = ({ children }: INothingToShow) => {
-  return <p className="p-6 font-poppins text-base">{children}</p>
+  return <p className="px-4 py-6 font-poppins text-base">{children}</p>
 }
