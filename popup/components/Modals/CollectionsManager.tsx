@@ -139,7 +139,7 @@ export const CollectionsManager = () => {
                       onBlur={() => handleUpdateNameAfterLostFocus(name)}
                       ref={inputRef}
                     />
-                    <p className="-mt-[1px] truncate text-greyscale-600">
+                    <p className="truncate-custom leading-4 text-greyscale-600">
                       {typefaces.length === 0
                         ? "No fonts added"
                         : typefaces

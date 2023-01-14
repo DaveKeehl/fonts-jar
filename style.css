@@ -20,6 +20,15 @@
   }
 }
 
+@layer utilities {
+  .truncate-custom {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+}
+
 .search input::-webkit-search-cancel-button {
   -webkit-appearance: none;
   height: 1rem;
