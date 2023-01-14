@@ -1,4 +1,4 @@
-import { useState } from "react"
+import { useEffect, useRef, useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 import { Eye, EyeClosed, Trash } from "phosphor-react"
@@ -12,12 +12,20 @@ import type { ICollection, TypefaceTuple } from "~types/typeface"
 export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [newCollection, setNewCollection] = useState("")
+  const [cursor, setCursor] = useState(null)
   const modalOpen = useAtomValue(modalOpenAtom)
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>(
     "collections",
     []
   )
+
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  useEffect(() => {
+    const input = inputRef.current
+    if (input) input.setSelectionRange(cursor, cursor)
+  }, [inputRef, cursor, collections])
 
   const filteredCollections = [...collections].filter(({ name, typefaces }) => {
     const cleanQuery = searchQuery.trim().toLowerCase()
@@ -58,36 +66,29 @@ export const CollectionsManager = () => {
     )
   }
 
+  const updateCollectionName = (oldName: string, newName: string) => {
+    setCollections((prev) =>
+      prev.map((collection) => {
+        if (collection.name !== oldName) return collection
+        return {
+          ...collection,
+          name: newName
+        }
+      })
+    )
+  }
+
   const handleUpdateName = (
     e: React.ChangeEvent<HTMLInputElement>,
     name: string
   ) => {
-    setCollections((prev) =>
-      prev.map((collection) => {
-        if (collection.name !== name) return collection
-        return {
-          ...collection,
-          name: e.target.value
-        }
-      })
-    )
-    // e.currentTarget.focus()
+    setCursor(e.target.selectionStart)
+    updateCollectionName(name, e.target.value)
   }
 
-  // const handleUpdateNameAfterLostFocus = (
-  //   e: React.ChangeEvent<HTMLInputElement>,
-  //   name: string
-  // ) => {
-  //   setCollections((prev) =>
-  //     prev.map((collection) => {
-  //       if (collection.name !== name) return collection
-  //       return {
-  //         ...collection,
-  //         name: name.trim()
-  //       }
-  //     })
-  //   )
-  // }
+  const handleUpdateNameAfterLostFocus = (name: string) => {
+    updateCollectionName(name, name.trim())
+  }
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -135,6 +136,8 @@ export const CollectionsManager = () => {
                       className="text-base font-normal leading-[24px] focus-visible:outline-0"
                       value={name}
                       onChange={(e) => handleUpdateName(e, name)}
+                      onBlur={() => handleUpdateNameAfterLostFocus(name)}
+                      ref={inputRef}
                     />
                     <p className="-mt-[1px] truncate text-greyscale-600">
                       {typefaces.length === 0
