@@ -19,14 +19,22 @@ export const CollectionsManager = () => {
     []
   )
 
-  const filteredCollections = [...collections].filter(({ name }) => {
+  const filteredCollections = [...collections].filter(({ name, typefaces }) => {
     const cleanQuery = searchQuery.trim().toLowerCase()
     const nameNormalized = name.toLowerCase()
 
     const nameContainsQuery = nameNormalized.includes(cleanQuery)
     const queryContainsName = cleanQuery.includes(nameNormalized)
+    const typefacesContainQuery = typefaces.some((typeface) => {
+      const queryTerms = cleanQuery.split(" ")
+      return queryTerms.some((term) => {
+        const cleanTypeface = typeface.trim().toLowerCase()
+        const cleanTerm = term.trim().toLowerCase()
+        return cleanTypeface.includes(cleanTerm)
+      })
+    })
 
-    return nameContainsQuery || queryContainsName
+    return nameContainsQuery || queryContainsName || typefacesContainQuery
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -109,7 +117,7 @@ export const CollectionsManager = () => {
         <Search
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          inputClassName="rounded-lg bg-greyscale-200/60 py-2 pr-3 pl-10"
+          inputClassName="rounded-lg bg-greyscale-200/60 py-2 pr-3 pl-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-greyscale-200"
           iconClassName="left-3"
         />
         <div className="flex flex-col gap-4">

@@ -57,7 +57,7 @@ export const CollectionAssignment = () => {
         <Search
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
-          inputClassName="rounded-lg bg-greyscale-200/60 py-2 pr-3 pl-10"
+          inputClassName="rounded-lg bg-greyscale-200/60 py-2 pr-3 pl-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-greyscale-200"
           iconClassName="left-3"
         />
         {filteredCollections.length === 0 ? (
