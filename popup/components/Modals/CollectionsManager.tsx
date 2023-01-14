@@ -2,18 +2,18 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 import { Eye, EyeClosed, Trash } from "phosphor-react"
-import capitalize from "lodash/capitalize"
 
 import { Search } from "../Search"
 import { Modal } from "./Modal"
 
 import { modalOpenAtom } from "~popup/atoms"
-import type { ICollection } from "~types/typeface"
+import type { ICollection, TypefaceTuple } from "~types/typeface"
 
 export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const [newCollection, setNewCollection] = useState("")
   const modalOpen = useAtomValue(modalOpenAtom)
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>(
     "collections",
     []
@@ -140,11 +140,14 @@ export const CollectionsManager = () => {
                       {typefaces.length === 0
                         ? "No fonts added"
                         : typefaces
-                            .map((typeface) =>
-                              typeface
-                                .split(" ")
-                                .map((word) => capitalize(word))
-                            )
+                            .map((slug) => {
+                              const typeface = favorites.find(
+                                (favorite) => favorite[0] === slug
+                              )
+
+                              if (typeface) return typeface[1].family
+                              return slug
+                            })
                             .join(", ")}
                     </p>
                   </div>

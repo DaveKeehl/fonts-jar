@@ -3,4 +3,4 @@ import { atom } from "jotai"
 type Modal = "collections-manager" | "collection-assignment"
 export const modalOpenAtom = atom<"" | Modal>("")
 
-export const selectedTypefaceAtom = atom("")
+export const selectedTypefaceSlugAtom = atom("")

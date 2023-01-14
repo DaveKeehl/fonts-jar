@@ -4,7 +4,7 @@ import { FolderPlus, X } from "phosphor-react"
 
 import { Button } from "./Button"
 
-import { modalOpenAtom, selectedTypefaceAtom } from "~popup/atoms"
+import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
 import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
 
 interface IFavorite {
@@ -14,7 +14,7 @@ interface IFavorite {
 export const Favorite = ({ favorite }: IFavorite) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const setIsModalOpen = useSetAtom(modalOpenAtom)
-  const setSelectedTypeface = useSetAtom(selectedTypefaceAtom)
+  const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom)
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
 
   const { origin, family, /** styles, variableAxes **/ slug } = favorite

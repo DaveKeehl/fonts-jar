@@ -2,19 +2,24 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 
-import { modalOpenAtom, selectedTypefaceAtom } from "~popup/atoms"
+import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
 import { Search } from "../Search"
 import { Modal } from "./Modal"
 
-import type { ICollection } from "~types/typeface"
+import type { ICollection, TypefaceTuple } from "~types/typeface"
 
 export const CollectionAssignment = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const modalOpen = useAtomValue(modalOpenAtom)
-  const selectedTypeface = useAtomValue(selectedTypefaceAtom)
+  const selectedTypefaceSlug = useAtomValue(selectedTypefaceSlugAtom)
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>(
     "collections",
     []
+  )
+
+  const selectedTypeface = favorites.find(
+    (favorite) => favorite[0] === selectedTypefaceSlug
   )
 
   const filteredCollections = [...collections].filter(({ name }) => {
@@ -36,8 +41,10 @@ export const CollectionAssignment = () => {
         return {
           ...collection,
           typefaces: e.target.checked
-            ? [...collection.typefaces, selectedTypeface]
-            : collection.typefaces.filter((font) => font !== selectedTypeface)
+            ? [...collection.typefaces, selectedTypefaceSlug]
+            : collection.typefaces.filter(
+                (font) => font !== selectedTypefaceSlug
+              )
         }
       })
     )
@@ -50,9 +57,12 @@ export const CollectionAssignment = () => {
       <div className="flex max-w-[300px] flex-col gap-4 py-[18px] px-4">
         <div>
           <h2 className="mb-2 text-xl font-semibold">Assign to collection</h2>
-          <p className="text-sm">
-            🏷️ Choose the collections <i>{selectedTypeface}</i> belongs to.
-          </p>
+          {selectedTypeface && (
+            <p className="text-sm">
+              🏷️ Choose the collections <i>{selectedTypeface[1].family}</i>{" "}
+              belongs to.
+            </p>
+          )}
         </div>
         <Search
           value={searchQuery}
@@ -72,7 +82,7 @@ export const CollectionAssignment = () => {
                   type="checkbox"
                   id={name}
                   name={name}
-                  checked={typefaces.includes(selectedTypeface)}
+                  checked={typefaces.includes(selectedTypefaceSlug)}
                   onChange={handleChange}
                 />
                 {name}
