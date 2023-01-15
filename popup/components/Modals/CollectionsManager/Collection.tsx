@@ -52,7 +52,7 @@ export const Collection = ({
       <div>
         <input
           type="text"
-          className="text-base font-normal leading-[24px] focus-visible:outline-0"
+          className="w-full text-base font-normal leading-[24px] focus-visible:outline-0"
           value={value}
           onChange={(e) => onChange(e, name)}
           onBlur={() => onBlur(name)}
