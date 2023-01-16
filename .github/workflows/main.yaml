@@ -27,6 +27,7 @@ jobs:
         uses: PlasmoHQ/soft-secret@v1
         with:
           secret: ${{ secrets.CRX_PUBLIC_KEY }}
+          content: CRX_PUBLIC_KEY
           target: ".env"
 
       - name: Build and zip extension artifact
