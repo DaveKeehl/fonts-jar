@@ -33,7 +33,7 @@ jobs:
         run: npm run build -- --zip
 
       - name: List files
-        run: ls -l
+        run: ls -la
 
       - name: Upload build artifact
         uses: actions/upload-artifact@master
