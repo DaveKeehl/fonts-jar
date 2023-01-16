@@ -53,7 +53,8 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
-    ]
+    ],
+    "key": "$CRX_PUBLIC_KEY"
   },
   "lint-staged": {
     "**/*": "prettier --write --ignore-unknown"
