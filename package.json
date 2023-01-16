@@ -16,6 +16,7 @@
   "scripts": {
     "dev": "plasmo dev",
     "build": "plasmo build",
+    "build-zip": "plasmo build -- --zip",
     "package": "plasmo package",
     "lint": "npx tsc"
   },
