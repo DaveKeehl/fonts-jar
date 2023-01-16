@@ -23,22 +23,18 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Create .env with public keys
+      - name: Create .env with Plasmo public keys
         uses: PlasmoHQ/soft-secret@v1
         with:
-          secret: CRX_PUBLIC_KEY=${{ secrets.CRX_PUBLIC_KEY }}
-          target: ".env"
+          secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
+          target: .env
 
       - name: Build and zip extension artifact
         run: npm run build -- --zip
 
-      - name: List files
-        run: ls -la
-
       - name: Upload .env file
         uses: actions/upload-artifact@master
         with:
-          name: .env
           path: .env
           retention-days: 1
 
