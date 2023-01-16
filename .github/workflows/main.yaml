@@ -35,6 +35,9 @@ jobs:
       - name: List files
         run: ls -la
 
+      - name: Read .env content
+        run: cat .env
+
       - name: Upload build artifact
         uses: actions/upload-artifact@master
         with:
