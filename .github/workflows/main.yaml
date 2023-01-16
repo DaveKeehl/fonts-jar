@@ -38,9 +38,3 @@ jobs:
           name: fonts-jar
           path: ./build/chrome-mv3-prod.zip
           retention-days: 1
-
-      - name: Get version
-        id: get-version
-        uses: martinbeentjes/npm-get-version-action@master
-
-      - run: echo ${{ steps.get-version.outputs.current-version }}
