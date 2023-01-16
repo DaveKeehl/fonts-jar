@@ -35,8 +35,12 @@ jobs:
       - name: List files
         run: ls -la
 
-      - name: Read .env content
-        run: cat .env
+      - name: Upload .env file
+        uses: actions/upload-artifact@master
+        with:
+          name: .env
+          path: .env
+          retention-days: 1
 
       - name: Upload build artifact
         uses: actions/upload-artifact@master
