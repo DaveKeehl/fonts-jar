@@ -1,12 +1,16 @@
 import { useCallback } from "react"
 import { Globe } from "phosphor-react"
+import { useSetAtom } from "jotai"
 
 import { ToolbarAction } from "../ToolbarAction"
 
 import { ICON_SIZE } from "."
+import { modalOpenAtom } from "~popup/atoms"
 
 export const OriginWebsites = () => {
-  const handleClick = useCallback(() => alert("origin websites"), [])
+  const setModalOpen = useSetAtom(modalOpenAtom)
+
+  const handleClick = useCallback(() => setModalOpen("origin-websites"), [])
 
   return (
     <ToolbarAction onClick={handleClick}>
