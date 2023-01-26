@@ -21,11 +21,8 @@ export const CollectionsManager = () => {
   })
   const [newCollection, setNewCollection] = useState("")
   const modalOpen = useAtomValue(modalOpenAtom)
-  const [favorites] = useStorage<TypefaceTuple[]>({ key: "favorites", area: "sync" }, [])
-  const [collections, setCollections] = useStorage<ICollection[]>(
-    { key: "collections", area: "sync" },
-    []
-  )
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
+  const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
 
   const filteredCollections = [...collections].filter(({ name, typefaces }) => {
     const cleanQuery = searchQuery.trim().toLowerCase()
