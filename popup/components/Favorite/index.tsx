@@ -6,6 +6,7 @@ import { Button } from "./Button"
 
 import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
 import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
+import { useCallback } from "react"
 
 interface IFavorite {
   favorite: ITypeface
@@ -23,12 +24,12 @@ export const Favorite = ({ favorite }: IFavorite) => {
   // const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
   // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
 
-  const openModal = () => {
+  const openModal = useCallback(() => {
     setIsModalOpen("collection-assignment")
     setSelectedTypeface(favorite.slug)
-  }
+  }, [favorite])
 
-  const handleRemoveTypeface = () => {
+  const handleRemoveTypeface = useCallback(() => {
     const favoritesMap = new Map(favorites)
     favoritesMap.delete(slug)
     setFavorites(Array.from(favoritesMap))
@@ -58,7 +59,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
         font: slug
       })
     })
-  }
+  }, [favorites, slug])
 
   return (
     <div className="group flex items-center justify-between border-b border-greyscale-200 px-4 py-3 ">
