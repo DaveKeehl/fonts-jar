@@ -7,7 +7,45 @@ import { Search } from "../Search"
 import { Modal } from "./Modal"
 
 import type { TypefaceTuple } from "~types/typeface"
-import type { SupportedWebsite } from "~types/website"
+
+const Origins = ({
+  uniqueOrigins,
+  filteredOrigins,
+  visibleOrigins,
+  onChange
+}: {
+  uniqueOrigins: string[]
+  filteredOrigins: string[]
+  visibleOrigins: string[]
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+}) => {
+  if (uniqueOrigins.length === 0 && filteredOrigins.length === 0) {
+    return <p className="text-base">No origins.</p>
+  }
+
+  if (uniqueOrigins.length > 0 && filteredOrigins.length === 0) {
+    return <p className="text-base">No results.</p>
+  }
+
+  return (
+    <div className="flex w-full flex-col justify-start gap-1">
+      {filteredOrigins.map((origin) => (
+        <label
+          key={crypto.randomUUID()}
+          className="flex items-center gap-2 text-base hover:cursor-pointer">
+          <input
+            type="checkbox"
+            id={origin}
+            name={origin}
+            checked={visibleOrigins.includes(origin)}
+            onChange={onChange}
+          />
+          {origin}
+        </label>
+      ))}
+    </div>
+  )
+}
 
 export const OriginWebsites = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -17,24 +55,23 @@ export const OriginWebsites = () => {
 
   const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
 
-  // const filteredCollections = [...collections].filter(({ name }) => {
-  //   const cleanQuery = searchQuery.trim().toLowerCase()
-  //   const nameNormalized = name.toLowerCase()
+  const filteredOrigins = uniqueOrigins.filter((origin) => {
+    const cleanQuery = searchQuery.trim().toLowerCase()
+    const originNormalized = origin.toLowerCase()
 
-  //   const nameContainsQuery = nameNormalized.includes(cleanQuery)
-  //   const queryContainsName = cleanQuery.includes(nameNormalized)
+    const originContainsQuery = originNormalized.includes(cleanQuery)
+    const queryContainsOrigin = cleanQuery.includes(originNormalized)
 
-  //   return nameContainsQuery || queryContainsName
-  // })
+    return originContainsQuery || queryContainsOrigin
+  })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const origin = e.target.name
 
-    if (visibleOrigins.includes(origin)) {
-      setVisibleOrigins((prev) => prev.filter((visibleOrigin) => visibleOrigin !== origin))
-    } else {
-      setVisibleOrigins((prev) => [...prev, origin])
-    }
+    setVisibleOrigins((prev) => {
+      if (!visibleOrigins.includes(origin)) return [...prev, origin]
+      return prev.filter((visibleOrigin) => visibleOrigin !== origin)
+    })
   }
 
   return (
@@ -50,26 +87,12 @@ export const OriginWebsites = () => {
           inputClassName="rounded-lg bg-greyscale-200/60 py-2 pr-3 pl-10 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-greyscale-200"
           iconClassName="left-3"
         />
-        {uniqueOrigins.length === 0 ? (
-          <p className="text-base">No origins.</p>
-        ) : (
-          <div className="flex w-full flex-col justify-start gap-1">
-            {uniqueOrigins.map((origin) => (
-              <label
-                key={crypto.randomUUID()}
-                className="flex items-center gap-2 text-base hover:cursor-pointer">
-                <input
-                  type="checkbox"
-                  id={origin}
-                  name={origin}
-                  checked={visibleOrigins.includes(origin)}
-                  onChange={handleChange}
-                />
-                {origin}
-              </label>
-            ))}
-          </div>
-        )}
+        <Origins
+          uniqueOrigins={uniqueOrigins}
+          visibleOrigins={visibleOrigins}
+          filteredOrigins={filteredOrigins}
+          onChange={handleChange}
+        />
       </div>
     </Modal>
   )
