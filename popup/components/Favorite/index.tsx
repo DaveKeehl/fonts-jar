@@ -16,6 +16,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   const setIsModalOpen = useSetAtom(modalOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom)
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
+  const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
 
   const { origin, family, /** styles, variableAxes **/ slug } = favorite
 
@@ -36,12 +37,18 @@ export const Favorite = ({ favorite }: IFavorite) => {
         if (!collection.typefaces.includes(favorite.slug)) return collection
         return {
           ...collection,
-          typefaces: collection.typefaces.filter(
-            (font) => font !== favorite.slug
-          )
+          typefaces: collection.typefaces.filter((font) => font !== favorite.slug)
         }
       })
     )
+    setVisibleOrigins((prev) => {
+      const remainingFontsWithSameOrigin = favorites.filter(
+        (fav) => fav[1].slug !== slug && fav[1].origin.name === origin.name
+      )
+      if (remainingFontsWithSameOrigin.length === 0) {
+        return prev.filter((prevOrigin) => prevOrigin !== origin.name)
+      }
+    })
 
     // Send message to the content_script that a font has been removed from wishlist.
     // The content_script uses this message to change the state of the add/remove wishlist button.

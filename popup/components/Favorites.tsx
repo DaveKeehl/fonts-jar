@@ -6,18 +6,39 @@ import { NothingToShow } from "./NothingToShow"
 import { getSortFunction } from "../utils"
 import type { ISorting } from "types/sorting"
 import type { ICollection, TypefaceTuple } from "types/typeface"
+import type { SupportedWebsite } from "~types/website"
+import { useEffect } from "react"
 
 export const Favorites = () => {
   const [searchQuery] = useStorage("searchQuery", "")
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [method] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
-  const [direction] = useStorage<ISorting["direction"]>(
-    "sortDirection",
-    "ascending"
-  )
+  const [direction] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
   const [collections] = useStorage<ICollection[]>("collections", [])
+  const [visibleOrigins, setVisibleOrigins] = useStorage<SupportedWebsite[]>(
+    "visibleOriginWebsites",
+    []
+  )
+
+  useEffect(() => {
+    const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
+    uniqueOrigins.forEach((origin) => {
+      if (!visibleOrigins.includes(origin)) {
+        setVisibleOrigins((prev) => [...prev, origin])
+      }
+    })
+  }, [])
+
+  // useEffect(() => {
+  //   const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
+  //   const originsToRemove = visibleOrigins.filter(
+  //     (visibleOrigin) => !uniqueOrigins.includes(visibleOrigin)
+  //   )
+  //   setVisibleOrigins((prev) => prev.filter((prevOrigin) => originsToRemove.includes(prevOrigin)))
+  // }, [favorites])
 
   const results = [...favorites]
+    .filter((favorite) => visibleOrigins.includes(favorite[1].origin.name))
     .filter((favorite) => {
       const results = collections.filter((collection) =>
         collection.typefaces.includes(favorite[1].slug)
@@ -38,10 +59,7 @@ export const Favorites = () => {
       const queryContainsOrigin = cleanQuery.includes(originNormalized)
 
       return (
-        familyContainsQuery ||
-        originContainsQuery ||
-        queryContainsFamily ||
-        queryContainsOrigin
+        familyContainsQuery || originContainsQuery || queryContainsFamily || queryContainsOrigin
       )
     })
     .sort(getSortFunction({ method, direction }))
