@@ -3,7 +3,7 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Favorite } from "./Favorite"
 import { NothingToShow } from "./NothingToShow"
 
-import { getSortFunction } from "../utils"
+import { getSortFunction, useSearch } from "../utils"
 import type { ISorting } from "types/sorting"
 import type { ICollection, TypefaceTuple } from "types/typeface"
 import type { SupportedWebsite } from "~types/website"
@@ -29,52 +29,51 @@ export const Favorites = () => {
     })
   }, [])
 
-  // useEffect(() => {
-  //   const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
-  //   const originsToRemove = visibleOrigins.filter(
-  //     (visibleOrigin) => !uniqueOrigins.includes(visibleOrigin)
-  //   )
-  //   setVisibleOrigins((prev) => prev.filter((prevOrigin) => originsToRemove.includes(prevOrigin)))
-  // }, [favorites])
+  const filterByOrigin = (favorites: TypefaceTuple[]) => {
+    return [...favorites].filter((favorite) => visibleOrigins.includes(favorite[1].origin.name))
+  }
 
-  const results = [...favorites]
-    .filter((favorite) => visibleOrigins.includes(favorite[1].origin.name))
-    .filter((favorite) => {
+  const filterByCollection = (favorites: TypefaceTuple[]) => {
+    return [...favorites].filter((favorite) => {
       const results = collections.filter((collection) =>
         collection.typefaces.includes(favorite[1].slug)
       )
       if (results.length === 0) return true
       return results.some((collection) => !collection.hidden)
     })
-    .filter((favorite) => {
-      const cleanQuery = searchQuery.trim().toLowerCase()
-      const { family, origin } = favorite[1]
+  }
 
-      const familyNormalized = family.toLowerCase()
-      const originNormalized = origin.name.toLowerCase()
+  const filteredFavorites = useSearch(
+    searchQuery,
+    filterByCollection(filterByOrigin(favorites)),
+    (cleanQuery) => ({
+      family: {
+        propertyContainsQuery: ([, { family }]) => family.toLowerCase().includes(cleanQuery),
+        queryContainsProperty: ([, { family }]) => cleanQuery.includes(family.toLowerCase())
+      },
+      origin: {
+        propertyContainsQuery: ([, { origin }]) => origin.name.toLowerCase().includes(cleanQuery),
+        queryContainsProperty: ([, { origin }]) => cleanQuery.includes(origin.name.toLowerCase())
+      }
+    }),
+    (tuple) => tuple[1]
+  )
 
-      const familyContainsQuery = familyNormalized.includes(cleanQuery)
-      const originContainsQuery = originNormalized.includes(cleanQuery)
-      const queryContainsFamily = cleanQuery.includes(familyNormalized)
-      const queryContainsOrigin = cleanQuery.includes(originNormalized)
-
-      return (
-        familyContainsQuery || originContainsQuery || queryContainsFamily || queryContainsOrigin
-      )
-    })
-    .sort(getSortFunction({ method, direction }))
+  const filteredSortedFavorites = [...filteredFavorites].sort(
+    getSortFunction({ method, direction })
+  )
 
   if (favorites.length === 0) {
     return <NothingToShow>No fonts added</NothingToShow>
   }
 
-  if (results.length === 0) {
+  if (filteredSortedFavorites.length === 0) {
     return <NothingToShow>No fonts visible</NothingToShow>
   }
 
   return (
     <div id="favorites" className="h-[400px] overflow-auto">
-      {results.map((favorite) => (
+      {filteredSortedFavorites.map((favorite) => (
         <Favorite key={crypto.randomUUID()} favorite={favorite[1]} />
       ))}
     </div>
