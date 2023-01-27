@@ -85,32 +85,19 @@ export const useSearch = <T, S = T>(
 ) => {
   const cleanQuery = query.trim().toLowerCase()
   const validations = validate(cleanQuery)
-  // console.log(validations)
-  console.log({ items })
 
   return [...items].filter((item) => {
-    // console.log({ item })
-    return Object.keys(item).reduce((result, property) => {
+    const properties = !Array.isArray(item) ? Object.keys(item) : Object.keys(mapper(item))
+
+    return properties.reduce((result, property) => {
       const validationHasProperty = Object.hasOwn(validations, property)
 
       if (validationHasProperty) {
         const { propertyContainsQuery, queryContainsProperty } = validations[property]
 
         if (queryContainsProperty) {
-          // console.log({
-          //   property,
-          //   cleanQuery,
-          //   propertyContainsQuery: propertyContainsQuery(item),
-          //   queryContainsProperty: queryContainsProperty(item)
-          // })
           return result || propertyContainsQuery(item) || queryContainsProperty(item)
         }
-
-        // console.log({
-        //   property,
-        //   cleanQuery,
-        //   propertyContainsQuery: propertyContainsQuery(item)
-        // })
         result || propertyContainsQuery(item)
       }
 
