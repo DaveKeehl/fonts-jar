@@ -9,6 +9,7 @@ import { NewCollectionForm } from "./NewCollectionForm"
 import { Collections } from "./Collections"
 
 import type { ICollection, TypefaceTuple } from "~types/typeface"
+import { useSearch } from "~popup/utils"
 
 export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -24,23 +25,22 @@ export const CollectionsManager = () => {
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
 
-  const filteredCollections = [...collections].filter(({ name, typefaces }) => {
-    const cleanQuery = searchQuery.trim().toLowerCase()
-    const nameNormalized = name.toLowerCase()
-
-    const nameContainsQuery = nameNormalized.includes(cleanQuery)
-    const queryContainsName = cleanQuery.includes(nameNormalized)
-
-    const typefacesContainQuery = typefaces.some((typeface) =>
-      cleanQuery.split(" ").some((term) => {
-        const cleanTypeface = typeface.trim().toLowerCase()
-        const cleanTerm = term.trim().toLowerCase()
-        return cleanTypeface.includes(cleanTerm)
-      })
-    )
-
-    return nameContainsQuery || queryContainsName || typefacesContainQuery
-  })
+  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery) => ({
+    name: {
+      propertyContainsQuery: ({ name }) => name.toLowerCase().includes(cleanQuery),
+      queryContainsProperty: ({ name }) => cleanQuery.includes(name.toLowerCase())
+    },
+    typefaces: {
+      propertyContainsQuery: ({ typefaces }) =>
+        typefaces.some((typeface) => {
+          return cleanQuery.split(" ").some((term) => {
+            const cleanTypeface = typeface.trim().toLowerCase()
+            const cleanTerm = term.trim().toLowerCase()
+            return cleanTypeface.includes(cleanTerm)
+          })
+        })
+    }
+  }))
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCollection(e.target.value)
 
