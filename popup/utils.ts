@@ -71,3 +71,50 @@ export const getSortFunction = (sort: ISorting) => {
 
   return sortFunction as CompareFunction
 }
+
+export const useSearch = <T, S = T>(
+  query: string,
+  items: T[],
+  validate: (cleanQuery: string) => {
+    [property in keyof S]?: {
+      propertyContainsQuery: (item: T) => boolean
+      queryContainsProperty?: (item: T) => boolean
+    }
+  },
+  mapper?: (item: T) => S
+) => {
+  const cleanQuery = query.trim().toLowerCase()
+  const validations = validate(cleanQuery)
+  // console.log(validations)
+  console.log({ items })
+
+  return [...items].filter((item) => {
+    // console.log({ item })
+    return Object.keys(item).reduce((result, property) => {
+      const validationHasProperty = Object.hasOwn(validations, property)
+
+      if (validationHasProperty) {
+        const { propertyContainsQuery, queryContainsProperty } = validations[property]
+
+        if (queryContainsProperty) {
+          // console.log({
+          //   property,
+          //   cleanQuery,
+          //   propertyContainsQuery: propertyContainsQuery(item),
+          //   queryContainsProperty: queryContainsProperty(item)
+          // })
+          return result || propertyContainsQuery(item) || queryContainsProperty(item)
+        }
+
+        // console.log({
+        //   property,
+        //   cleanQuery,
+        //   propertyContainsQuery: propertyContainsQuery(item)
+        // })
+        result || propertyContainsQuery(item)
+      }
+
+      return result
+    }, false)
+  })
+}
