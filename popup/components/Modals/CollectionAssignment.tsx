@@ -18,10 +18,10 @@ export const CollectionAssignment = () => {
 
   const selectedTypeface = favorites.find((favorite) => favorite[0] === selectedTypefaceSlug)
 
-  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery) => ({
+  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
     name: {
-      propertyContainsQuery: ({ name }) => name.toLowerCase().includes(cleanQuery),
-      queryContainsProperty: ({ name }) => cleanQuery.includes(name.toLowerCase())
+      propertyContainsQuery: ({ name }) => normalize(name).includes(cleanQuery),
+      queryContainsProperty: ({ name }) => cleanQuery.includes(normalize(name))
     }
   }))
 

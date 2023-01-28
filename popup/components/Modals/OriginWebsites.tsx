@@ -7,6 +7,7 @@ import { Search } from "../Search"
 import { Modal } from "./Modal"
 
 import type { TypefaceTuple } from "~types/typeface"
+import { useSearch } from "~popup/utils"
 
 const Origins = ({
   uniqueOrigins,
@@ -55,15 +56,17 @@ export const OriginWebsites = () => {
 
   const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
 
-  const filteredOrigins = uniqueOrigins.filter((origin) => {
-    const cleanQuery = searchQuery.trim().toLowerCase()
-    const originNormalized = origin.toLowerCase()
-
-    const originContainsQuery = originNormalized.includes(cleanQuery)
-    const queryContainsOrigin = cleanQuery.includes(originNormalized)
-
-    return originContainsQuery || queryContainsOrigin
-  })
+  const filteredOrigins = useSearch(
+    searchQuery,
+    uniqueOrigins,
+    (cleanQuery, normalize) => ({
+      origin: {
+        propertyContainsQuery: (origin) => normalize(origin).includes(cleanQuery),
+        queryContainsProperty: (origin) => cleanQuery.includes(normalize(origin))
+      }
+    }),
+    (item) => ({ origin: item })
+  )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const origin = e.target.name

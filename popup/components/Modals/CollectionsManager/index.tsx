@@ -25,17 +25,17 @@ export const CollectionsManager = () => {
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
 
-  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery) => ({
+  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
     name: {
-      propertyContainsQuery: ({ name }) => name.toLowerCase().includes(cleanQuery),
-      queryContainsProperty: ({ name }) => cleanQuery.includes(name.toLowerCase())
+      propertyContainsQuery: ({ name }) => normalize(name).includes(cleanQuery),
+      queryContainsProperty: ({ name }) => cleanQuery.includes(normalize(name))
     },
     typefaces: {
       propertyContainsQuery: ({ typefaces }) =>
         typefaces.some((typeface) => {
+          const cleanTypeface = normalize(typeface)
           return cleanQuery.split(" ").some((term) => {
-            const cleanTypeface = typeface.trim().toLowerCase()
-            const cleanTerm = term.trim().toLowerCase()
+            const cleanTerm = normalize(term)
             return cleanTypeface.includes(cleanTerm)
           })
         })

@@ -1,3 +1,5 @@
+import { isPlainObject } from "lodash"
+
 import type { CompareFunction, ISorting } from "~types/sorting"
 import type { TypefaceTuple } from "~types/typeface"
 
@@ -75,7 +77,10 @@ export const getSortFunction = (sort: ISorting) => {
 export const useSearch = <T, S = T>(
   query: string,
   items: T[],
-  validate: (cleanQuery: string) => {
+  validate: (
+    cleanQuery: string,
+    normalize: (input: string) => string
+  ) => {
     [property in keyof S]?: {
       propertyContainsQuery: (item: T) => boolean
       queryContainsProperty?: (item: T) => boolean
@@ -83,11 +88,11 @@ export const useSearch = <T, S = T>(
   },
   mapper?: (item: T) => S
 ) => {
-  const cleanQuery = query.trim().toLowerCase()
-  const validations = validate(cleanQuery)
+  const normalize = (input: string) => input.trim().toLowerCase()
+  const validations = validate(normalize(query), normalize)
 
   return [...items].filter((item) => {
-    const properties = !Array.isArray(item) ? Object.keys(item) : Object.keys(mapper(item))
+    const properties = isPlainObject(item) ? Object.keys(item) : Object.keys(mapper(item))
 
     return properties.reduce((result, property) => {
       const validationHasProperty = Object.hasOwn(validations, property)
@@ -98,7 +103,7 @@ export const useSearch = <T, S = T>(
         if (queryContainsProperty) {
           return result || propertyContainsQuery(item) || queryContainsProperty(item)
         }
-        result || propertyContainsQuery(item)
+        return result || propertyContainsQuery(item)
       }
 
       return result

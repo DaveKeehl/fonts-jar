@@ -46,14 +46,14 @@ export const Favorites = () => {
   const filteredFavorites = useSearch(
     searchQuery,
     filterByCollection(filterByOrigin(favorites)),
-    (cleanQuery) => ({
+    (cleanQuery, normalize) => ({
       family: {
-        propertyContainsQuery: ([, { family }]) => family.toLowerCase().includes(cleanQuery),
-        queryContainsProperty: ([, { family }]) => cleanQuery.includes(family.toLowerCase())
+        propertyContainsQuery: ([, { family }]) => normalize(family).includes(cleanQuery),
+        queryContainsProperty: ([, { family }]) => cleanQuery.includes(normalize(family))
       },
       origin: {
-        propertyContainsQuery: ([, { origin }]) => origin.name.toLowerCase().includes(cleanQuery),
-        queryContainsProperty: ([, { origin }]) => cleanQuery.includes(origin.name.toLowerCase())
+        propertyContainsQuery: ([, { origin }]) => normalize(origin.name).includes(cleanQuery),
+        queryContainsProperty: ([, { origin }]) => cleanQuery.includes(normalize(origin.name))
       }
     }),
     (tuple) => tuple[1]
