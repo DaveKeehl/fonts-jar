@@ -1,9 +1,9 @@
 import type { PlasmoCSConfig } from "plasmo"
 
-import { identifyTheme, identifyWebsite, getThemeToggleButton } from "./content/detection"
-import { onReady, injectMarkup, extractFontData } from "./content/DOM"
-import { injectStyles } from "./content/styles"
-import { websites } from "./content/constants"
+import { identifyTheme, identifyWebsite, getThemeToggleButton } from "./logic/detection"
+import { onReady, injectMarkup, extractFontData } from "./logic/DOM"
+import { injectStyles } from "./logic/styles"
+import { websites } from "./logic/constants"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://fonts.google.com/*"],

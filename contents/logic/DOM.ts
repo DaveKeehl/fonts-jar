@@ -69,23 +69,16 @@ const extractFontName = (queries: string[]) => {
  * @param origin - The object containing the typeface origin metadata to know how to extract the typeface metadata.
  * @returns An object of type Typeface containing the typeface metadata.
  */
-export const extractFontData = (
-  origin: ITypefaceOrigin,
-  queries: ExtractionQueries
-): ITypeface => {
+export const extractFontData = (origin: ITypefaceOrigin, queries: ExtractionQueries): ITypeface => {
   const title = extractFontName(queries.titleElement)
   const variants = document.querySelectorAll<HTMLSpanElement>(queries.variants)
-  const variableAxes = document.querySelectorAll<HTMLDivElement>(
-    queries.variableAxes
-  )
+  const variableAxes = document.querySelectorAll<HTMLDivElement>(queries.variableAxes)
 
   return {
     family: title.trim(),
     slug: slugify(title),
     styles: [...variants]
-      .map((variant) =>
-        variant.textContent !== null ? variant.textContent.trim() : ""
-      )
+      .map((variant) => (variant.textContent !== null ? variant.textContent.trim() : ""))
       .filter((variant) => variant !== ""),
     variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
     origin,
@@ -188,10 +181,7 @@ export const toggleButtonState = (
  * @param typeface - The typeface metadata needed to create the markup.
  * @param themeToggleButton - The theme toggle <button> element used to switch theme.
  */
-export const injectMarkup = async (
-  typeface: ITypeface,
-  themeToggleButton: HTMLButtonElement
-) => {
+export const injectMarkup = async (typeface: ITypeface, themeToggleButton: HTMLButtonElement) => {
   const website = typeface.origin.name
 
   // If there is a theme toggle button, attach an event listener to update the styles
@@ -206,9 +196,7 @@ export const injectMarkup = async (
   // Fix button style when placed in collapsed header
   if (website === "Google Fonts") {
     document.addEventListener("scroll", () => {
-      buttons.forEach((button) =>
-        button.classList.toggle("collapsed-header", window.scrollY > 130)
-      )
+      buttons.forEach((button) => button.classList.toggle("collapsed-header", window.scrollY > 130))
     })
   }
 
@@ -233,9 +221,7 @@ export const injectMarkup = async (
 
       // Check if page data and extension storage are out of sync
       if (buttonIsActive !== isFontInFavorites) {
-        buttons.forEach((button) =>
-          toggleButtonState(button, isFontInFavorites)
-        )
+        buttons.forEach((button) => toggleButtonState(button, isFontInFavorites))
       }
     }
   })
