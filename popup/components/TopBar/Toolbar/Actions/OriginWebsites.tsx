@@ -13,7 +13,7 @@ export const OriginWebsites = () => {
   const handleClick = useCallback(() => setModalOpen("origin-websites"), [])
 
   return (
-    <ToolbarAction onClick={handleClick}>
+    <ToolbarAction onClick={handleClick} title="Filter By Origin Websites">
       <Globe size={ICON_SIZE} />
     </ToolbarAction>
   )

@@ -15,6 +15,7 @@ export const Collections = () => {
 
   return (
     <ToolbarAction
+      title="Collections Manager"
       onClick={handleClick}
       onMouseEnter={() => setHover(true)}
       onMouseLeave={() => setHover(false)}>
