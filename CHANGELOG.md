@@ -8,10 +8,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [Unreleased]
 ### Added
 - Support for filtering fonts based on the origin websites
+- Tooltips for toolbar buttons
 ### Changed
 - Manifest key is now overridden to have a consistent extension ID
 - Publish workflow now automates releases
 - Updated dependencies
+- Put back caret down icon in sort method and sort direction buttons in toolbar
 ### Fixed
 - Collection input field in collections manager modal is now set to `width: 100%` to prevent horizontal overflow
 
