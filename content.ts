@@ -1,11 +1,11 @@
-import type { PlasmoContentScript } from "plasmo"
+import type { PlasmoCSConfig } from "plasmo"
 
 import { identifyTheme, identifyWebsite, getThemeToggleButton } from "./content/detection"
 import { onReady, injectMarkup, extractFontData } from "./content/DOM"
 import { injectStyles } from "./content/styles"
 import { websites } from "./content/constants"
 
-export const config: PlasmoContentScript = {
+export const config: PlasmoCSConfig = {
   matches: ["https://fonts.google.com/*"],
   run_at: "document_end"
 }
