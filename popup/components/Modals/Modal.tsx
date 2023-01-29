@@ -3,7 +3,7 @@ import ReactModal from "react-modal"
 
 import { modalOpenAtom } from "~popup/atoms"
 
-ReactModal.setAppElement("#root")
+ReactModal.setAppElement("#__plasmo")
 
 interface IModal {
   isModalOpen: boolean
