@@ -37,13 +37,6 @@ const Button = () => {
 
   const isFontInFavorites = new Map(favorites).has(typeface.slug)
 
-  const icon = {
-    size: 20,
-    weight: "bold"
-  } as const
-
-  const bg = isFontInFavorites ? "bg-gf-primary/[.25]" : "bg-none hover:bg-gf-primary/[.04]"
-
   const handleClick = () => {
     const newFavorites = new Map(favorites)
     let newCollections = [...collections]
@@ -85,18 +78,35 @@ const Button = () => {
     setVisibleOrigins(newVisibleOrigins)
   }
 
+  const ICON = {
+    SIZE: 20,
+    WEIGHT: "bold"
+  } as const
+
+  const styles = {
+    "Google Fonts": {
+      bg: isFontInFavorites ? "bg-gf-primary/[.25]" : "bg-none hover:bg-gf-primary/[.04]",
+      text: "text-gf-primary hover:text-gf-secondary",
+      border: "border-gf-primary"
+    }
+  }
+
+  const bg = styles[website.name].bg
+  const text = styles[website.name].text
+  const border = styles[website.name].border
+
   return (
     <button
-      className={`-mr-8 flex items-center justify-center gap-[4px] rounded-[36px] border border-[#8ab4f8] py-2 px-[15px] font-inherit text-sm font-medium text-[#8ab4f8] hover:cursor-pointer hover:text-[#d2e3fc] ${bg}`}
+      className={`-mr-8 flex items-center justify-center gap-[4px] rounded-[36px] border py-2 px-[15px] font-inherit text-sm font-medium hover:cursor-pointer ${bg} ${text} ${border}`}
       onClick={handleClick}>
       {!isFontInFavorites ? (
         <>
-          <Plus size={icon.size} weight={icon.weight} />
+          <Plus size={ICON.SIZE} weight={ICON.WEIGHT} />
           <span>{buttonContent.add}</span>
         </>
       ) : (
         <>
-          <Minus size={icon.size} weight={icon.weight} />
+          <Minus size={ICON.SIZE} weight={ICON.WEIGHT} />
           <span>{buttonContent.remove}</span>
         </>
       )}
