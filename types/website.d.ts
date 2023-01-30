@@ -23,7 +23,7 @@ export interface Website {
 
 // WEBSITES
 
-export type SupportedWebsite = "Google Fonts"
+export type SupportedWebsite = "Google Fonts" | "Adobe Fonts"
 
 export type WebsitesSpecificStyles = {
   name: SupportedWebsite

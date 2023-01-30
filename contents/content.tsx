@@ -3,6 +3,7 @@ import { Minus, Plus } from "phosphor-react"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import type { ICollection, TypefaceTuple } from "~types/typeface"
+import type { SupportedWebsite } from "~types/website"
 import { extractFontData } from "./logic/DOM"
 import { identifyWebsite } from "./logic/detection"
 import { buttonContent, websites } from "./logic/constants"
@@ -83,7 +84,7 @@ const Button = () => {
     WEIGHT: "bold"
   } as const
 
-  const styles = {
+  const styles: { [key in SupportedWebsite]?: { bg: string; text: string; border: string } } = {
     "Google Fonts": {
       bg: isFontInFavorites ? "bg-gf-primary/[.25]" : "bg-none hover:bg-gf-primary/[.04]",
       text: "text-gf-primary hover:text-gf-secondary",

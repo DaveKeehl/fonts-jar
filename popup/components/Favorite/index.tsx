@@ -1,12 +1,13 @@
+import { useCallback } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useSetAtom } from "jotai"
 import { FolderPlus, X } from "phosphor-react"
 
 import { Button } from "./Button"
-
 import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
+
 import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
-import { useCallback } from "react"
+import type { SupportedWebsite } from "~types/website"
 
 interface IFavorite {
   favorite: ITypeface
@@ -17,7 +18,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   const setIsModalOpen = useSetAtom(modalOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom)
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
-  const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
+  const [, setVisibleOrigins] = useStorage<SupportedWebsite[]>("visibleOriginWebsites", [])
 
   const { origin, family, /** styles, variableAxes **/ slug } = favorite
 

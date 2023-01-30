@@ -8,6 +8,7 @@ import { Modal } from "./Modal"
 
 import type { TypefaceTuple } from "~types/typeface"
 import { useSearch } from "~popup/utils"
+import type { SupportedWebsite } from "~types/website"
 
 const Origins = ({
   uniqueOrigins,
@@ -52,7 +53,10 @@ export const OriginWebsites = () => {
   const [searchQuery, setSearchQuery] = useState("")
   const modalOpen = useAtomValue(modalOpenAtom)
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
+  const [visibleOrigins, setVisibleOrigins] = useStorage<SupportedWebsite[]>(
+    "visibleOriginWebsites",
+    []
+  )
 
   const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
 
@@ -69,7 +73,7 @@ export const OriginWebsites = () => {
   )
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const origin = e.target.name
+    const origin = e.target.name as SupportedWebsite
 
     setVisibleOrigins((prev) => {
       if (!visibleOrigins.includes(origin)) return [...prev, origin]
