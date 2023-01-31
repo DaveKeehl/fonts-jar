@@ -11,7 +11,7 @@ import { buttonContent, websites } from "./logic/constants"
 import cssText from "data-text:~style.css"
 
 export const config: PlasmoCSConfig = {
-  matches: ["https://fonts.google.com/*"],
+  matches: ["https://fonts.google.com/*specimen/*"],
   run_at: "document_end"
 }
 
@@ -22,7 +22,7 @@ export const getStyle = () => {
 }
 
 export const getInlineAnchor: PlasmoGetInlineAnchor = () =>
-  document.querySelector("#main-content h1.gmat-headline-1:first-of-type")
+  document.querySelector("#main-content h1")
 
 // Use this to optimize unmount lookups
 export const getShadowHostId = () => "plasmo-inline-example-unique-id"
@@ -35,6 +35,7 @@ const Button = () => {
   const typefaceOrigin = identifyWebsite(document.location.href)
   const website = websites.find((el) => el.name === typefaceOrigin.name)
   const typeface = extractFontData(typefaceOrigin, website.queries)
+  console.log(`rendering at: ${document.location.href}`)
 
   const isFontInFavorites = new Map(favorites).has(typeface.slug)
 
