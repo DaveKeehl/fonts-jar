@@ -124,7 +124,7 @@ const Button = () => {
   }
 
   const ICON = {
-    SIZE: 18,
+    SIZE: 16,
     WEIGHT: "bold"
   } as const
 
