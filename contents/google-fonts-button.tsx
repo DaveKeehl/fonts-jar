@@ -1,14 +1,16 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo"
 import { Minus, Plus } from "phosphor-react"
 import { useStorage } from "@plasmohq/storage/hook"
+import { cva } from "cva"
 
-import type { ICollection, TypefaceTuple } from "~types/typeface"
-import type { SupportedWebsite } from "~types/website"
+import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
+import type { Theme } from "~types/website"
 import { extractFontData } from "./logic/DOM"
 import { identifyWebsite } from "./logic/detection"
 import { buttonContent, websites } from "./logic/constants"
 
 import cssText from "data-text:~style.css"
+import { useEffect, useState } from "react"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://fonts.google.com/*specimen/*"],
@@ -21,23 +23,65 @@ export const getStyle = () => {
   return style
 }
 
-export const getInlineAnchor: PlasmoGetInlineAnchor = () =>
-  document.querySelector("#main-content h1")
+export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
+  return document.querySelector("ul.breadcrumb__actions li:nth-last-child(2)")
+}
 
 // Use this to optimize unmount lookups
-export const getShadowHostId = () => "plasmo-inline-example-unique-id"
+export const getShadowHostId = () => "plasmo-inline"
+
+const button = cva(
+  "-mr-8 flex items-center justify-center gap-[4px] rounded-[36px] border py-2 px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
+  {
+    variants: {
+      theme: {
+        dark: ["border-gf-dark-primary", "text-gf-dark-primary", "hover:text-gf-dark-secondary"],
+        light: ["border-gf-light-primary", "text-gf-light-primary", "hover:text-gf-light-secondary"]
+      },
+      filledDark: {
+        true: ["bg-gf-dark-primary/[.25]"],
+        false: ["bg-none hover:bg-gf-dark-primary/[.04]"]
+      },
+      filledLight: {
+        true: ["bg-gf-light-primary/[.25]"],
+        false: ["bg-none hover:bg-gf-light-primary/[.04]"]
+      }
+    },
+    defaultVariants: {
+      theme: "dark"
+    }
+  }
+)
 
 const Button = () => {
+  const [typeface, setTypeface] = useState<ITypeface>()
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
   const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
+  const [theme, setTheme] = useState<Theme>("dark")
 
-  const typefaceOrigin = identifyWebsite(document.location.href)
-  const website = websites.find((el) => el.name === typefaceOrigin.name)
-  const typeface = extractFontData(typefaceOrigin, website.queries)
-  console.log(`rendering at: ${document.location.href}`)
+  useEffect(() => {
+    setTimeout(() => {
+      const typefaceOrigin = identifyWebsite(document.location.href)
+      const website = websites.find((el) => el.name === typefaceOrigin.name)
+      const themeHolder = document.querySelector(website.queries.theme.element)
+      const initialTheme: Theme = themeHolder.classList.contains(
+        website.queries.theme.darkThemeClass
+      )
+        ? "dark"
+        : "light"
+      setTheme(initialTheme)
+      const themeToggler = document.querySelector(website.queries.theme.toggle)
+      themeToggler.addEventListener("click", toggleTheme)
+      setTypeface(extractFontData(typefaceOrigin, website.queries))
+    }, 100)
+  }, [])
 
-  const isFontInFavorites = new Map(favorites).has(typeface.slug)
+  const isFontInFavorites = typeface ? new Map(favorites).has(typeface.slug) : false
+
+  function toggleTheme() {
+    setTheme((prev) => (prev === "dark" ? "light" : "dark"))
+  }
 
   const handleClick = () => {
     const newFavorites = new Map(favorites)
@@ -85,22 +129,19 @@ const Button = () => {
     WEIGHT: "bold"
   } as const
 
-  const styles: { [key in SupportedWebsite]?: { bg: string; text: string; border: string } } = {
-    "Google Fonts": {
-      bg: isFontInFavorites ? "bg-gf-primary/[.25]" : "bg-none hover:bg-gf-primary/[.04]",
-      text: "text-gf-primary hover:text-gf-secondary",
-      border: "border-gf-primary"
-    }
-  }
-
-  const bg = styles[website.name].bg
-  const text = styles[website.name].text
-  const border = styles[website.name].border
+  const buttonProps =
+    theme === "dark"
+      ? {
+          theme,
+          filledDark: theme === "dark" && isFontInFavorites
+        }
+      : {
+          theme,
+          filledLight: theme === "light" && isFontInFavorites
+        }
 
   return (
-    <button
-      className={`-mr-8 flex items-center justify-center gap-[4px] rounded-[36px] border py-2 px-[15px] font-inherit text-sm font-medium hover:cursor-pointer ${bg} ${text} ${border}`}
-      onClick={handleClick}>
+    <button className={button(buttonProps)} onClick={handleClick}>
       {!isFontInFavorites ? (
         <>
           <Plus size={ICON.SIZE} weight={ICON.WEIGHT} />
