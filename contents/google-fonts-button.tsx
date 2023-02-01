@@ -1,6 +1,7 @@
+import { useEffect, useState } from "react"
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo"
-import { Minus, Plus } from "phosphor-react"
 import { useStorage } from "@plasmohq/storage/hook"
+import { Minus, Plus } from "phosphor-react"
 import { cva } from "cva"
 
 import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
@@ -8,9 +9,7 @@ import type { Theme } from "~types/website"
 import { extractFontData } from "./logic/DOM"
 import { identifyWebsite } from "./logic/detection"
 import { buttonContent, websites } from "./logic/constants"
-
 import cssText from "data-text:~style.css"
-import { useEffect, useState } from "react"
 
 export const config: PlasmoCSConfig = {
   matches: ["https://fonts.google.com/*specimen/*"],
@@ -133,11 +132,11 @@ const Button = () => {
     theme === "dark"
       ? {
           theme,
-          filledDark: theme === "dark" && isFontInFavorites
+          filledDark: isFontInFavorites
         }
       : {
           theme,
-          filledLight: theme === "light" && isFontInFavorites
+          filledLight: isFontInFavorites
         }
 
   return (
