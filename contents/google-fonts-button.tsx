@@ -30,7 +30,7 @@ export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
 export const getShadowHostId = () => "plasmo-inline"
 
 const button = cva(
-  "-mr-8 flex items-center justify-center gap-[4px] rounded-[36px] border py-2 px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
+  "flex items-center justify-center gap-[4px] rounded-[36px] border py-[7px] px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
   {
     variants: {
       theme: {
@@ -124,7 +124,7 @@ const Button = () => {
   }
 
   const ICON = {
-    SIZE: 20,
+    SIZE: 18,
     WEIGHT: "bold"
   } as const
 
