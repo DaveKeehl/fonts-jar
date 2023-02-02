@@ -1,6 +1,6 @@
 import type { SupportedWebsite, Theme } from "types/website"
 import type { ITypefaceOrigin } from "types/typeface"
-import { websites } from "./constants"
+import { websites, websites2 } from "./constants"
 import { isUrlLegal } from "./utils"
 
 /**
@@ -9,7 +9,7 @@ import { isUrlLegal } from "./utils"
  * @returns If the url is supported, an object of type TypefaceOrigin is returned. Otherwise an error is thrown.
  */
 export const identifyWebsite = (url: string): ITypefaceOrigin | never => {
-  const origin = websites.find((website) => isUrlLegal(url, website.regex))
+  const origin = websites2.find((website) => isUrlLegal(url, website.regex))
 
   if (origin === undefined) {
     throw new Error(`The received url (${url}) does not seem to be supported`)

@@ -19,6 +19,12 @@ module.exports = {
             secondary: '#174ea6'
           }
         },
+        adobe: {
+          light: {
+            primary: '#707070',
+            secondary: '#e1e1e1'
+          }
+        },
         greyscale: {
           100: '#fbfbfe',
           200: '#dadde6',

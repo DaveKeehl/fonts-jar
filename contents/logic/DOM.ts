@@ -1,6 +1,6 @@
 import { getFavorites } from "./storage"
-import type { ExtractionQueries, SupportedWebsite } from "types/website"
-import type { ITypeface, ITypefaceOrigin } from "types/typeface"
+import type { ExtractionQueries, ExtractionQueriesV2, SupportedWebsite } from "types/website"
+import type { ITypeface, ITypefaceOrigin, ITypefaceV2 } from "types/typeface"
 import { buttonContent, websites } from "./constants"
 import { identifyTheme } from "./detection"
 import { handleButtonClick } from "./eventHandlers"
@@ -81,6 +81,17 @@ export const extractFontData = (origin: ITypefaceOrigin, queries: ExtractionQuer
       .map((variant) => (variant.textContent !== null ? variant.textContent.trim() : ""))
       .filter((variant) => variant !== ""),
     variableAxes: variableAxes !== undefined ? variableAxes.length : 0,
+    origin,
+    added_at: ""
+  }
+}
+
+export const extractFontDataV2 = (origin: ITypefaceOrigin, titleQuery: string): ITypefaceV2 => {
+  const title = document.querySelector<HTMLHeadingElement>(titleQuery).textContent
+
+  return {
+    family: title.trim(),
+    slug: slugify(title),
     origin,
     added_at: ""
   }

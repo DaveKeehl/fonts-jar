@@ -9,7 +9,15 @@ export interface ITypeface {
   added_at: string
 }
 
+export interface ITypefaceV2 {
+  family: string
+  slug: string
+  origin: ITypefaceOrigin
+  added_at: string
+}
+
 export type TypefaceTuple = [string, ITypeface] // [<typeface_name>, <typeface_data>]
+export type TypefaceTupleV2 = [string, ITypefaceV2] // [<typeface_name>, <typeface_data>]
 
 export interface ITypefaceOrigin {
   name: SupportedWebsite

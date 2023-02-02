@@ -1,4 +1,4 @@
-import type { Website } from "types/website"
+import type { Website, WebsiteV2 } from "types/website"
 
 /**
  * The content of the button (used to add/remove fonts) that is injected in the page.
@@ -57,6 +57,33 @@ export const websites: Website[] = [
         size: "20px",
         padding: "0px"
       }
+    }
+  }
+]
+
+export const websites2: WebsiteV2[] = [
+  {
+    name: "Google Fonts",
+    regex: {
+      match: /fonts.google.com\/?(.*)\/specimen\/.*/,
+      ignore: /fonts.google.com\/?(.*)\/specimen\/.*\?.*preview.text=/
+    },
+    queries: {
+      theme: {
+        element: "body", // Which element holds the dark theme class name
+        darkThemeClass: "gf-dark-theme",
+        toggle: "button.theme-toggle"
+      },
+      titleElement: "gf-specimen-header h1"
+    }
+  },
+  {
+    name: "Adobe Fonts",
+    regex: {
+      match: /fonts.adobe.com\/fonts\/.*/
+    },
+    queries: {
+      titleElement: "h2.spectrum-Heading--display"
     }
   }
 ]

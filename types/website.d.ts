@@ -21,6 +21,12 @@ export interface Website {
   }
 }
 
+export interface WebsiteV2 {
+  name: SupportedWebsite
+  regex: WebsiteRegex
+  queries: ExtractionQueriesV2
+}
+
 // WEBSITES
 
 export type SupportedWebsite = "Google Fonts" | "Adobe Fonts"
@@ -37,6 +43,11 @@ export interface ExtractionQueries {
   titleElement: string[]
   variants: string
   variableAxes: string
+}
+
+export interface ExtractionQueriesV2 {
+  titleElement: string
+  theme?: ThemeQuery
 }
 
 export interface ThemeQuery {
