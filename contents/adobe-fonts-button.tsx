@@ -4,17 +4,11 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Minus, Plus } from "phosphor-react"
 import { cva } from "cva"
 
-import type {
-  ICollection,
-  ITypeface,
-  ITypefaceV2,
-  TypefaceTuple,
-  TypefaceTupleV2
-} from "~types/typeface"
+import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
 import type { Theme } from "~types/website"
-import { extractFontData, extractFontDataV2 } from "./logic/DOM"
+import { extractFontData } from "./logic/DOM"
 import { identifyWebsite } from "./logic/detection"
-import { buttonContent, websites, websites2 } from "./logic/constants"
+import { buttonContent, websites } from "./logic/constants"
 import cssText from "data-text:~style.css"
 
 export const config: PlasmoCSConfig = {
@@ -53,24 +47,22 @@ const button = cva(
       }
     },
     defaultVariants: {
-      theme: "dark"
+      theme: "light"
     }
   }
 )
 
 const AdobeFontsButton = () => {
-  const [typeface, setTypeface] = useState<ITypefaceV2>()
-  const [favorites, setFavorites] = useStorage<TypefaceTupleV2[]>("favorites", [])
+  const [typeface, setTypeface] = useState<ITypeface>()
+  const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
   const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
   const [theme, setTheme] = useState<Theme>("light") // diff
 
   useEffect(() => {
     setTimeout(() => {
-      console.log({ websites2 })
       const typefaceOrigin = identifyWebsite(document.location.href)
-      const website = websites2.find((el) => el.name === typefaceOrigin.name)
-      // console.log({ typefaceOrigin, website })
+      const website = websites.find((el) => el.name === typefaceOrigin.name)
 
       if (website.queries.theme) {
         const { element, darkThemeClass, toggle } = website.queries.theme
@@ -84,7 +76,7 @@ const AdobeFontsButton = () => {
         themeToggler.addEventListener("click", toggleTheme)
       }
 
-      setTypeface(extractFontDataV2(typefaceOrigin, website.queries.titleElement))
+      setTypeface(extractFontData(typefaceOrigin, website.queries.titleElement))
     }, 100)
   }, [])
 

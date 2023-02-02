@@ -63,16 +63,20 @@ const Button = () => {
     setTimeout(() => {
       const typefaceOrigin = identifyWebsite(document.location.href)
       const website = websites.find((el) => el.name === typefaceOrigin.name)
-      const themeHolder = document.querySelector(website.queries.theme.element)
-      const initialTheme: Theme = themeHolder.classList.contains(
-        website.queries.theme.darkThemeClass
-      )
-        ? "dark"
-        : "light"
-      setTheme(initialTheme)
-      const themeToggler = document.querySelector(website.queries.theme.toggle)
-      themeToggler.addEventListener("click", toggleTheme)
-      setTypeface(extractFontData(typefaceOrigin, website.queries))
+
+      if (website.queries.theme) {
+        const { element, darkThemeClass, toggle } = website.queries.theme
+
+        const themeHolder = document.querySelector(element)
+        const initialTheme: Theme = themeHolder.classList.contains(darkThemeClass)
+          ? "dark"
+          : "light"
+        setTheme(initialTheme)
+        const themeToggler = document.querySelector(toggle)
+        themeToggler.addEventListener("click", toggleTheme)
+      }
+
+      setTypeface(extractFontData(typefaceOrigin, website.queries.titleElement))
     }, 100)
   }, [])
 

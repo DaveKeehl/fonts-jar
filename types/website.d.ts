@@ -7,24 +7,6 @@ export interface Website {
   name: SupportedWebsite
   regex: WebsiteRegex
   queries: ExtractionQueries
-  themes: {
-    [key in Theme]?: {
-      primary: string
-      secondary: string
-      tertiary: string
-      quaternary: string
-    }
-  }
-  styles: {
-    button: { [key: string]: string }
-    icon: { [key: string]: string }
-  }
-}
-
-export interface WebsiteV2 {
-  name: SupportedWebsite
-  regex: WebsiteRegex
-  queries: ExtractionQueriesV2
 }
 
 // WEBSITES
@@ -39,13 +21,6 @@ export type WebsitesSpecificStyles = {
 // QUERIES
 
 export interface ExtractionQueries {
-  theme: ThemeQuery
-  titleElement: string[]
-  variants: string
-  variableAxes: string
-}
-
-export interface ExtractionQueriesV2 {
   titleElement: string
   theme?: ThemeQuery
 }

@@ -66,7 +66,5 @@ export const isUrlLegal = (url: string, websiteRegex: WebsiteRegex) => {
     ignore = new RegExp(websiteRegex.ignore).test(url)
   }
 
-  console.log({ url, websiteRegex, match, ignore })
-
   return match && !ignore
 }
