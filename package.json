@@ -55,7 +55,8 @@
   },
   "manifest": {
     "host_permissions": [
-      "https://*/*"
+      "https://fonts.google.com/*",
+      "https://fonts.adobe.com/*"
     ],
     "key": "$CRX_PUBLIC_KEY"
   },
