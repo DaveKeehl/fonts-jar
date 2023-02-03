@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Support for filtering fonts based on the origin websites
 - Tooltips for toolbar buttons
 - Support for Adobe Fonts
+- Completely overhauled and made a lot easier the process of adding new supported websites
 ### Changed
 - Manifest key is now overridden to have a consistent extension ID
 - Publish workflow now automates releases
