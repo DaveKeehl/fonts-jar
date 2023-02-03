@@ -9,23 +9,19 @@ import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
 import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
 import type { SupportedWebsite } from "~types/website"
 
-interface IFavorite {
-  favorite: ITypeface
-}
-
-export const Favorite = ({ favorite }: IFavorite) => {
+export const Typeface = ({ typeface }: { typeface: ITypeface }) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const setIsModalOpen = useSetAtom(modalOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom)
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
   const [, setVisibleOrigins] = useStorage<SupportedWebsite[]>("visibleOriginWebsites", [])
 
-  const { origin, family, slug } = favorite
+  const { origin, family, slug } = typeface
 
   const openModal = useCallback(() => {
     setIsModalOpen("collection-assignment")
-    setSelectedTypeface(favorite.slug)
-  }, [favorite])
+    setSelectedTypeface(typeface.slug)
+  }, [typeface])
 
   const handleRemoveTypeface = useCallback(() => {
     const favoritesMap = new Map(favorites)
@@ -33,10 +29,10 @@ export const Favorite = ({ favorite }: IFavorite) => {
     setFavorites(Array.from(favoritesMap))
     setCollections((prev) =>
       prev.map((collection) => {
-        if (!collection.typefaces.includes(favorite.slug)) return collection
+        if (!collection.typefaces.includes(typeface.slug)) return collection
         return {
           ...collection,
-          typefaces: collection.typefaces.filter((font) => font !== favorite.slug)
+          typefaces: collection.typefaces.filter((font) => font !== typeface.slug)
         }
       })
     )

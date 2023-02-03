@@ -1,7 +1,7 @@
 import { useEffect } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { Favorite } from "./Favorite"
+import { Typeface } from "./Typeface"
 import { NothingToShow } from "./NothingToShow"
 
 import { getSortFunction, useSearch } from "../utils"
@@ -74,7 +74,7 @@ export const Favorites = () => {
   return (
     <div id="favorites" className="h-[400px] overflow-auto">
       {filteredSortedFavorites.map((favorite) => (
-        <Favorite key={crypto.randomUUID()} favorite={favorite[1]} />
+        <Typeface key={crypto.randomUUID()} typeface={favorite[1]} />
       ))}
     </div>
   )
