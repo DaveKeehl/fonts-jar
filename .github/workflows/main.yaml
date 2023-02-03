@@ -29,12 +29,12 @@ jobs:
           secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
           target: .env
 
-      - name: Create and zip production build
-        run: npm run build-zip
+      - name: Create production builds
+        run: npm run build
 
-      - name: Upload build artifact
+      - name: Upload build artifacts
         uses: actions/upload-artifact@master
         with:
           name: fonts-jar
-          path: ./build/chrome-mv3-prod.zip
+          path: ./build/*-prod.zip
           retention-days: 1
