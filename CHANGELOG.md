@@ -7,7 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 ### Changed
-- CI artifacts now include production builds for Chrome, Edge and Firefox
+- CI workflow now uploads production builds for Chrome, Edge and Firefox to artifacts
+- Publish workflow now uploads production builds for Chrome, Edge and Firefox to new release
 - `host_permissions` now only target the supported websites
 - Improved README
 
