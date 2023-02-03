@@ -2,6 +2,7 @@ import { useEffect, useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { Minus, Plus } from "phosphor-react"
 import { cva } from "cva"
+import { twMerge } from "tailwind-merge"
 
 import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
 import type { Theme, Website } from "~types/website"
@@ -10,6 +11,7 @@ import { isUrlLegal, slugify } from "~contents/utils"
 interface IButton {
   website: Website
   defaultTheme: Theme
+  className?: string
   variants?: {
     theme: {
       dark: string[]
@@ -27,6 +29,8 @@ interface IButton {
 }
 
 const Button = ({
+  website,
+  className,
   defaultTheme,
   variants = {
     theme: {
@@ -41,8 +45,7 @@ const Button = ({
       true: [],
       false: []
     }
-  },
-  website
+  }
 }: IButton) => {
   const [typeface, setTypeface] = useState<ITypeface>()
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
@@ -69,8 +72,8 @@ const Button = ({
         setTheme(initialTheme)
 
         // Attach event listener to theme toggler to know when to change theme
-        const themeToggler = document.querySelector(toggle)
-        themeToggler.addEventListener("click", toggleTheme)
+        const themeTogglers = document.querySelectorAll(toggle)
+        themeTogglers.forEach((toggler) => toggler.addEventListener("click", toggleTheme))
       }
 
       const fontName = document
@@ -153,7 +156,10 @@ const Button = ({
         }
 
   const button = cva(
-    "flex items-center justify-center gap-[4px] rounded-[36px] border py-[7px] px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
+    twMerge(
+      "flex items-center justify-center gap-[4px] rounded-[36px] border py-[7px] px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
+      className
+    ),
     {
       variants,
       defaultVariants: {

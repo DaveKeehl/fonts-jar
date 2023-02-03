@@ -50,3 +50,7 @@
 #plasmo-shadow-container {
   z-index: 0 !important;
 }
+
+#plasmo-shadow-container > .plasmo-csui-container {
+  width: max-content !important;
+}
