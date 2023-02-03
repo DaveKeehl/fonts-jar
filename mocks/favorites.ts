@@ -10,28 +10,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "poppins"
     }
   ],
   [
@@ -43,28 +22,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Roboto+Serif"
       },
-      slug: "robotoSerif",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 3
+      slug: "robotoSerif"
     }
   ],
   [
@@ -76,22 +34,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Open+Sans"
       },
-      slug: "openSans",
-      styles: [
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic"
-      ],
-      variableAxes: 3
+      slug: "openSans"
     }
   ],
   [
@@ -103,28 +46,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Montserrat"
       },
-      slug: "montserrat",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 2
+      slug: "montserrat"
     }
   ],
   [
@@ -136,28 +58,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Raleway"
       },
-      slug: "raleway",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 2
+      slug: "raleway"
     }
   ],
   [
@@ -169,16 +70,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Oswald"
       },
-      slug: "oswald",
-      styles: [
-        "Extra-light 200",
-        "Light 300",
-        "Regular 400",
-        "Medium 500",
-        "Semi-bold 600",
-        "Bold 700"
-      ],
-      variableAxes: 1
+      slug: "oswald"
     }
   ],
   [
@@ -190,19 +82,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Inter"
       },
-      slug: "inter",
-      styles: [
-        "Thin 100",
-        "Extra-light 200",
-        "Light 300",
-        "Regular 400",
-        "Medium 500",
-        "Semi-bold 600",
-        "Bold 700",
-        "Extra-bold 800",
-        "Black 900"
-      ],
-      variableAxes: 1
+      slug: "inter"
     }
   ],
   [
@@ -214,22 +94,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Playfair+Display"
       },
-      slug: "playfairDisplay",
-      styles: [
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 2
+      slug: "playfairDisplay"
     }
   ],
   [
@@ -241,28 +106,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Work+Sans"
       },
-      slug: "workSans",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 2
+      slug: "workSans"
     }
   ],
   [
@@ -274,28 +118,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Barlow"
       },
-      slug: "barlow",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "barlow"
     }
   ],
   [
@@ -307,24 +130,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Karla"
       },
-      slug: "karla",
-      styles: [
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic"
-      ],
-      variableAxes: 2
+      slug: "karla"
     }
   ],
   [
@@ -336,9 +142,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Bebas+Neue"
       },
-      slug: "bebasNeue",
-      styles: ["Regular 400"],
-      variableAxes: 0
+      slug: "bebasNeue"
     }
   ],
   [
@@ -350,28 +154,7 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/noto/specimen/Noto+Serif+Display"
       },
-      slug: "notoSerifDisplay",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 3
+      slug: "notoSerifDisplay"
     }
   ],
   [
@@ -383,139 +166,37 @@ export const validTypefaces: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Overpass"
       },
-      slug: "overpass",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 2
+      slug: "overpass"
     }
   ]
 ]
 
-export const invalidAddedAt = [
+export const invalidAddedAt: TypefaceTuple[] = [
   [
     "poppins",
     {
       added_at: "",
-      collections: ["body"],
       family: "Poppins",
       origin: {
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "poppins"
     }
   ]
 ]
 
-export const invalidCollections = [
+export const invalidCollections: TypefaceTuple[] = [
   [
     "poppins",
     {
       added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: 0,
       family: "Poppins",
       origin: {
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
-    }
-  ]
-]
-
-export const invalidFamily = [
-  [
-    "poppins",
-    {
-      added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
-      family: [],
-      origin: {
-        name: "Google Fonts",
-        url: "https://fonts.google.com/specimen/Poppins"
-      },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "poppins"
     }
   ]
 ]
@@ -530,28 +211,7 @@ export const invalidOrigin: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "poppins"
     }
   ]
 ]
@@ -566,65 +226,7 @@ export const notMatchingSlugs: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
-    }
-  ]
-]
-
-export const invalidSlug = [
-  [
-    "poppins",
-    {
-      added_at: "Fri Feb 18 2022 11:50:27 GMT+0100 (Central European Standard Time)",
-      collections: ["body"],
-      family: "Poppins",
-      origin: {
-        name: "Google Fonts",
-        url: "https://fonts.google.com/specimen/Poppins"
-      },
-      slug: 0,
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: 0
+      slug: "poppins"
     }
   ]
 ]
@@ -639,9 +241,7 @@ export const invalidStyles: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [],
-      variableAxes: 0
+      slug: "poppins"
     }
   ]
 ]
@@ -656,28 +256,7 @@ export const invalidVariableAxes: TypefaceTuple[] = [
         name: "Google Fonts",
         url: "https://fonts.google.com/specimen/Poppins"
       },
-      slug: "poppins",
-      styles: [
-        "Thin 100",
-        "Thin 100 italic",
-        "Extra-light 200",
-        "Extra-light 200 italic",
-        "Light 300",
-        "Light 300 italic",
-        "Regular 400",
-        "Regular 400 italic",
-        "Medium 500",
-        "Medium 500 italic",
-        "Semi-bold 600",
-        "Semi-bold 600 italic",
-        "Bold 700",
-        "Bold 700 italic",
-        "Extra-bold 800",
-        "Extra-bold 800 italic",
-        "Black 900",
-        "Black 900 italic"
-      ],
-      variableAxes: -2
+      slug: "poppins"
     }
   ]
 ]

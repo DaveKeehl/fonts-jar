@@ -3,8 +3,6 @@ import { SupportedWebsite } from "./website"
 export interface ITypeface {
   family: string
   slug: string
-  styles: string[]
-  variableAxes: number
   origin: ITypefaceOrigin
   added_at: string
 }

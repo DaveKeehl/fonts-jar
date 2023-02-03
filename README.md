@@ -34,6 +34,7 @@ Until this extension is not available for download from the Chrome Web Store, yo
 Fonts Jar currently supports the following websites:
 
 - [Google Fonts](https://fonts.google.com/)
+- [Adobe Fonts](https://fonts.adobe.com/)
 
 ## 🧭 Roadmap
 

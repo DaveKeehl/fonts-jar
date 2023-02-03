@@ -17,18 +17,6 @@ export const slugify = (text: string) =>
     .join("")
 
 /**
- * Given some CSS, get a minified version of it.
- * @param css - The CSS to be minified.
- * @returns The minified CSS.
- */
-export const minify = (css: string) =>
-  css
-    .replace(/([^0-9a-zA-Z.#])\s+/g, "$1")
-    .replace(/\s([^0-9a-zA-Z.#]+)/g, "$1")
-    .replace(/;}/g, "}")
-    .replace(/\/\*.*?\*\//g, "")
-
-/**
  * Generic function whose goal is to run some code on the first valid element from an array of candidate elements.
  * @param candidates - The array of candidates. The function will stop iterating at the first candidate that results in a valid element as output of the onCandidateIteration callback function.
  * @param onCandidateIteration - Callback function whose output is used to determine the validitiy of a candidate element.

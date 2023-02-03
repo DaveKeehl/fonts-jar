@@ -10,8 +10,20 @@ module.exports = {
       },
       colors: {
         gf: {
-          primary: '#8ab4f8',
-          secondary: '#d2e3fc'
+          dark: {
+            primary: '#8ab4f8',
+            secondary: '#d2e3fc'
+          },
+          light: {
+            primary: '#1a73e8',
+            secondary: '#174ea6'
+          }
+        },
+        adobe: {
+          light: {
+            primary: '#707070',
+            secondary: '#e1e1e1'
+          }
         },
         greyscale: {
           100: '#fbfbfe',

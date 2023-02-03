@@ -20,10 +20,7 @@ export const Favorite = ({ favorite }: IFavorite) => {
   const [, setCollections] = useStorage<ICollection[]>("collections", [])
   const [, setVisibleOrigins] = useStorage<SupportedWebsite[]>("visibleOriginWebsites", [])
 
-  const { origin, family, /** styles, variableAxes **/ slug } = favorite
-
-  // const stylesText = `${styles.length} style${styles.length > 1 ? "s" : ""}`
-  // const variableAxesText = variableAxes > 0 ? `(variable - ${variableAxes} axes)` : ""
+  const { origin, family, slug } = favorite
 
   const openModal = useCallback(() => {
     setIsModalOpen("collection-assignment")
@@ -71,9 +68,6 @@ export const Favorite = ({ favorite }: IFavorite) => {
           className="mb-[2px] block text-lg font-medium no-underline [line-height:1.2] hover:cursor-ne-resize hover:underline">
           {family}
         </a>
-        {/* <p className="text-sm text-greyscale-600 opacity-90">
-          {stylesText} {variableAxesText}
-        </p> */}
         <p className="text-sm text-greyscale-600 opacity-90">{origin.name}</p>
       </div>
       <div className="flex gap-2 opacity-0 group-hover:opacity-100">
