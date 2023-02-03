@@ -25,8 +25,36 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Build and zip extension artifact
-        run: npm run build -- --zip
+      - name: Lint
+        run: npm run lint
+
+      - name: Create .env with Plasmo public keys
+        uses: PlasmoHQ/soft-secret@v1
+        with:
+          secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
+          target: .env
+
+      - name: Create and zip production build
+        run: npm run build-zip
+
+      - name: Extract release notes
+        id: extract-release-notes
+        uses: ffurrer2/extract-release-notes@v1
+
+      - name: Get version
+        id: get-version
+        uses: martinbeentjes/npm-get-version-action@master
+
+      - name: Create new release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ steps.get-version.outputs.current-version }}
+          release_name: ${{ steps.get-version.outputs.current-version }}
+          draft: false
+          prerelease: false
+          body: ${{ steps.extract-release-notes.outputs.release_notes }}
 
       # - name: Browser Platform Publish
       #   uses: PlasmoHQ/bpp@v3

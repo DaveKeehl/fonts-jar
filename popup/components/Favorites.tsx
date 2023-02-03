@@ -1,63 +1,80 @@
+import { useEffect } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { Favorite } from "./Favorite"
+import { Typeface } from "./Typeface"
 import { NothingToShow } from "./NothingToShow"
 
-import { getSortFunction } from "../utils"
+import { getSortFunction, useSearch } from "../utils"
 import type { ISorting } from "types/sorting"
 import type { ICollection, TypefaceTuple } from "types/typeface"
+import type { SupportedWebsite } from "~types/website"
 
 export const Favorites = () => {
   const [searchQuery] = useStorage("searchQuery", "")
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [method] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
-  const [direction] = useStorage<ISorting["direction"]>(
-    "sortDirection",
-    "ascending"
-  )
+  const [direction] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
   const [collections] = useStorage<ICollection[]>("collections", [])
+  const [visibleOrigins, setVisibleOrigins] = useStorage<SupportedWebsite[]>(
+    "visibleOriginWebsites",
+    []
+  )
 
-  const results = [...favorites]
-    .filter((favorite) => {
+  useEffect(() => {
+    const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
+    uniqueOrigins.forEach((origin) => {
+      if (!visibleOrigins.includes(origin)) {
+        setVisibleOrigins((prev) => [...prev, origin])
+      }
+    })
+  }, [])
+
+  const filterByOrigin = (favorites: TypefaceTuple[]) => {
+    return [...favorites].filter((favorite) => visibleOrigins.includes(favorite[1].origin.name))
+  }
+
+  const filterByCollection = (favorites: TypefaceTuple[]) => {
+    return [...favorites].filter((favorite) => {
       const results = collections.filter((collection) =>
         collection.typefaces.includes(favorite[1].slug)
       )
       if (results.length === 0) return true
       return results.some((collection) => !collection.hidden)
     })
-    .filter((favorite) => {
-      const cleanQuery = searchQuery.trim().toLowerCase()
-      const { family, origin } = favorite[1]
+  }
 
-      const familyNormalized = family.toLowerCase()
-      const originNormalized = origin.name.toLowerCase()
+  const filteredFavorites = useSearch(
+    searchQuery,
+    filterByCollection(filterByOrigin(favorites)),
+    (cleanQuery, normalize) => ({
+      family: {
+        propertyContainsQuery: ([, { family }]) => normalize(family).includes(cleanQuery),
+        queryContainsProperty: ([, { family }]) => cleanQuery.includes(normalize(family))
+      },
+      origin: {
+        propertyContainsQuery: ([, { origin }]) => normalize(origin.name).includes(cleanQuery),
+        queryContainsProperty: ([, { origin }]) => cleanQuery.includes(normalize(origin.name))
+      }
+    }),
+    (tuple) => tuple[1]
+  )
 
-      const familyContainsQuery = familyNormalized.includes(cleanQuery)
-      const originContainsQuery = originNormalized.includes(cleanQuery)
-      const queryContainsFamily = cleanQuery.includes(familyNormalized)
-      const queryContainsOrigin = cleanQuery.includes(originNormalized)
-
-      return (
-        familyContainsQuery ||
-        originContainsQuery ||
-        queryContainsFamily ||
-        queryContainsOrigin
-      )
-    })
-    .sort(getSortFunction({ method, direction }))
+  const filteredSortedFavorites = [...filteredFavorites].sort(
+    getSortFunction({ method, direction })
+  )
 
   if (favorites.length === 0) {
     return <NothingToShow>No fonts added</NothingToShow>
   }
 
-  if (results.length === 0) {
+  if (filteredSortedFavorites.length === 0) {
     return <NothingToShow>No fonts visible</NothingToShow>
   }
 
   return (
     <div id="favorites" className="h-[400px] overflow-auto">
-      {results.map((favorite) => (
-        <Favorite key={crypto.randomUUID()} favorite={favorite[1]} />
+      {filteredSortedFavorites.map((favorite) => (
+        <Typeface key={crypto.randomUUID()} typeface={favorite[1]} />
       ))}
     </div>
   )

@@ -1,3 +1,5 @@
+import { isPlainObject } from "lodash"
+
 import type { CompareFunction, ISorting } from "~types/sorting"
 import type { TypefaceTuple } from "~types/typeface"
 
@@ -70,4 +72,41 @@ export const getSortFunction = (sort: ISorting) => {
   if (method === "time" && direction === "descending") sortFunction = sortDescendingByDate
 
   return sortFunction as CompareFunction
+}
+
+export const useSearch = <T, S = T>(
+  query: string,
+  items: T[],
+  validate: (
+    cleanQuery: string,
+    normalize: (input: string) => string
+  ) => {
+    [property in keyof S]?: {
+      propertyContainsQuery: (item: T) => boolean
+      queryContainsProperty?: (item: T) => boolean
+    }
+  },
+  mapper?: (item: T) => S
+) => {
+  const normalize = (input: string) => input.trim().toLowerCase()
+  const validations = validate(normalize(query), normalize)
+
+  return [...items].filter((item) => {
+    const properties = isPlainObject(item) ? Object.keys(item) : Object.keys(mapper(item))
+
+    return properties.reduce((result, property) => {
+      const validationHasProperty = Object.hasOwn(validations, property)
+
+      if (validationHasProperty) {
+        const { propertyContainsQuery, queryContainsProperty } = validations[property]
+
+        if (queryContainsProperty) {
+          return result || propertyContainsQuery(item) || queryContainsProperty(item)
+        }
+        return result || propertyContainsQuery(item)
+      }
+
+      return result
+    }, false)
+  })
 }

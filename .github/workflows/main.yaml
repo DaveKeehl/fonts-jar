@@ -23,8 +23,14 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Build and zip extension artifact
-        run: npm run build -- --zip
+      - name: Create .env with Plasmo public keys
+        uses: PlasmoHQ/soft-secret@v1
+        with:
+          secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
+          target: .env
+
+      - name: Create and zip production build
+        run: npm run build-zip
 
       - name: Upload build artifact
         uses: actions/upload-artifact@master

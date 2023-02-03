@@ -6,9 +6,10 @@ import { Search } from "../../Search"
 import { Modal } from "../Modal"
 import { modalOpenAtom } from "~popup/atoms"
 import { NewCollectionForm } from "./NewCollectionForm"
-import { Collection } from "./Collection"
+import { Collections } from "./Collections"
 
 import type { ICollection, TypefaceTuple } from "~types/typeface"
+import { useSearch } from "~popup/utils"
 
 export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -24,23 +25,22 @@ export const CollectionsManager = () => {
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
 
-  const filteredCollections = [...collections].filter(({ name, typefaces }) => {
-    const cleanQuery = searchQuery.trim().toLowerCase()
-    const nameNormalized = name.toLowerCase()
-
-    const nameContainsQuery = nameNormalized.includes(cleanQuery)
-    const queryContainsName = cleanQuery.includes(nameNormalized)
-
-    const typefacesContainQuery = typefaces.some((typeface) =>
-      cleanQuery.split(" ").some((term) => {
-        const cleanTypeface = typeface.trim().toLowerCase()
-        const cleanTerm = term.trim().toLowerCase()
-        return cleanTypeface.includes(cleanTerm)
-      })
-    )
-
-    return nameContainsQuery || queryContainsName || typefacesContainQuery
-  })
+  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
+    name: {
+      propertyContainsQuery: ({ name }) => normalize(name).includes(cleanQuery),
+      queryContainsProperty: ({ name }) => cleanQuery.includes(normalize(name))
+    },
+    typefaces: {
+      propertyContainsQuery: ({ typefaces }) =>
+        typefaces.some((typeface) => {
+          const cleanTypeface = normalize(typeface)
+          return cleanQuery.split(" ").some((term) => {
+            const cleanTerm = normalize(term)
+            return cleanTypeface.includes(cleanTerm)
+          })
+        })
+    }
+  }))
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCollection(e.target.value)
 
@@ -110,27 +110,16 @@ export const CollectionsManager = () => {
           iconClassName="left-3"
         />
         <div className="flex flex-col gap-4">
-          <div className="flex flex-col gap-[3px]">
-            {filteredCollections.length === 0 ? (
-              <p className="text-base">No results.</p>
-            ) : (
-              filteredCollections.map((collection, idx) => (
-                <Collection
-                  key={idx}
-                  value={
-                    // If the collection name has been updated, use the updated one. Otherwise use the original collection name
-                    collection.name === updatedName.prev ? updatedName.updated : collection.name
-                  }
-                  data={collection}
-                  favorites={favorites}
-                  onChange={(e, name) => handleUpdateName(e, name)}
-                  onBlur={(name) => handleUpdateNameAfterLostFocus(name)}
-                  onToggleVisibility={(name) => handleToggleVisibility(name)}
-                  onDelete={(name) => handleDelete(name)}
-                />
-              ))
-            )}
-          </div>
+          <Collections
+            collections={collections}
+            filteredCollections={filteredCollections}
+            favorites={favorites}
+            updatedName={updatedName}
+            onChange={(e, name) => handleUpdateName(e, name)}
+            onBlur={(name) => handleUpdateNameAfterLostFocus(name)}
+            onToggleVisibility={(name) => handleToggleVisibility(name)}
+            onDelete={(name) => handleDelete(name)}
+          />
           <NewCollectionForm
             value={newCollection}
             onChange={handleChange}

@@ -1,7 +1,7 @@
 import { Favorites } from "./components/Favorites"
 import { Header } from "./components/Header"
 import { TopBar } from "./components/TopBar"
-import { CollectionsManager, CollectionAssignment } from "./components/Modals"
+import { CollectionsManager, CollectionAssignment, OriginWebsites } from "./components/Modals"
 
 import "../style.css"
 
@@ -13,6 +13,7 @@ function IndexPopup() {
       <Favorites />
       <CollectionsManager />
       <CollectionAssignment />
+      <OriginWebsites />
     </div>
   )
 }

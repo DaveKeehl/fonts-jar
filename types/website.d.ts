@@ -7,23 +7,11 @@ export interface Website {
   name: SupportedWebsite
   regex: WebsiteRegex
   queries: ExtractionQueries
-  themes: {
-    [key in Theme]?: {
-      primary: string
-      secondary: string
-      tertiary: string
-      quaternary: string
-    }
-  }
-  styles: {
-    button: { [key: string]: string }
-    icon: { [key: string]: string }
-  }
 }
 
 // WEBSITES
 
-export type SupportedWebsite = "Google Fonts"
+export type SupportedWebsite = "Google Fonts" | "Adobe Fonts"
 
 export type WebsitesSpecificStyles = {
   name: SupportedWebsite
@@ -33,14 +21,12 @@ export type WebsitesSpecificStyles = {
 // QUERIES
 
 export interface ExtractionQueries {
-  theme: ThemeQuery
-  titleElement: string[]
-  variants: string
-  variableAxes: string
+  titleElement: string
+  theme?: ThemeQuery
 }
 
 export interface ThemeQuery {
-  element: string
+  element: string // Which element holds the dark theme class name
   darkThemeClass: string
   toggle: string
 }

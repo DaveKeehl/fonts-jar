@@ -17,11 +17,7 @@ export const Search = ({
 }: ISearch) => {
   return (
     <div className="search relative flex h-full flex-1 flex-row items-center">
-      <MagnifyingGlass
-        size={18}
-        weight="bold"
-        className={`absolute ${iconClassName}`}
-      />
+      <MagnifyingGlass size={18} weight="bold" className={`absolute ${iconClassName}`} />
       <input
         type="search"
         placeholder={placeholder}

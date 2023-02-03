@@ -7,6 +7,7 @@ import { Search } from "../Search"
 import { Modal } from "./Modal"
 
 import type { ICollection, TypefaceTuple } from "~types/typeface"
+import { useSearch } from "~popup/utils"
 
 export const CollectionAssignment = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -17,15 +18,12 @@ export const CollectionAssignment = () => {
 
   const selectedTypeface = favorites.find((favorite) => favorite[0] === selectedTypefaceSlug)
 
-  const filteredCollections = [...collections].filter(({ name }) => {
-    const cleanQuery = searchQuery.trim().toLowerCase()
-    const nameNormalized = name.toLowerCase()
-
-    const nameContainsQuery = nameNormalized.includes(cleanQuery)
-    const queryContainsName = cleanQuery.includes(nameNormalized)
-
-    return nameContainsQuery || queryContainsName
-  })
+  const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
+    name: {
+      propertyContainsQuery: ({ name }) => normalize(name).includes(cleanQuery),
+      queryContainsProperty: ({ name }) => cleanQuery.includes(normalize(name))
+    }
+  }))
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCollections((prev) =>
