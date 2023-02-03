@@ -18,6 +18,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Content scripts now use Plasmo CSUI to inject React components within the supported websites
 ### Removed
 - No longer using background service worker
+- No longer internally storing font variants and variable axis count
 ### Fixed
 - Collection input field in collections manager modal is now set to `width: 100%` to prevent horizontal overflow
 
