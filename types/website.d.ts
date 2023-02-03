@@ -26,7 +26,7 @@ export interface ExtractionQueries {
 }
 
 export interface ThemeQuery {
-  element: string
+  element: string // Which element holds the dark theme class name
   darkThemeClass: string
   toggle: string
 }

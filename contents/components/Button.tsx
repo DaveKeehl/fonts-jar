@@ -1,82 +1,91 @@
 import { useEffect, useState } from "react"
-import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo"
 import { useStorage } from "@plasmohq/storage/hook"
 import { Minus, Plus } from "phosphor-react"
 import { cva } from "cva"
 
 import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
-import type { Theme } from "~types/website"
-import { extractFontData } from "./logic/DOM"
-import { identifyWebsite } from "./logic/detection"
-import { buttonContent, websites } from "./logic/constants"
-import cssText from "data-text:~style.css"
+import type { Theme, Website } from "~types/website"
+import { isUrlLegal, slugify } from "~contents/utils"
 
-export const config: PlasmoCSConfig = {
-  matches: ["https://fonts.google.com/*specimen/*"],
-  run_at: "document_end"
-}
-
-export const getStyle = () => {
-  const style = document.createElement("style")
-  style.textContent = cssText
-  return style
-}
-
-export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
-  return document.querySelector("ul.breadcrumb__actions li:nth-last-child(2)")
-}
-
-// Use this to optimize unmount lookups
-export const getShadowHostId = () => "plasmo-inline"
-
-const button = cva(
-  "flex items-center justify-center gap-[4px] rounded-[36px] border py-[7px] px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
-  {
-    variants: {
-      theme: {
-        dark: ["border-gf-dark-primary", "text-gf-dark-primary", "hover:text-gf-dark-secondary"],
-        light: ["border-gf-light-primary", "text-gf-light-primary", "hover:text-gf-light-secondary"]
-      },
-      filledDark: {
-        true: ["bg-gf-dark-primary/[.25]"],
-        false: ["bg-none hover:bg-gf-dark-primary/[.04]"]
-      },
-      filledLight: {
-        true: ["bg-gf-light-primary/[.25]"],
-        false: ["bg-none hover:bg-gf-light-primary/[.04]"]
-      }
-    },
-    defaultVariants: {
-      theme: "dark"
+interface IButton {
+  website: Website
+  defaultTheme: Theme
+  variants?: {
+    theme: {
+      dark: string[]
+      light: string[]
+    }
+    filledDark: {
+      true: string[]
+      false: string[]
+    }
+    filledLight: {
+      true: string[]
+      false: string[]
     }
   }
-)
+}
 
-const Button = () => {
+const Button = ({
+  defaultTheme,
+  variants = {
+    theme: {
+      dark: [],
+      light: []
+    },
+    filledDark: {
+      true: [],
+      false: []
+    },
+    filledLight: {
+      true: [],
+      false: []
+    }
+  },
+  website
+}: IButton) => {
   const [typeface, setTypeface] = useState<ITypeface>()
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
   const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
-  const [theme, setTheme] = useState<Theme>("dark")
+  const [theme, setTheme] = useState<Theme>(defaultTheme)
 
   useEffect(() => {
     setTimeout(() => {
-      const typefaceOrigin = identifyWebsite(document.location.href)
-      const website = websites.find((el) => el.name === typefaceOrigin.name)
+      const url = document.location.href
+
+      if (!isUrlLegal(url, website.regex)) {
+        throw new Error(`The received url (${url}) does not seem to be supported`)
+      }
 
       if (website.queries.theme) {
         const { element, darkThemeClass, toggle } = website.queries.theme
 
+        // Grab the current theme
         const themeHolder = document.querySelector(element)
         const initialTheme: Theme = themeHolder.classList.contains(darkThemeClass)
           ? "dark"
           : "light"
         setTheme(initialTheme)
+
+        // Attach event listener to theme toggler to know when to change theme
         const themeToggler = document.querySelector(toggle)
         themeToggler.addEventListener("click", toggleTheme)
       }
 
-      setTypeface(extractFontData(typefaceOrigin, website.queries.titleElement))
+      const fontName = document
+        .querySelector<HTMLHeadingElement>(website.queries.titleElement)
+        .textContent.trim()
+
+      setTypeface({
+        family: fontName,
+        slug: slugify(fontName),
+        origin: {
+          name: website.name,
+          url
+        },
+        added_at: ""
+      })
     }, 100)
   }, [])
 
@@ -143,17 +152,27 @@ const Button = () => {
           filledLight: isFontInFavorites
         }
 
+  const button = cva(
+    "flex items-center justify-center gap-[4px] rounded-[36px] border py-[7px] px-[15px] font-inherit text-sm font-medium hover:cursor-pointer",
+    {
+      variants,
+      defaultVariants: {
+        theme
+      }
+    }
+  )
+
   return (
     <button className={button(buttonProps)} onClick={handleClick}>
       {!isFontInFavorites ? (
         <>
           <Plus size={ICON.SIZE} weight={ICON.WEIGHT} />
-          <span>{buttonContent.add}</span>
+          <span>Add to favorites</span>
         </>
       ) : (
         <>
           <Minus size={ICON.SIZE} weight={ICON.WEIGHT} />
-          <span>{buttonContent.remove}</span>
+          <span>Remove from favorites</span>
         </>
       )}
     </button>
