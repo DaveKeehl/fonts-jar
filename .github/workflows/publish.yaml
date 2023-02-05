@@ -62,5 +62,5 @@ jobs:
       # - name: Browser Platform Publish
       #   uses: PlasmoHQ/bpp@v3
       #   with:
-      #     keys: ${{ secrets.BPP_KEYS }}
+      #     keys: ${{ secrets.PLASMO_BPP_KEYS }}
       #     chrome-file: ./build/chrome-mv3-prod.zip
