@@ -1,6 +1,6 @@
-name: CI
+name: PR Review
 
-on: [push]
+on: [pull_request]
 
 jobs:
   CI:
@@ -23,18 +23,5 @@ jobs:
       - name: Lint
         run: npm run lint
 
-      - name: Create .env with Plasmo public keys
-        uses: PlasmoHQ/soft-secret@v1
-        with:
-          secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
-          target: .env
-
       - name: Create production builds
         run: npm run build
-
-      - name: Upload build artifacts
-        uses: actions/upload-artifact@master
-        with:
-          name: fonts-jar
-          path: ./build/*-prod.zip
-          retention-days: 1
