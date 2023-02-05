@@ -11,7 +11,7 @@
   "bugs": {
     "url": "https://github.com/DaveKeehl/fonts-jar/issues"
   },
-  "homepage": "https://github.com/DaveKeehl/fonts-jar#readme",
+  "homepage": "https://github.com/DaveKeehl/fonts-jar",
   "license": "ISC",
   "scripts": {
     "dev": "plasmo dev",
