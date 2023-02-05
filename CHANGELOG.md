@@ -11,6 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Publish workflow now uploads production builds for Chrome, Edge and Firefox to new release
 - `host_permissions` now only target the supported websites
 - Improved README
+- Homepage in package.json now points to raw repository url
 
 ## [0.4.0] - 2023-02-03
 ### Added
