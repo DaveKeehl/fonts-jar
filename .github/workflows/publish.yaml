@@ -34,8 +34,8 @@ jobs:
           secret: ${{ secrets.PLASMO_PUBLIC_KEYS }}
           target: .env
 
-      - name: Create and zip production build
-        run: npm run build-zip
+      - name: Create production builds
+        run: npm run build
 
       - name: Extract release notes
         id: extract-release-notes
@@ -46,18 +46,21 @@ jobs:
         uses: martinbeentjes/npm-get-version-action@master
 
       - name: Create new release
-        uses: actions/create-release@v1
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        uses: softprops/action-gh-release@v1
         with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          body: ${{ steps.extract-release-notes.outputs.release_notes }}
+          name: ${{ steps.get-version.outputs.current-version }}
           tag_name: ${{ steps.get-version.outputs.current-version }}
-          release_name: ${{ steps.get-version.outputs.current-version }}
           draft: false
           prerelease: false
-          body: ${{ steps.extract-release-notes.outputs.release_notes }}
+          files: |
+            ./build/chrome-mv3-prod.zip
+            ./build/edge-mv3-prod.zip
+            ./build/firefox-mv2-prod.zip
 
       # - name: Browser Platform Publish
       #   uses: PlasmoHQ/bpp@v3
       #   with:
-      #     keys: ${{ secrets.SUBMIT_KEYS }}
-      #     artifact: build/chrome-mv3-prod.zip
+      #     keys: ${{ secrets.PLASMO_BPP_KEYS }}
+      #     chrome-file: ./build/chrome-mv3-prod.zip
