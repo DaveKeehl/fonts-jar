@@ -1,5 +1,5 @@
 import { useCallback, useState } from "react"
-import { Folder, FolderOpen } from "phosphor-react"
+import { Folder, FolderOpen } from "@phosphor-icons/react"
 import { useSetAtom } from "jotai"
 
 import { ToolbarAction } from "../ToolbarAction"

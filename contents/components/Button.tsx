@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
-import { Minus, Plus } from "phosphor-react"
-import { cva } from "cva"
+import { Minus, Plus } from "@phosphor-icons/react"
+import { cva } from "class-variance-authority"
 
 import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
 import type { Theme, Website } from "~types/website"

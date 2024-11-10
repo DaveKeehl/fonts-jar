@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { capitalize } from "lodash"
 import { useStorage } from "@plasmohq/storage/hook"
-import { ArrowDownRight, ArrowUpRight } from "phosphor-react"
+import { ArrowDownRight, ArrowUpRight } from "@phosphor-icons/react"
 
 import { ToolbarAction } from "../ToolbarAction"
 

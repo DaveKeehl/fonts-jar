@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { Clock, TextAa } from "phosphor-react"
+import { Clock, TextAa } from "@phosphor-icons/react"
 import { useStorage } from "@plasmohq/storage/hook"
 
 import { ToolbarAction } from "../ToolbarAction"

@@ -1,7 +1,7 @@
 import { useCallback } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useSetAtom } from "jotai"
-import { FolderPlus, X } from "phosphor-react"
+import { FolderPlus, X } from "@phosphor-icons/react"
 
 import { Button } from "./Button"
 import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"

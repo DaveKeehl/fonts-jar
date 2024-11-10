@@ -1,4 +1,4 @@
-import { CaretDown } from "phosphor-react"
+import { CaretDown } from "@phosphor-icons/react"
 
 interface IToolbarAction {
   children: React.ReactNode

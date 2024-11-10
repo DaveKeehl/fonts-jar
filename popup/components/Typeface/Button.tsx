@@ -1,4 +1,4 @@
-import { cva, type VariantProps } from "cva"
+import { cva, type VariantProps } from "class-variance-authority"
 
 interface IButton extends VariantProps<typeof button> {
   children: React.ReactNode

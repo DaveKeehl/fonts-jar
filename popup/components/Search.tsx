@@ -1,4 +1,4 @@
-import { MagnifyingGlass } from "phosphor-react"
+import { MagnifyingGlass } from "@phosphor-icons/react"
 
 interface ISearch {
   value: string

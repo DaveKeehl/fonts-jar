@@ -1,4 +1,4 @@
-import { Eye, EyeClosed, Trash } from "phosphor-react"
+import { Eye, EyeClosed, Trash } from "@phosphor-icons/react"
 
 import type { ICollection, TypefaceTuple } from "~types/typeface"
 

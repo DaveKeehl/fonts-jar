@@ -1,5 +1,5 @@
 import { useCallback } from "react"
-import { Globe } from "phosphor-react"
+import { Globe } from "@phosphor-icons/react"
 import { useSetAtom } from "jotai"
 
 import { ToolbarAction } from "../ToolbarAction"
