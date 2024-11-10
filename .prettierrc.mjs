@@ -1,7 +1,7 @@
 /**
  * @type {import('prettier').Options}
  */
-module.exports = {
+const config = {
   printWidth: 100,
   tabWidth: 2,
   useTabs: false,
@@ -19,3 +19,5 @@ module.exports = {
   importOrderSortSpecifiers: true,
   pluginSearchDirs: false
 }
+
+export default config
