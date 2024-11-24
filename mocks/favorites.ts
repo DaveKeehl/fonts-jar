@@ -1,4 +1,4 @@
-import type { TypefaceTuple } from "types/typeface"
+import type { TypefaceTuple } from "~/types/typeface"
 
 export const validTypefaces: TypefaceTuple[] = [
   [

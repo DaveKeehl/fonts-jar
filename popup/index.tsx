@@ -1,9 +1,9 @@
-import { Favorites } from "./components/Favorites"
-import { Header } from "./components/Header"
-import { TopBar } from "./components/TopBar"
-import { CollectionsManager, CollectionAssignment, OriginWebsites } from "./components/Modals"
+import { Favorites } from "~/popup/components/Favorites"
+import { Header } from "~/popup/components/Header"
+import { TopBar } from "~/popup/components/TopBar"
+import { CollectionsManager, CollectionAssignment, OriginWebsites } from "~/popup/components/Modals"
 
-import "../style.css"
+import "~/style.css"
 
 function IndexPopup() {
   return (

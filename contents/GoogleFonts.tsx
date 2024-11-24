@@ -1,6 +1,6 @@
 import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo"
 
-import Button from "./components/Button"
+import Button from "~/contents/components/Button"
 
 import cssText from "data-text:~style.css"
 

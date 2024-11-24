@@ -2,14 +2,14 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 
-import { Search } from "../../Search"
-import { Modal } from "../Modal"
-import { modalOpenAtom } from "~popup/atoms"
-import { NewCollectionForm } from "./NewCollectionForm"
-import { Collections } from "./Collections"
+import { Search } from "~/popup/components/Search"
+import { Modal } from "~/popup/components/Modals/Modal"
+import { NewCollectionForm } from "~/popup/components/Modals/CollectionsManager/NewCollectionForm"
+import { Collections } from "~/popup/components/Modals/CollectionsManager/Collections"
 
-import type { ICollection, TypefaceTuple } from "~types/typeface"
-import { useSearch } from "~popup/utils"
+import type { Collection, TypefaceTuple } from "~/types/typeface"
+import { useSearch } from "~/popup/utils"
+import { modalOpenAtom } from "~/popup/atoms"
 
 export const CollectionsManager = () => {
   const [searchQuery, setSearchQuery] = useState("")
@@ -23,7 +23,7 @@ export const CollectionsManager = () => {
   const [newCollection, setNewCollection] = useState("")
   const modalOpen = useAtomValue(modalOpenAtom)
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
+  const [collections, setCollections] = useStorage<Collection[]>("collections", [])
 
   const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
     name: {
@@ -47,10 +47,8 @@ export const CollectionsManager = () => {
   const handleToggleVisibility = (name: string) => {
     setCollections((prev) =>
       prev.map((collection) => {
-        if (collection.name === name) {
-          return { ...collection, hidden: !collection.hidden }
-        }
-        return collection
+        if (collection.name !== name) return collection
+        return { ...collection, hidden: !collection.hidden }
       })
     )
   }
@@ -63,15 +61,12 @@ export const CollectionsManager = () => {
     setCollections((prev) =>
       prev.map((collection) => {
         if (collection.name !== oldName) return collection
-        return {
-          ...collection,
-          name: newName
-        }
+        return { ...collection, name: newName }
       })
     )
   }
 
-  const addCollection = (collection: ICollection) => {
+  const addCollection = (collection: Collection) => {
     setCollections((prev) => [...prev, collection])
   }
 
@@ -85,11 +80,7 @@ export const CollectionsManager = () => {
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    addCollection({
-      name: newCollection,
-      typefaces: [],
-      hidden: false
-    })
+    addCollection({ name: newCollection, typefaces: [], hidden: false })
     setNewCollection("")
     e.currentTarget.blur()
   }

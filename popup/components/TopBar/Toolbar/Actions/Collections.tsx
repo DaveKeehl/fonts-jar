@@ -2,10 +2,10 @@ import { useCallback, useState } from "react"
 import { Folder, FolderOpen } from "@phosphor-icons/react"
 import { useSetAtom } from "jotai"
 
-import { ToolbarAction } from "../ToolbarAction"
+import { ToolbarAction } from "~/popup/components/TopBar/Toolbar/ToolbarAction"
 
 import { ICON_SIZE } from "."
-import { modalOpenAtom } from "~popup/atoms"
+import { modalOpenAtom } from "~/popup/atoms"
 
 export const Collections = () => {
   const [hover, setHover] = useState(false)

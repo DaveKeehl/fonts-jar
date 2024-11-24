@@ -3,17 +3,17 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { useSetAtom } from "jotai"
 import { FolderPlus, X } from "@phosphor-icons/react"
 
-import { Button } from "./Button"
-import { modalOpenAtom, selectedTypefaceSlugAtom } from "~popup/atoms"
+import { Button } from "~/popup/components/Typeface/Button"
 
-import type { ICollection, ITypeface, TypefaceTuple } from "types/typeface"
-import type { SupportedWebsite } from "~types/website"
+import { modalOpenAtom, selectedTypefaceSlugAtom } from "~/popup/atoms"
+import type { Collection, Typeface, TypefaceTuple } from "~/types/typeface"
+import type { SupportedWebsite } from "~/types/website"
 
-export const Typeface = ({ typeface }: { typeface: ITypeface }) => {
+export const TypefaceItem = ({ typeface }: { typeface: Typeface }) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
   const setIsModalOpen = useSetAtom(modalOpenAtom)
   const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom)
-  const [, setCollections] = useStorage<ICollection[]>("collections", [])
+  const [, setCollections] = useStorage<Collection[]>("collections", [])
   const [, setVisibleOrigins] = useStorage<SupportedWebsite[]>("visibleOriginWebsites", [])
 
   const { origin, family, slug } = typeface
@@ -27,15 +27,15 @@ export const Typeface = ({ typeface }: { typeface: ITypeface }) => {
     const favoritesMap = new Map(favorites)
     favoritesMap.delete(slug)
     setFavorites(Array.from(favoritesMap))
+
     setCollections((prev) =>
       prev.map((collection) => {
         if (!collection.typefaces.includes(typeface.slug)) return collection
-        return {
-          ...collection,
-          typefaces: collection.typefaces.filter((font) => font !== typeface.slug)
-        }
+        const filteredTypefaces = collection.typefaces.filter((font) => font !== typeface.slug)
+        return { ...collection, typefaces: filteredTypefaces }
       })
     )
+
     setVisibleOrigins((prev) => {
       const remainingFontsWithSameOrigin = favorites.filter(
         (fav) => fav[1].slug !== slug && fav[1].origin.name === origin.name

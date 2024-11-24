@@ -1,6 +1,6 @@
 import { CaretDown } from "@phosphor-icons/react"
 
-interface IToolbarAction {
+interface Props {
   children: React.ReactNode
   title: string
   hasDropdown?: boolean
@@ -16,7 +16,7 @@ export const ToolbarAction = ({
   onClick,
   onMouseEnter,
   onMouseLeave
-}: IToolbarAction) => {
+}: Props) => {
   return (
     <div
       className="group flex h-full items-center gap-[4px] border-l-[1px] border-greyscale-100 py-0 px-3 transition-all duration-200 hover:cursor-pointer hover:bg-greyscale-300"

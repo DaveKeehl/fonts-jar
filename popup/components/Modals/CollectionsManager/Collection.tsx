@@ -1,13 +1,13 @@
 import { Eye, EyeClosed, Trash } from "@phosphor-icons/react"
 
-import type { ICollection, TypefaceTuple } from "~types/typeface"
+import type { Collection, TypefaceTuple } from "~/types/typeface"
 
-interface IIncludedTypefaces {
+interface Props {
   typefaces: string[]
   favorites: TypefaceTuple[]
 }
 
-const IncludedTypefaces = ({ typefaces, favorites }: IIncludedTypefaces) => {
+const IncludedTypefaces = ({ typefaces, favorites }: Props) => {
   const joinedNames = typefaces
     .map((slug) => {
       const typeface = favorites.find((favorite) => favorite[0] === slug)
@@ -23,7 +23,7 @@ const IncludedTypefaces = ({ typefaces, favorites }: IIncludedTypefaces) => {
   )
 }
 
-export const Collection = ({
+export const CollectionItem = ({
   value,
   data,
   favorites,
@@ -33,7 +33,7 @@ export const Collection = ({
   onDelete
 }: {
   value: string
-  data: ICollection
+  data: Collection
   favorites: TypefaceTuple[]
   onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void
   onBlur: (name: string) => void

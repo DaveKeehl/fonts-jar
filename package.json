@@ -18,7 +18,8 @@
     "build": "plasmo build",
     "build-zip": "plasmo build -- --zip",
     "package": "plasmo package",
-    "lint": "npx tsc"
+    "lint": "npx prettier --check . && next lint",
+    "format": "npx prettier --write ."
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
@@ -26,30 +27,29 @@
     "class-variance-authority": "^0.7.0",
     "jotai": "^2.10.1",
     "lodash": "^4.17.21",
-    "plasmo": "0.89.4",
-    "react": "18.3.1",
-    "react-dom": "18.3.1",
+    "plasmo": "^0.89.4",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
     "react-modal": "^3.16.1"
   },
   "devDependencies": {
-    "@plasmohq/prettier-plugin-sort-imports": "4.0.1",
-    "@types/chrome": "0.0.280",
+    "@eslint/js": "^9.14.0",
+    "@plasmohq/prettier-plugin-sort-imports": "^4.0.1",
+    "@types/chrome": "^0.0.280",
     "@types/lodash": "^4.17.13",
-    "@types/node": "22.9.0",
-    "@types/react": "18.3.12",
-    "@types/react-dom": "18.3.1",
+    "@types/node": "^22.9.0",
+    "@types/react": "^18.3.12",
+    "@types/react-dom": "^18.3.1",
     "@types/react-modal": "^3.16.3",
     "autoprefixer": "^10.4.20",
-    "eslint": "^8.33.0",
-    "eslint-config-prettier": "^8.6.0",
-    "eslint-plugin-prettier": "^4.2.1",
-    "husky": "^9.1.6",
-    "lint-staged": "^13.1.0",
+    "eslint": "^9.14.0",
+    "eslint-config-prettier": "^9.1.0",
     "postcss": "^8.4.47",
-    "prettier": "3.3.3",
+    "prettier": "^3.3.3",
     "prettier-plugin-tailwindcss": "^0.6.8",
     "tailwindcss": "^3.4.14",
-    "typescript": "5.6.3"
+    "typescript": "^5.6.3",
+    "typescript-eslint": "^8.13.0"
   },
   "manifest": {
     "host_permissions": [
@@ -57,9 +57,6 @@
       "https://fonts.adobe.com/*"
     ],
     "key": "$CRX_PUBLIC_KEY"
-  },
-  "lint-staged": {
-    "**/*": "prettier --write --ignore-unknown"
   },
   "overrides": {
     "@swc/core": "1.5.7"

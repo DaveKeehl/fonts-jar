@@ -1,10 +1,10 @@
-import { Collection } from "./Collection"
+import { CollectionItem } from "~/popup/components/Modals/CollectionsManager/Collection"
 
-import type { ICollection, TypefaceTuple } from "~types/typeface"
+import type { Collection, TypefaceTuple } from "~/types/typeface"
 
-interface ICollections {
-  collections: ICollection[]
-  filteredCollections: ICollection[]
+interface Props {
+  collections: Collection[]
+  filteredCollections: Collection[]
   updatedName: { prev: string; updated: string }
   favorites: TypefaceTuple[]
   onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void
@@ -22,20 +22,17 @@ export const Collections = ({
   onBlur,
   onDelete,
   onToggleVisibility
-}: ICollections) => {
-  if (collections.length === 0 && filteredCollections.length === 0) {
-    return <p className="text-base">No collections.</p>
-  }
-
-  if (collections.length > 0 && filteredCollections.length === 0) {
-    return <p className="text-base">No results.</p>
+}: Props) => {
+  if (filteredCollections.length === 0) {
+    const message = collections.length === 0 ? "No collections." : "No results."
+    return <p className="text-base">{message}</p>
   }
 
   return (
     <div className="flex flex-col gap-[3px]">
-      {filteredCollections.map((collection, idx) => (
-        <Collection
-          key={idx}
+      {filteredCollections.map((collection) => (
+        <CollectionItem
+          key={collection.name}
           value={
             // If the collection name has been updated, use the updated one. Otherwise use the original collection name
             collection.name === updatedName.prev ? updatedName.updated : collection.name

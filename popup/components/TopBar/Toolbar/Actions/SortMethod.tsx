@@ -2,13 +2,15 @@ import { useCallback } from "react"
 import { Clock, TextAa } from "@phosphor-icons/react"
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { ToolbarAction } from "../ToolbarAction"
+import { ToolbarAction } from "~/popup/components/TopBar/Toolbar/ToolbarAction"
 
-import type { ISorting } from "~types/sorting"
+import type { Sorting } from "~/types/sorting"
 import { ICON_SIZE } from "."
 
 export const SortMethod = () => {
-  const [method, setMethod] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
+  const [method, setMethod] = useStorage<Sorting["method"]>("sortMethod", "alphabetical")
+
+  const title = `Sort By ${method === "alphabetical" ? "Name" : "Added Date"}`
 
   const toggleMethod = useCallback(
     () => setMethod(method === "alphabetical" ? "time" : "alphabetical"),
@@ -17,7 +19,7 @@ export const SortMethod = () => {
 
   return (
     <ToolbarAction
-      title={`Sort By ${method === "alphabetical" ? "Name" : "Added Date"}`}
+      title={title}
       onClick={toggleMethod}
       hasDropdown>
       {method === "alphabetical" ? <TextAa size={ICON_SIZE} /> : <Clock size={ICON_SIZE} />}

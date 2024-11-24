@@ -3,13 +3,13 @@ import { capitalize } from "lodash"
 import { useStorage } from "@plasmohq/storage/hook"
 import { ArrowDownRight, ArrowUpRight } from "@phosphor-icons/react"
 
-import { ToolbarAction } from "../ToolbarAction"
+import { ToolbarAction } from "~/popup/components/TopBar/Toolbar/ToolbarAction"
 
-import type { ISorting } from "~types/sorting"
+import type { Sorting } from "~/types/sorting"
 import { ICON_SIZE } from "."
 
 export const SortDirection = () => {
-  const [direction, setDirection] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
+  const [direction, setDirection] = useStorage<Sorting["direction"]>("sortDirection", "ascending")
 
   const toggleDirection = useCallback(
     () => setDirection(direction === "ascending" ? "descending" : "ascending"),

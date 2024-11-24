@@ -1,10 +1,10 @@
-interface INewCollectionForm {
+interface Props {
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
   onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
 }
 
-export const NewCollectionForm = ({ value, onChange, onSubmit }: INewCollectionForm) => {
+export const NewCollectionForm = ({ value, onChange, onSubmit }: Props) => {
   return (
     <form className="flex w-full gap-2" onSubmit={onSubmit}>
       <input

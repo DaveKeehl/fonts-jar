@@ -1,5 +1,5 @@
-import { SortDirection, SortMethod, Collections } from "./Actions"
-import { OriginWebsites } from "./Actions/OriginWebsites"
+import { SortDirection, SortMethod, Collections } from "~/popup/components/TopBar/Toolbar/Actions"
+import { OriginWebsites } from "~/popup/components/TopBar/Toolbar/Actions/OriginWebsites"
 
 export const Toolbar = () => {
   return (

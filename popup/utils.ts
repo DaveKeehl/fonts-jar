@@ -1,7 +1,7 @@
 import { isPlainObject } from "lodash"
 
-import type { CompareFunction, ISorting } from "~types/sorting"
-import type { TypefaceTuple } from "~types/typeface"
+import type { CompareFunction, Sorting } from "~/types/sorting"
+import type { TypefaceTuple } from "~/types/typeface"
 
 /**
  * Compare function that allows to sort typefaces by slug in ascending order.
@@ -62,7 +62,7 @@ const sortDescendingByDate = (a: TypefaceTuple, b: TypefaceTuple) => {
  * @param sort - The sorting information (method and direction).
  * @returns The appropriate compare function.
  */
-export const getSortFunction = (sort: ISorting) => {
+export const getSortFunction = (sort: Sorting) => {
   const { method, direction } = sort
   let sortFunction: CompareFunction | string = ""
 

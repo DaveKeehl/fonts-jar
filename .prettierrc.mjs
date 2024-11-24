@@ -10,14 +10,10 @@ const config = {
   trailingComma: "none",
   bracketSpacing: true,
   bracketSameLine: true,
-  plugins: [
-    require.resolve("@plasmohq/prettier-plugin-sort-imports"),
-    require.resolve("prettier-plugin-tailwindcss")
-  ],
+  plugins: ["prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   importOrder: ["^@plasmohq/(.*)$", "^~(.*)$", "^[./]"],
   importOrderSeparation: true,
-  importOrderSortSpecifiers: true,
-  pluginSearchDirs: false
+  importOrderSortSpecifiers: true
 }
 
 export default config

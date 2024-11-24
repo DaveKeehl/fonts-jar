@@ -1,6 +1,6 @@
 import { MagnifyingGlass } from "@phosphor-icons/react"
 
-interface ISearch {
+interface Props {
   value: string
   placeholder?: string
   inputClassName?: string
@@ -14,7 +14,7 @@ export const Search = ({
   inputClassName = "",
   iconClassName = "",
   onChange
-}: ISearch) => {
+}: Props) => {
   return (
     <div className="search relative flex h-full flex-1 flex-row items-center">
       <MagnifyingGlass size={18} weight="bold" className={`absolute ${iconClassName}`} />

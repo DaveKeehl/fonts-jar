@@ -3,55 +3,37 @@ import { useStorage } from "@plasmohq/storage/hook"
 import { Minus, Plus } from "@phosphor-icons/react"
 import { cva } from "class-variance-authority"
 
-import type { ICollection, ITypeface, TypefaceTuple } from "~types/typeface"
-import type { Theme, Website } from "~types/website"
-import { isUrlLegal, slugify } from "~contents/utils"
+import type { Collection, Typeface, TypefaceTuple } from "~/types/typeface"
+import type { Theme, Website } from "~/types/website"
+import { isUrlLegal, slugify } from "~/contents/utils"
 
-interface IButton {
+interface Props {
   website: Website
   defaultTheme: Theme
   variants?: {
-    theme: {
-      dark: string[]
-      light: string[]
-    }
-    filledDark: {
-      true: string[]
-      false: string[]
-    }
-    filledLight: {
-      true: string[]
-      false: string[]
-    }
+    theme: { dark: string[]; light: string[] };
+    filledDark: { true: string[]; false: string[] };
+    filledLight: { true: string[]; false: string[] };
   }
 }
 
 const Button = ({
   defaultTheme,
   variants = {
-    theme: {
-      dark: [],
-      light: []
-    },
-    filledDark: {
-      true: [],
-      false: []
-    },
-    filledLight: {
-      true: [],
-      false: []
-    }
+    theme: { dark: [], light: [] },
+    filledDark: { true: [], false: [] },
+    filledLight: { true: [], false: [] }
   },
   website
-}: IButton) => {
-  const [typeface, setTypeface] = useState<ITypeface>()
+}: Props) => {
+  const [typeface, setTypeface] = useState<Typeface>()
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [collections, setCollections] = useStorage<ICollection[]>("collections", [])
+  const [collections, setCollections] = useStorage<Collection[]>("collections", [])
   const [visibleOrigins, setVisibleOrigins] = useStorage<string[]>("visibleOriginWebsites", [])
   const [theme, setTheme] = useState<Theme>(defaultTheme)
 
   useEffect(() => {
-    setTimeout(() => {
+    const timerId = setTimeout(() => {
       const url = document.location.href
 
       if (!isUrlLegal(url, website.regex)) {
@@ -63,30 +45,26 @@ const Button = ({
 
         // Grab the current theme
         const themeHolder = document.querySelector(element)
-        const initialTheme: Theme = themeHolder.classList.contains(darkThemeClass)
-          ? "dark"
-          : "light"
-        setTheme(initialTheme)
+        const isDarkMode = themeHolder.classList.contains(darkThemeClass)
+        setTheme(isDarkMode ? "dark" : "light")
 
         // Attach event listener to theme toggler to know when to change theme
         const themeToggler = document.querySelector(toggle)
         themeToggler.addEventListener("click", toggleTheme)
       }
 
-      const fontName = document
-        .querySelector<HTMLHeadingElement>(website.queries.titleElement)
-        .textContent.trim()
+      const heading = document.querySelector<HTMLHeadingElement>(website.queries.titleElement)
+      const fontName = heading.textContent.trim()
 
       setTypeface({
         family: fontName,
         slug: slugify(fontName),
-        origin: {
-          name: website.name,
-          url
-        },
+        origin: { name: website.name, url },
         added_at: ""
       })
     }, 100)
+    
+    return () => clearInterval(timerId)
   }, [])
 
   const isFontInFavorites = typeface ? new Map(favorites).has(typeface.slug) : false
@@ -103,8 +81,8 @@ const Button = ({
     if (isFontInFavorites) {
       newFavorites.delete(typeface.slug)
 
-      const remainingFontsWithSameOrigin = Array.from(newFavorites).filter(([, fav]) => {
-        return fav.slug !== typeface.slug && fav.origin.name === typeface.origin.name
+      const remainingFontsWithSameOrigin = Array.from(newFavorites).filter(([, favorite]) => {
+        return favorite.slug !== typeface.slug && favorite.origin.name === typeface.origin.name
       })
 
       if (remainingFontsWithSameOrigin.length === 0) {

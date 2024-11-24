@@ -1,4 +1,6 @@
-export interface ISorting {
+import type { TypefaceTuple } from "~/types/typeface"
+
+export interface Sorting {
   method: "alphabetical" | "time"
   direction: "ascending" | "descending"
 }

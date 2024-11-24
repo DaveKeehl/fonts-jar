@@ -1,7 +1,7 @@
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { Search } from "../Search"
-import { Toolbar } from "./Toolbar"
+import { Search } from "~/popup/components/Search"
+import { Toolbar } from "~/popup/components/TopBar/Toolbar"
 
 export const TopBar = () => {
   const [searchQuery, setSearchQuery] = useStorage("searchQuery", "")

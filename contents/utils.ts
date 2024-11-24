@@ -1,4 +1,4 @@
-import type { WebsiteRegex } from "types/website"
+import type { WebsiteRegex } from "~/types/website"
 
 /**
  * Given a string, create a camelcase slug.

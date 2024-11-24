@@ -1,20 +1,20 @@
 import { useEffect } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 
-import { Typeface } from "./Typeface"
-import { NothingToShow } from "./NothingToShow"
+import { TypefaceItem } from "~/popup/components/Typeface"
+import { NothingToShow } from "~/popup/components/NothingToShow"
 
-import { getSortFunction, useSearch } from "../utils"
-import type { ISorting } from "types/sorting"
-import type { ICollection, TypefaceTuple } from "types/typeface"
-import type { SupportedWebsite } from "~types/website"
+import { getSortFunction, useSearch } from "~/popup/utils"
+import type { Sorting } from "~/types/sorting"
+import type { Collection, TypefaceTuple } from "~/types/typeface"
+import type { SupportedWebsite } from "~/types/website"
 
 export const Favorites = () => {
   const [searchQuery] = useStorage("searchQuery", "")
   const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [method] = useStorage<ISorting["method"]>("sortMethod", "alphabetical")
-  const [direction] = useStorage<ISorting["direction"]>("sortDirection", "ascending")
-  const [collections] = useStorage<ICollection[]>("collections", [])
+  const [method] = useStorage<Sorting["method"]>("sortMethod", "alphabetical")
+  const [direction] = useStorage<Sorting["direction"]>("sortDirection", "ascending")
+  const [collections] = useStorage<Collection[]>("collections", [])
   const [visibleOrigins, setVisibleOrigins] = useStorage<SupportedWebsite[]>(
     "visibleOriginWebsites",
     []
@@ -74,7 +74,7 @@ export const Favorites = () => {
   return (
     <div id="favorites" className="h-[400px] overflow-auto">
       {filteredSortedFavorites.map((favorite) => (
-        <Typeface key={crypto.randomUUID()} typeface={favorite[1]} />
+        <TypefaceItem key={crypto.randomUUID()} typeface={favorite[1]} />
       ))}
     </div>
   )

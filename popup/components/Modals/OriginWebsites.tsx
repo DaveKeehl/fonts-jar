@@ -2,31 +2,25 @@ import { useState } from "react"
 import { useStorage } from "@plasmohq/storage/hook"
 import { useAtomValue } from "jotai"
 
-import { modalOpenAtom } from "~popup/atoms"
-import { Search } from "../Search"
-import { Modal } from "./Modal"
+import { Search } from "~/popup/components/Search"
+import { Modal } from "~/popup/components/Modals/Modal"
 
-import type { TypefaceTuple } from "~types/typeface"
-import { useSearch } from "~popup/utils"
-import type { SupportedWebsite } from "~types/website"
+import type { TypefaceTuple } from "~/types/typeface"
+import { modalOpenAtom } from "~/popup/atoms"
+import { useSearch } from "~/popup/utils"
+import type { SupportedWebsite } from "~/types/website"
 
-const Origins = ({
-  uniqueOrigins,
-  filteredOrigins,
-  visibleOrigins,
-  onChange
-}: {
+type Props = {
   uniqueOrigins: string[]
   filteredOrigins: string[]
   visibleOrigins: string[]
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}) => {
-  if (uniqueOrigins.length === 0 && filteredOrigins.length === 0) {
-    return <p className="text-base">No origins.</p>
-  }
+}
 
-  if (uniqueOrigins.length > 0 && filteredOrigins.length === 0) {
-    return <p className="text-base">No results.</p>
+const Origins = ({ uniqueOrigins, filteredOrigins, visibleOrigins, onChange }: Props) => {
+  if (filteredOrigins.length === 0) {
+    const message = uniqueOrigins.length === 0 ? "No origins." : "No results."
+    return <p className="text-base">{message}</p>
   }
 
   return (

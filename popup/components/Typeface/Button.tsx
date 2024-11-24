@@ -1,10 +1,5 @@
 import { cva, type VariantProps } from "class-variance-authority"
 
-interface IButton extends VariantProps<typeof button> {
-  children: React.ReactNode
-  onClick?: () => void
-}
-
 const button = cva(
   "flex aspect-square w-7 items-center justify-center rounded p-1 transition-colors duration-100 hover:cursor-pointer",
   {
@@ -20,7 +15,14 @@ const button = cva(
   }
 )
 
-export const Button = ({ children, intent, onClick }: IButton) => {
+interface Props extends VariantProps<typeof button> {
+  children: React.ReactNode
+  onClick?: () => void
+}
+
+
+
+export const Button = ({ children, intent, onClick }: Props) => {
   return (
     <div className={button({ intent })} onClick={onClick}>
       {children}
