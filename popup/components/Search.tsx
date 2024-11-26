@@ -1,5 +1,7 @@
 import { MagnifyingGlass } from "@phosphor-icons/react";
 
+import { cn } from "~/utils/common";
+
 interface Props {
   value: string;
   placeholder?: string;
@@ -17,12 +19,15 @@ export const Search = ({
 }: Props) => {
   return (
     <div className="search relative flex h-full flex-1 flex-row items-center">
-      <MagnifyingGlass size={18} weight="bold" className={`absolute ${iconClassName}`} />
+      <MagnifyingGlass size={18} weight="bold" className={cn("absolute", iconClassName)} />
       <input
         type="search"
         placeholder={placeholder}
         autoComplete="off"
-        className={`h-full w-full border-none font-poppins text-base text-greyscale-900 placeholder:text-greyscale-600 focus:outline-0 ${inputClassName}`}
+        className={cn(
+          "h-full w-full border-none font-poppins text-base text-greyscale-900 placeholder:text-greyscale-600 focus:outline-0",
+          inputClassName
+        )}
         value={value}
         onChange={onChange}
       />
