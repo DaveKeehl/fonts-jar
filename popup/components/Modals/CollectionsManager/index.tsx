@@ -1,29 +1,29 @@
-import { useState } from "react"
-import { useStorage } from "@plasmohq/storage/hook"
-import { useAtomValue } from "jotai"
+import { useState } from "react";
+import { useStorage } from "@plasmohq/storage/hook";
+import { useAtomValue } from "jotai";
 
-import { Search } from "~/popup/components/Search"
-import { Modal } from "~/popup/components/Modals/Modal"
-import { NewCollectionForm } from "~/popup/components/Modals/CollectionsManager/NewCollectionForm"
-import { Collections } from "~/popup/components/Modals/CollectionsManager/Collections"
+import { Collections } from "~/popup/components/Modals/CollectionsManager/Collections";
+import { NewCollectionForm } from "~/popup/components/Modals/CollectionsManager/NewCollectionForm";
+import { Modal } from "~/popup/components/Modals/Modal";
+import { Search } from "~/popup/components/Search";
 
-import type { Collection, TypefaceTuple } from "~/types/typeface"
-import { useSearch } from "~/popup/utils"
-import { modalOpenAtom } from "~/popup/atoms"
+import { modalOpenAtom } from "~/utils/atoms";
+import { useSearch } from "~/utils/popup";
+import type { Collection, TypefaceTuple } from "~/types/typeface";
 
 export const CollectionsManager = () => {
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
   const [updatedName, setUpdatedName] = useState<{
-    prev: string
-    updated: string
+    prev: string;
+    updated: string;
   }>({
     prev: "",
     updated: ""
-  })
-  const [newCollection, setNewCollection] = useState("")
-  const modalOpen = useAtomValue(modalOpenAtom)
-  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [collections, setCollections] = useStorage<Collection[]>("collections", [])
+  });
+  const [newCollection, setNewCollection] = useState("");
+  const modalOpen = useAtomValue(modalOpenAtom);
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", []);
+  const [collections, setCollections] = useStorage<Collection[]>("collections", []);
 
   const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
     name: {
@@ -33,62 +33,63 @@ export const CollectionsManager = () => {
     typefaces: {
       propertyContainsQuery: ({ typefaces }) =>
         typefaces.some((typeface) => {
-          const cleanTypeface = normalize(typeface)
+          const cleanTypeface = normalize(typeface);
           return cleanQuery.split(" ").some((term) => {
-            const cleanTerm = normalize(term)
-            return cleanTypeface.includes(cleanTerm)
-          })
+            const cleanTerm = normalize(term);
+            return cleanTypeface.includes(cleanTerm);
+          });
         })
     }
-  }))
+  }));
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCollection(e.target.value)
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => setNewCollection(e.target.value);
 
   const handleToggleVisibility = (name: string) => {
     setCollections((prev) =>
       prev.map((collection) => {
-        if (collection.name !== name) return collection
-        return { ...collection, hidden: !collection.hidden }
+        if (collection.name !== name) return collection;
+        return { ...collection, hidden: !collection.hidden };
       })
-    )
-  }
+    );
+  };
 
   const handleDelete = (name: string) => {
-    setCollections((prev) => prev.filter((collection) => collection.name !== name))
-  }
+    setCollections((prev) => prev.filter((collection) => collection.name !== name));
+  };
 
   const updateCollectionName = (oldName: string, newName: string) => {
     setCollections((prev) =>
       prev.map((collection) => {
-        if (collection.name !== oldName) return collection
-        return { ...collection, name: newName }
+        if (collection.name !== oldName) return collection;
+        return { ...collection, name: newName };
       })
-    )
-  }
+    );
+  };
 
   const addCollection = (collection: Collection) => {
-    setCollections((prev) => [...prev, collection])
-  }
+    setCollections((prev) => [...prev, collection]);
+  };
 
   const handleUpdateName = (e: React.ChangeEvent<HTMLInputElement>, name: string) => {
-    setUpdatedName({ prev: name, updated: e.target.value })
-  }
+    setUpdatedName({ prev: name, updated: e.target.value });
+  };
 
   const handleUpdateNameAfterLostFocus = (name: string) => {
-    updateCollectionName(name, updatedName.updated.trim())
-  }
+    updateCollectionName(name, updatedName.updated.trim());
+  };
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault()
-    addCollection({ name: newCollection, typefaces: [], hidden: false })
-    setNewCollection("")
-    e.currentTarget.blur()
-  }
+    e.preventDefault();
+    addCollection({ name: newCollection, typefaces: [], hidden: false });
+    setNewCollection("");
+    e.currentTarget.blur();
+  };
 
   return (
     <Modal
       isModalOpen={modalOpen === "collections-manager"}
-      contentLabel="Collections Manager Modal">
+      contentLabel="Collections Manager Modal"
+    >
       <div className="flex flex-col gap-4 px-5 py-6">
         <div>
           <h2 className="mb-2 text-xl font-semibold">Collections</h2>
@@ -119,5 +120,5 @@ export const CollectionsManager = () => {
         </div>
       </div>
     </Modal>
-  )
-}
+  );
+};

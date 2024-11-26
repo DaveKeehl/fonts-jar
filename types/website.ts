@@ -1,36 +1,36 @@
 export interface WebsiteRegex {
-  match: RegExp
-  ignore?: RegExp
+  match: RegExp;
+  ignore?: RegExp;
 }
 
 export interface Website {
-  name: SupportedWebsite
-  regex: WebsiteRegex
-  queries: ExtractionQueries
+  name: SupportedWebsite;
+  regex: WebsiteRegex;
+  queries: ExtractionQueries;
 }
 
 // WEBSITES
 
-export type SupportedWebsite = "Google Fonts" | "Adobe Fonts"
+export type SupportedWebsite = "Google Fonts" | "Adobe Fonts";
 
 export type WebsitesSpecificStyles = {
-  name: SupportedWebsite
-  styles: string
-}
+  name: SupportedWebsite;
+  styles: string;
+};
 
 // QUERIES
 
 export interface ExtractionQueries {
-  titleElement: string
-  theme?: ThemeQuery
+  titleElement: string;
+  theme?: ThemeQuery;
 }
 
 export interface ThemeQuery {
-  element: string // Which element holds the dark theme class name
-  darkThemeClass: string
-  toggle: string
+  element: string; // Which element holds the dark theme class name
+  darkThemeClass: string;
+  toggle: string;
 }
 
 // THEME
 
-export type Theme = "light" | "dark"
+export type Theme = "light" | "dark";

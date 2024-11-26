@@ -1,26 +1,26 @@
-import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo"
+import type { PlasmoCSConfig, PlasmoGetInlineAnchor } from "plasmo";
 
-import Button from "~/contents/components/Button"
+import Button from "~/contents/components/Button";
 
-import cssText from "data-text:~style.css"
+import cssText from "data-text:~style.css";
 
 export const config: PlasmoCSConfig = {
   matches: ["https://fonts.adobe.com/fonts/*"],
   run_at: "document_end"
-}
+};
 
 export const getStyle = () => {
-  const style = document.createElement("style")
-  style.textContent = cssText
-  return style
-}
+  const style = document.createElement("style");
+  style.textContent = cssText;
+  return style;
+};
 
 export const getInlineAnchor: PlasmoGetInlineAnchor = async () => {
-  return document.querySelector("h2.spectrum-Heading--display")
-}
+  return document.querySelector("h2.spectrum-Heading--display");
+};
 
 // Use this to optimize unmount lookups
-export const getShadowHostId = () => "plasmo-inline"
+export const getShadowHostId = () => "plasmo-inline";
 
 export default function AdobeFontsButton() {
   return (
@@ -50,5 +50,5 @@ export default function AdobeFontsButton() {
         }
       }}
     />
-  )
+  );
 }

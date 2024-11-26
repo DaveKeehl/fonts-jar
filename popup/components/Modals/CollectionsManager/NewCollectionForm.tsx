@@ -1,7 +1,7 @@
 interface Props {
-  value: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void
+  value: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+  onSubmit: (e: React.FormEvent<HTMLFormElement>) => void;
 }
 
 export const NewCollectionForm = ({ value, onChange, onSubmit }: Props) => {
@@ -21,5 +21,5 @@ export const NewCollectionForm = ({ value, onChange, onSubmit }: Props) => {
         disabled={value === ""}
       />
     </form>
-  )
-}
+  );
+};

@@ -1,10 +1,10 @@
-import { useStorage } from "@plasmohq/storage/hook"
+import { useStorage } from "@plasmohq/storage/hook";
 
-import { Search } from "~/popup/components/Search"
-import { Toolbar } from "~/popup/components/TopBar/Toolbar"
+import { Search } from "~/popup/components/Search";
+import { Toolbar } from "~/popup/components/TopBar/Toolbar";
 
 export const TopBar = () => {
-  const [searchQuery, setSearchQuery] = useStorage("searchQuery", "")
+  const [searchQuery, setSearchQuery] = useStorage("searchQuery", "");
 
   return (
     <div className="flex h-10 items-center bg-greyscale-200">
@@ -16,5 +16,5 @@ export const TopBar = () => {
       />
       <Toolbar />
     </div>
-  )
-}
+  );
+};

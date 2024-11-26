@@ -1,27 +1,27 @@
-import { Eye, EyeClosed, Trash } from "@phosphor-icons/react"
+import { Eye, EyeClosed, Trash } from "@phosphor-icons/react";
 
-import type { Collection, TypefaceTuple } from "~/types/typeface"
+import type { Collection, TypefaceTuple } from "~/types/typeface";
 
 interface Props {
-  typefaces: string[]
-  favorites: TypefaceTuple[]
+  typefaces: string[];
+  favorites: TypefaceTuple[];
 }
 
 const IncludedTypefaces = ({ typefaces, favorites }: Props) => {
   const joinedNames = typefaces
     .map((slug) => {
-      const typeface = favorites.find((favorite) => favorite[0] === slug)
-      if (typeface) return typeface[1].family
-      return slug
+      const typeface = favorites.find((favorite) => favorite[0] === slug);
+      if (typeface) return typeface[1].family;
+      return slug;
     })
-    .join(", ")
+    .join(", ");
 
   return (
     <p className="truncate-custom leading-4 text-greyscale-600">
       {typefaces.length === 0 ? "No fonts added" : joinedNames}
     </p>
-  )
-}
+  );
+};
 
 export const CollectionItem = ({
   value,
@@ -32,20 +32,20 @@ export const CollectionItem = ({
   onToggleVisibility,
   onDelete
 }: {
-  value: string
-  data: Collection
-  favorites: TypefaceTuple[]
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void
-  onBlur: (name: string) => void
-  onToggleVisibility: (name: string) => void
-  onDelete: (name: string) => void
+  value: string;
+  data: Collection;
+  favorites: TypefaceTuple[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  onBlur: (name: string) => void;
+  onToggleVisibility: (name: string) => void;
+  onDelete: (name: string) => void;
 }) => {
-  const { name, typefaces, hidden } = data
+  const { name, typefaces, hidden } = data;
 
-  const ICON_SIZE = 20
-  const ICON_WEIGHT = "bold"
-  const ICON_BLACK = "black"
-  const ICON_RED = "red"
+  const ICON_SIZE = 20;
+  const ICON_WEIGHT = "bold";
+  const ICON_BLACK = "black";
+  const ICON_RED = "red";
 
   return (
     <div className="flex items-center justify-between gap-4 border-b-[1px] border-greyscale-200 py-[6px] last:border-0">
@@ -86,5 +86,5 @@ export const CollectionItem = ({
         />
       </div>
     </div>
-  )
-}
+  );
+};

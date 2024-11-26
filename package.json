@@ -34,6 +34,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.14.0",
+    "@ianvs/prettier-plugin-sort-imports": "^4.4.0",
     "@plasmohq/prettier-plugin-sort-imports": "^4.0.1",
     "@types/chrome": "^0.0.280",
     "@types/lodash": "^4.17.13",

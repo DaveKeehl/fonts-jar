@@ -1,19 +1,19 @@
-import { useSetAtom } from "jotai"
-import ReactModal from "react-modal"
+import { useSetAtom } from "jotai";
+import ReactModal from "react-modal";
 
-import { modalOpenAtom } from "~/popup/atoms"
+import { modalOpenAtom } from "~/utils/atoms";
 
-ReactModal.setAppElement("#__plasmo")
+ReactModal.setAppElement("#__plasmo");
 
 interface Props {
-  isModalOpen: boolean
-  contentLabel: string
-  children: React.ReactNode
+  isModalOpen: boolean;
+  contentLabel: string;
+  children: React.ReactNode;
 }
 
 export const Modal = ({ children, isModalOpen, contentLabel }: Props) => {
-  const setModalOpen = useSetAtom(modalOpenAtom)
-  const closeModal = () => setModalOpen("")
+  const setModalOpen = useSetAtom(modalOpenAtom);
+  const closeModal = () => setModalOpen("");
 
   return (
     <ReactModal
@@ -39,8 +39,9 @@ export const Modal = ({ children, isModalOpen, contentLabel }: Props) => {
         }
       }}
       bodyOpenClassName="body-open"
-      contentLabel={contentLabel}>
+      contentLabel={contentLabel}
+    >
       {children}
     </ReactModal>
-  )
-}
+  );
+};

@@ -1,9 +1,13 @@
-import { Favorites } from "~/popup/components/Favorites"
-import { Header } from "~/popup/components/Header"
-import { TopBar } from "~/popup/components/TopBar"
-import { CollectionsManager, CollectionAssignment, OriginWebsites } from "~/popup/components/Modals"
+import { Favorites } from "~/popup/components/Favorites";
+import { Header } from "~/popup/components/Header";
+import {
+  CollectionAssignment,
+  CollectionsManager,
+  OriginWebsites
+} from "~/popup/components/Modals";
+import { TopBar } from "~/popup/components/TopBar";
 
-import "~/style.css"
+import "~/style.css";
 
 function IndexPopup() {
   return (
@@ -15,7 +19,7 @@ function IndexPopup() {
       <CollectionAssignment />
       <OriginWebsites />
     </div>
-  )
+  );
 }
 
-export default IndexPopup
+export default IndexPopup;

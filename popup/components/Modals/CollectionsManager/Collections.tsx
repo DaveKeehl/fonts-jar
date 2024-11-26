@@ -1,16 +1,16 @@
-import { CollectionItem } from "~/popup/components/Modals/CollectionsManager/Collection"
+import { CollectionItem } from "~/popup/components/Modals/CollectionsManager/Collection";
 
-import type { Collection, TypefaceTuple } from "~/types/typeface"
+import type { Collection, TypefaceTuple } from "~/types/typeface";
 
 interface Props {
-  collections: Collection[]
-  filteredCollections: Collection[]
-  updatedName: { prev: string; updated: string }
-  favorites: TypefaceTuple[]
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void
-  onBlur: (name: string) => void
-  onToggleVisibility: (name: string) => void
-  onDelete: (name: string) => void
+  collections: Collection[];
+  filteredCollections: Collection[];
+  updatedName: { prev: string; updated: string };
+  favorites: TypefaceTuple[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  onBlur: (name: string) => void;
+  onToggleVisibility: (name: string) => void;
+  onDelete: (name: string) => void;
 }
 
 export const Collections = ({
@@ -24,8 +24,8 @@ export const Collections = ({
   onToggleVisibility
 }: Props) => {
   if (filteredCollections.length === 0) {
-    const message = collections.length === 0 ? "No collections." : "No results."
-    return <p className="text-base">{message}</p>
+    const message = collections.length === 0 ? "No collections." : "No results.";
+    return <p className="text-base">{message}</p>;
   }
 
   return (
@@ -46,5 +46,5 @@ export const Collections = ({
         />
       ))}
     </div>
-  )
-}
+  );
+};

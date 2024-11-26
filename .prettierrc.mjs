@@ -3,17 +3,25 @@
  */
 const config = {
   printWidth: 100,
-  tabWidth: 2,
-  useTabs: false,
-  semi: false,
-  singleQuote: false,
+  plugins: ["@ianvs/prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
   trailingComma: "none",
-  bracketSpacing: true,
-  bracketSameLine: true,
-  plugins: ["prettier-plugin-sort-imports", "prettier-plugin-tailwindcss"],
-  importOrder: ["^@plasmohq/(.*)$", "^~(.*)$", "^[./]"],
-  importOrderSeparation: true,
-  importOrderSortSpecifiers: true
-}
+  importOrder: [
+    "^react$",
+    "^@plasmohq/(.*)$",
+    "<THIRD_PARTY_MODULES>",
+    "",
+    "^~/popup/components/(.*)$",
+    "^~/contents/components/(.*)$",
+    "",
+    "^~/utils/(.*)$",
+    "^~/types/(.*)$",
+    "^~/mocks/(.*)$",
+    "",
+    "^(?!.*[.]css$)[./].*$",
+    ".css$",
+    "",
+    "^[./]"
+  ]
+};
 
-export default config
+export default config;

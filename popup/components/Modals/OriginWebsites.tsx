@@ -1,26 +1,26 @@
-import { useState } from "react"
-import { useStorage } from "@plasmohq/storage/hook"
-import { useAtomValue } from "jotai"
+import { useState } from "react";
+import { useStorage } from "@plasmohq/storage/hook";
+import { useAtomValue } from "jotai";
 
-import { Search } from "~/popup/components/Search"
-import { Modal } from "~/popup/components/Modals/Modal"
+import { Modal } from "~/popup/components/Modals/Modal";
+import { Search } from "~/popup/components/Search";
 
-import type { TypefaceTuple } from "~/types/typeface"
-import { modalOpenAtom } from "~/popup/atoms"
-import { useSearch } from "~/popup/utils"
-import type { SupportedWebsite } from "~/types/website"
+import { modalOpenAtom } from "~/utils/atoms";
+import { useSearch } from "~/utils/popup";
+import type { TypefaceTuple } from "~/types/typeface";
+import type { SupportedWebsite } from "~/types/website";
 
 type Props = {
-  uniqueOrigins: string[]
-  filteredOrigins: string[]
-  visibleOrigins: string[]
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
-}
+  uniqueOrigins: string[];
+  filteredOrigins: string[];
+  visibleOrigins: string[];
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
+};
 
 const Origins = ({ uniqueOrigins, filteredOrigins, visibleOrigins, onChange }: Props) => {
   if (filteredOrigins.length === 0) {
-    const message = uniqueOrigins.length === 0 ? "No origins." : "No results."
-    return <p className="text-base">{message}</p>
+    const message = uniqueOrigins.length === 0 ? "No origins." : "No results.";
+    return <p className="text-base">{message}</p>;
   }
 
   return (
@@ -28,7 +28,8 @@ const Origins = ({ uniqueOrigins, filteredOrigins, visibleOrigins, onChange }: P
       {filteredOrigins.map((origin) => (
         <label
           key={crypto.randomUUID()}
-          className="flex items-center gap-2 text-base hover:cursor-pointer">
+          className="flex items-center gap-2 text-base hover:cursor-pointer"
+        >
           <input
             type="checkbox"
             id={origin}
@@ -40,19 +41,19 @@ const Origins = ({ uniqueOrigins, filteredOrigins, visibleOrigins, onChange }: P
         </label>
       ))}
     </div>
-  )
-}
+  );
+};
 
 export const OriginWebsites = () => {
-  const [searchQuery, setSearchQuery] = useState("")
-  const modalOpen = useAtomValue(modalOpenAtom)
-  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
+  const [searchQuery, setSearchQuery] = useState("");
+  const modalOpen = useAtomValue(modalOpenAtom);
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", []);
   const [visibleOrigins, setVisibleOrigins] = useStorage<SupportedWebsite[]>(
     "visibleOriginWebsites",
     []
-  )
+  );
 
-  const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))]
+  const uniqueOrigins = [...new Set(favorites.map((favorite) => favorite[1].origin.name))];
 
   const filteredOrigins = useSearch(
     searchQuery,
@@ -64,20 +65,20 @@ export const OriginWebsites = () => {
       }
     }),
     (item) => ({ origin: item })
-  )
+  );
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const origin = e.target.name as SupportedWebsite
+    const origin = e.target.name as SupportedWebsite;
 
     setVisibleOrigins((prev) => {
-      if (!visibleOrigins.includes(origin)) return [...prev, origin]
-      return prev.filter((visibleOrigin) => visibleOrigin !== origin)
-    })
-  }
+      if (!visibleOrigins.includes(origin)) return [...prev, origin];
+      return prev.filter((visibleOrigin) => visibleOrigin !== origin);
+    });
+  };
 
   return (
     <Modal isModalOpen={modalOpen === "origin-websites"} contentLabel="Origin Websites Modal">
-      <div className="flex max-w-[300px] flex-col gap-4 py-[18px] px-4">
+      <div className="flex max-w-[300px] flex-col gap-4 px-4 py-[18px]">
         <div>
           <h2 className="mb-2 text-xl font-semibold">Origin Websites</h2>
           <p className="text-sm">🌐 Filter your fonts based on their origin website.</p>
@@ -96,5 +97,5 @@ export const OriginWebsites = () => {
         />
       </div>
     </Modal>
-  )
-}
+  );
+};

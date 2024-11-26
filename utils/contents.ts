@@ -1,4 +1,4 @@
-import type { WebsiteRegex } from "~/types/website"
+import type { WebsiteRegex } from "~/types/website";
 
 /**
  * Given a string, create a camelcase slug.
@@ -11,10 +11,10 @@ export const slugify = (text: string) =>
     .split(/[^A-Za-z]/g)
     .map((el) => el.toLowerCase())
     .map((el, idx) => {
-      if (idx === 0) return el
-      return el[0].toUpperCase() + el.slice(1)
+      if (idx === 0) return el;
+      return el[0].toUpperCase() + el.slice(1);
     })
-    .join("")
+    .join("");
 
 /**
  * Generic function whose goal is to run some code on the first valid element from an array of candidate elements.
@@ -30,29 +30,29 @@ export const useFirstValidCandidate = <T, K, V>(
   onTruthyCandidate: (candidate: K) => V,
   onCandidateValidation: (candidate: K) => boolean
 ) => {
-  let res: V
+  let res: V;
 
   for (const candidate of candidates) {
-    const element = onCandidateIteration(candidate)
+    const element = onCandidateIteration(candidate);
 
-    if (!element) continue
+    if (!element) continue;
 
     if (onCandidateValidation(element)) {
-      res = onTruthyCandidate(element)
-      break
+      res = onTruthyCandidate(element);
+      break;
     }
   }
 
-  return res
-}
+  return res;
+};
 
 export const isUrlLegal = (url: string, websiteRegex: WebsiteRegex) => {
-  const match = new RegExp(websiteRegex.match).test(url)
-  let ignore = false
+  const match = new RegExp(websiteRegex.match).test(url);
+  let ignore = false;
 
   if (websiteRegex.ignore !== undefined) {
-    ignore = new RegExp(websiteRegex.ignore).test(url)
+    ignore = new RegExp(websiteRegex.ignore).test(url);
   }
 
-  return match && !ignore
-}
+  return match && !ignore;
+};

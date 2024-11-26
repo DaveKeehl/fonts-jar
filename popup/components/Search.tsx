@@ -1,11 +1,11 @@
-import { MagnifyingGlass } from "@phosphor-icons/react"
+import { MagnifyingGlass } from "@phosphor-icons/react";
 
 interface Props {
-  value: string
-  placeholder?: string
-  inputClassName?: string
-  iconClassName?: string
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  value: string;
+  placeholder?: string;
+  inputClassName?: string;
+  iconClassName?: string;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
 }
 
 export const Search = ({
@@ -22,10 +22,10 @@ export const Search = ({
         type="search"
         placeholder={placeholder}
         autoComplete="off"
-        className={`h-full w-full border-none font-poppins text-base text-greyscale-900  placeholder:text-greyscale-600 focus:outline-0 ${inputClassName}`}
+        className={`h-full w-full border-none font-poppins text-base text-greyscale-900 placeholder:text-greyscale-600 focus:outline-0 ${inputClassName}`}
         value={value}
         onChange={onChange}
       />
     </div>
-  )
-}
+  );
+};

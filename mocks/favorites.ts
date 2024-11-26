@@ -1,4 +1,4 @@
-import type { TypefaceTuple } from "~/types/typeface"
+import type { TypefaceTuple } from "~/types/typeface";
 
 export const validTypefaces: TypefaceTuple[] = [
   [
@@ -169,7 +169,7 @@ export const validTypefaces: TypefaceTuple[] = [
       slug: "overpass"
     }
   ]
-]
+];
 
 export const invalidAddedAt: TypefaceTuple[] = [
   [
@@ -184,7 +184,7 @@ export const invalidAddedAt: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];
 
 export const invalidCollections: TypefaceTuple[] = [
   [
@@ -199,7 +199,7 @@ export const invalidCollections: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];
 
 export const invalidOrigin: TypefaceTuple[] = [
   [
@@ -214,7 +214,7 @@ export const invalidOrigin: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];
 
 export const notMatchingSlugs: TypefaceTuple[] = [
   [
@@ -229,7 +229,7 @@ export const notMatchingSlugs: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];
 
 export const invalidStyles: TypefaceTuple[] = [
   [
@@ -244,7 +244,7 @@ export const invalidStyles: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];
 
 export const invalidVariableAxes: TypefaceTuple[] = [
   [
@@ -259,4 +259,4 @@ export const invalidVariableAxes: TypefaceTuple[] = [
       slug: "poppins"
     }
   ]
-]
+];

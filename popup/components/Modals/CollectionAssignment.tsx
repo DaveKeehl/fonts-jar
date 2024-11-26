@@ -1,52 +1,53 @@
-import { useState } from "react"
-import { useStorage } from "@plasmohq/storage/hook"
-import { useAtomValue } from "jotai"
+import { useState } from "react";
+import { useStorage } from "@plasmohq/storage/hook";
+import { useAtomValue } from "jotai";
 
-import { modalOpenAtom, selectedTypefaceSlugAtom } from "~/popup/atoms"
-import { Search } from "~/popup/components/Search"
-import { Modal } from "~/popup/components/Modals/Modal"
+import { Modal } from "~/popup/components/Modals/Modal";
+import { Search } from "~/popup/components/Search";
 
-import type { Collection, TypefaceTuple } from "~/types/typeface"
-import { useSearch } from "~/popup/utils"
+import { modalOpenAtom, selectedTypefaceSlugAtom } from "~/utils/atoms";
+import { useSearch } from "~/utils/popup";
+import type { Collection, TypefaceTuple } from "~/types/typeface";
 
 export const CollectionAssignment = () => {
-  const [searchQuery, setSearchQuery] = useState("")
-  const modalOpen = useAtomValue(modalOpenAtom)
-  const selectedTypefaceSlug = useAtomValue(selectedTypefaceSlugAtom)
-  const [favorites] = useStorage<TypefaceTuple[]>("favorites", [])
-  const [collections, setCollections] = useStorage<Collection[]>("collections", [])
+  const [searchQuery, setSearchQuery] = useState("");
+  const modalOpen = useAtomValue(modalOpenAtom);
+  const selectedTypefaceSlug = useAtomValue(selectedTypefaceSlugAtom);
+  const [favorites] = useStorage<TypefaceTuple[]>("favorites", []);
+  const [collections, setCollections] = useStorage<Collection[]>("collections", []);
 
-  const selectedTypeface = favorites.find((favorite) => favorite[0] === selectedTypefaceSlug)
+  const selectedTypeface = favorites.find((favorite) => favorite[0] === selectedTypefaceSlug);
 
   const filteredCollections = useSearch(searchQuery, collections, (cleanQuery, normalize) => ({
     name: {
       propertyContainsQuery: ({ name }) => normalize(name).includes(cleanQuery),
       queryContainsProperty: ({ name }) => cleanQuery.includes(normalize(name))
     }
-  }))
+  }));
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setCollections((prev) =>
       prev.map((collection) => {
-        if (collection.name !== e.target.name) return collection
+        if (collection.name !== e.target.name) return collection;
 
         const updatedTypefaces = e.target.checked
           ? [...collection.typefaces, selectedTypefaceSlug]
-          : collection.typefaces.filter((font) => font !== selectedTypefaceSlug)
+          : collection.typefaces.filter((font) => font !== selectedTypefaceSlug);
 
         return {
           ...collection,
           typefaces: updatedTypefaces
-        }
+        };
       })
-    )
-  }
+    );
+  };
 
   return (
     <Modal
       isModalOpen={modalOpen === "collection-assignment"}
-      contentLabel="Collection Assignment Modal">
-      <div className="flex max-w-[300px] flex-col gap-4 py-[18px] px-4">
+      contentLabel="Collection Assignment Modal"
+    >
+      <div className="flex max-w-[300px] flex-col gap-4 px-4 py-[18px]">
         <div>
           <h2 className="mb-2 text-xl font-semibold">Assign to collection</h2>
           {selectedTypeface && (
@@ -68,7 +69,8 @@ export const CollectionAssignment = () => {
             {collections.map(({ name, typefaces }) => (
               <label
                 key={crypto.randomUUID()}
-                className="flex items-center gap-2 text-base hover:cursor-pointer">
+                className="flex items-center gap-2 text-base hover:cursor-pointer"
+              >
                 <input
                   type="checkbox"
                   id={name}
@@ -83,5 +85,5 @@ export const CollectionAssignment = () => {
         )}
       </div>
     </Modal>
-  )
-}
+  );
+};

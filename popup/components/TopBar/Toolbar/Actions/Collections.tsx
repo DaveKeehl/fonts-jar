@@ -1,25 +1,27 @@
-import { useCallback, useState } from "react"
-import { Folder, FolderOpen } from "@phosphor-icons/react"
-import { useSetAtom } from "jotai"
+import { useCallback, useState } from "react";
+import { Folder, FolderOpen } from "@phosphor-icons/react";
+import { useSetAtom } from "jotai";
 
-import { ToolbarAction } from "~/popup/components/TopBar/Toolbar/ToolbarAction"
+import { ToolbarAction } from "~/popup/components/TopBar/Toolbar/ToolbarAction";
 
-import { ICON_SIZE } from "."
-import { modalOpenAtom } from "~/popup/atoms"
+import { modalOpenAtom } from "~/utils/atoms";
+
+import { ICON_SIZE } from ".";
 
 export const Collections = () => {
-  const [hover, setHover] = useState(false)
-  const setModalOpen = useSetAtom(modalOpenAtom)
+  const [hover, setHover] = useState(false);
+  const setModalOpen = useSetAtom(modalOpenAtom);
 
-  const handleClick = useCallback(() => setModalOpen("collections-manager"), [])
+  const handleClick = useCallback(() => setModalOpen("collections-manager"), []);
 
   return (
     <ToolbarAction
       title="Collections Manager"
       onClick={handleClick}
       onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}>
+      onMouseLeave={() => setHover(false)}
+    >
       {hover ? <FolderOpen size={ICON_SIZE} /> : <Folder size={ICON_SIZE} />}
     </ToolbarAction>
-  )
-}
+  );
+};
