@@ -18,8 +18,9 @@
     "build": "plasmo build",
     "build-zip": "plasmo build -- --zip",
     "package": "plasmo package",
-    "lint": "npx prettier --check . && next lint",
-    "format": "npx prettier --write ."
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "format:check": "prettier --check ."
   },
   "dependencies": {
     "@phosphor-icons/react": "^2.1.7",
