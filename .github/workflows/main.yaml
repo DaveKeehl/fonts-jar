@@ -20,8 +20,8 @@ jobs:
       - name: Install dependencies
         run: npm install
 
-      - name: Lint
-        run: npm run lint
+      - name: Lint and format check
+        run: npm run lint & npm run format:check
 
       - name: Create .env with Plasmo public keys
         uses: PlasmoHQ/soft-secret@v1
