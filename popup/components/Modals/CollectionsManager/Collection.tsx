@@ -1,26 +1,17 @@
 import { Eye, EyeClosed, Trash } from "@phosphor-icons/react";
 
+import { IncludedTypefaces } from "~/popup/components/Modals/CollectionsManager/IncludedTypefaces";
+
 import type { Collection, TypefaceTuple } from "~/types/typeface";
 
-interface Props {
-  typefaces: string[];
+type Props = {
+  value: string;
+  data: Collection;
   favorites: TypefaceTuple[];
-}
-
-const IncludedTypefaces = ({ typefaces, favorites }: Props) => {
-  const joinedNames = typefaces
-    .map((slug) => {
-      const typeface = favorites.find((favorite) => favorite[0] === slug);
-      if (typeface) return typeface[1].family;
-      return slug;
-    })
-    .join(", ");
-
-  return (
-    <p className="truncate-custom leading-4 text-greyscale-600">
-      {typefaces.length === 0 ? "No fonts added" : joinedNames}
-    </p>
-  );
+  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
+  onBlur: (name: string) => void;
+  onToggleVisibility: (name: string) => void;
+  onDelete: (name: string) => void;
 };
 
 export const CollectionItem = ({
@@ -31,15 +22,7 @@ export const CollectionItem = ({
   onBlur,
   onToggleVisibility,
   onDelete
-}: {
-  value: string;
-  data: Collection;
-  favorites: TypefaceTuple[];
-  onChange: (e: React.ChangeEvent<HTMLInputElement>, name: string) => void;
-  onBlur: (name: string) => void;
-  onToggleVisibility: (name: string) => void;
-  onDelete: (name: string) => void;
-}) => {
+}: Props) => {
   const { name, typefaces, hidden } = data;
 
   const ICON_SIZE = 20;

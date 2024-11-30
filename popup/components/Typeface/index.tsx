@@ -11,10 +11,11 @@ import type { SupportedWebsite } from "~/types/website";
 
 export const TypefaceItem = ({ typeface }: { typeface: Typeface }) => {
   const [favorites, setFavorites] = useStorage<TypefaceTuple[]>("favorites", []);
-  const setIsModalOpen = useSetAtom(modalOpenAtom);
-  const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom);
   const [, setCollections] = useStorage<Collection[]>("collections", []);
   const [, setVisibleOrigins] = useStorage<SupportedWebsite[]>("visibleOriginWebsites", []);
+
+  const setIsModalOpen = useSetAtom(modalOpenAtom);
+  const setSelectedTypeface = useSetAtom(selectedTypefaceSlugAtom);
 
   const { origin, family, slug } = typeface;
 
